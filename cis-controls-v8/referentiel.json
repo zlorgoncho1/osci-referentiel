@@ -1,0 +1,1371 @@
+{
+  "code": "CIS",
+  "name": "CIS Controls v8",
+  "description": "CIS Critical Security Controls v8 - a prioritized set of actions to protect organizations and data from known cyber attack vectors.",
+  "version": "v8",
+  "type": "CIS",
+  "domain": "SecurityInfra",
+  "metadata": {},
+  "controls": [
+    {
+      "code": "1.1",
+      "title": "Establish and Maintain Detailed Enterprise Asset Inventory",
+      "description": null,
+      "orderIndex": 0
+    },
+    {
+      "code": "2.1",
+      "title": "Establish and Maintain a Software Inventory",
+      "description": null,
+      "orderIndex": 1
+    },
+    {
+      "code": "3.1",
+      "title": "Establish and Maintain a Data Management Process",
+      "description": null,
+      "orderIndex": 2
+    },
+    {
+      "code": "4.1",
+      "title": "Establish and Maintain a Secure Configuration Process",
+      "description": null,
+      "orderIndex": 3
+    },
+    {
+      "code": "5.1",
+      "title": "Establish and Maintain an Asset Management Process",
+      "description": null,
+      "orderIndex": 4
+    },
+    {
+      "code": "6.1",
+      "title": "Establish and Maintain an Access Control Process",
+      "description": null,
+      "orderIndex": 5
+    },
+    {
+      "code": "8.1",
+      "title": "Establish and Maintain an Audit Log Management Process",
+      "description": null,
+      "orderIndex": 6
+    }
+  ],
+  "checklists": [
+    {
+      "title": "Security Infrastructure",
+      "version": "1.0",
+      "domain": "SecurityInfra",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Infrastructure",
+        "Network",
+        "Cluster"
+      ],
+      "description": "Infrastructure security hardening and configuration assessment based on CIS Benchmarks and NIST SP 800-53",
+      "items": [
+        {
+          "question": "Are all firewalls configured with deny-by-default rules and reviewed quarterly?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-41 Rev.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure deny-by-default firewall rules and schedule quarterly review",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is an IDS/IPS deployed and actively monitored on all critical network segments?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-94",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy and configure IDS/IPS on critical network segments",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Is network segmentation enforced between production, staging, and development environments?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "ISO",
+          "reference": "ISO 27001:2022 A.8.22",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement network segmentation between environments",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are critical and high-severity patches applied within SLA (14 days critical, 30 days high)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-40 Rev.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Establish and enforce patch management SLA",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are all servers hardened according to CIS Benchmarks?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Benchmarks v8",
+          "expectedEvidence": "CIS benchmark scan report for all server categories",
+          "autoTaskTitle": "Apply CIS benchmark hardening configurations",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are TLS certificates valid, using TLS 1.2+ only, and auto-renewed?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP TLS Cheat Sheet",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Upgrade TLS configuration and enable auto-renewal",
+          "controlCode": null
+        },
+        {
+          "question": "Is SSH access restricted to key-based authentication with keys rotated every 90 days?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-53 IA-5",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce SSH key-based auth and configure rotation",
+          "controlCode": "5.1"
+        },
+        {
+          "question": "Are unused services, ports, and protocols disabled on all servers?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "ISO",
+          "reference": "ISO 27001:2022 A.8.20",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable unused services and ports",
+          "controlCode": null
+        },
+        {
+          "question": "Is anti-malware deployed and updated on all infrastructure components?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "ISO",
+          "reference": "ISO 27001:2022 A.8.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy anti-malware on all infrastructure",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are system clocks synchronized via NTP with authenticated time sources?",
+          "itemType": "YesNo",
+          "weight": 1,
+          "referenceType": "ISO",
+          "reference": "ISO 27001:2022 A.8.17",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure NTP synchronization across infrastructure",
+          "controlCode": null
+        }
+      ]
+    },
+    {
+      "title": "Security Cluster",
+      "version": "1.0",
+      "domain": "SecurityCluster",
+      "checklistType": "Compliance",
+      "criticality": "Critical",
+      "applicability": [
+        "Cluster",
+        "Infrastructure"
+      ],
+      "description": "Kubernetes/container orchestration security based on CIS Kubernetes Benchmark and NSA Kubernetes Hardening Guide",
+      "items": [
+        {
+          "question": "Is Kubernetes RBAC enabled and properly configured (no cluster-admin for workloads)?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark 5.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure Kubernetes RBAC with least privilege",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are Network Policies enforced to restrict pod-to-pod communication?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "NSA Kubernetes Hardening Guide",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement Kubernetes Network Policies",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are Pod Security Standards (Restricted) enforced on all namespaces?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark 5.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce Pod Security Standards (Restricted profile)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are containers running as non-root with read-only root filesystem?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-190",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure non-root containers with read-only filesystem",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the Kubernetes API server access restricted and audited?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark 1.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict and audit Kubernetes API server access",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are secrets encrypted at rest in etcd?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark 1.2.29",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable etcd encryption at rest for secrets",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is admission control (OPA Gatekeeper / Kyverno) deployed and enforcing policies?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NSA Kubernetes Hardening Guide",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy admission controller with security policies",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are container runtime security monitoring tools deployed (Falco, Sysdig)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-190",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy container runtime security monitoring",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Is the container image registry private with vulnerability scanning enabled?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-190",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure private registry with image scanning",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Kubernetes CIS Benchmark compliance score",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8",
+          "expectedEvidence": "kube-bench or equivalent scan report",
+          "autoTaskTitle": null,
+          "controlCode": "4.1"
+        }
+      ]
+    },
+    {
+      "title": "Infrastructure - CIS Controls v8 & Benchmarks",
+      "version": "1.0.0",
+      "domain": "SecurityInfra",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Infrastructure"
+      ],
+      "description": "Security assessment checklist based on the Center for Internet Security (CIS) Controls Version 8 and associated CIS Benchmarks for infrastructure environments. Covers enterprise asset inventory (Control 1), software asset inventory (Control 2), data protection (Control 3), secure configuration (Control 4), account management (Control 5), access control management (Control 6), continuous vulnerability management (Control 7), audit log management (Control 8), email and web browser protections (Control 9), malware defenses (Control 10), data recovery (Control 11), network infrastructure management (Control 12), network monitoring and defense (Control 13), security awareness training (Control 14), application software security (Control 16), and penetration testing (Control 18). Each item maps to a specific CIS Controls v8 safeguard for actionable infrastructure hardening.",
+      "items": [
+        {
+          "question": "Is an actively managed inventory of all enterprise assets (hardware, virtual machines, cloud instances, IoT devices) maintained, with each asset assigned an owner, and is the inventory updated at least weekly through automated discovery scans (CIS Controls v8 1.1)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 1.1",
+          "expectedEvidence": "Asset inventory export from CMDB or discovery tool showing asset name, IP, owner, classification, and last-seen timestamp.",
+          "autoTaskTitle": "Validate enterprise asset inventory completeness (CIS 1.1)",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Are unauthorized assets detected and addressed within a defined timeframe, either by removing them from the network, quarantining them, or adding them to the approved inventory with proper authorization (CIS Controls v8 1.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 1.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify unauthorized asset detection and remediation process (CIS 1.2)",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Is a detailed software inventory maintained for all infrastructure systems, including operating systems, firmware versions, installed applications, and libraries, and is it updated through automated scanning at least every two weeks (CIS Controls v8 2.1)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 2.1",
+          "expectedEvidence": "Software inventory report from endpoint management or scanning tool showing software name, version, and host for each infrastructure system.",
+          "autoTaskTitle": "Review software asset inventory for infrastructure systems (CIS 2.1)",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Are only authorized software applications allowed to execute on infrastructure systems through application whitelisting, software restriction policies, or equivalent technical controls (CIS Controls v8 2.5)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 2.5",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify application whitelisting on infrastructure servers (CIS 2.5)",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is a data classification scheme applied to data stored and processed on infrastructure systems, and are technical controls (encryption, access restrictions) aligned to the sensitivity classification of each data type (CIS Controls v8 3.7)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 3.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Evaluate data classification and protection on infrastructure (CIS 3.7)",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are secure configuration baselines established and enforced for all infrastructure asset types (servers, network devices, hypervisors, storage), using industry-recognized hardening guides such as CIS Benchmarks or vendor security guides (CIS Controls v8 4.1)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 4.1",
+          "expectedEvidence": "Secure baseline configuration templates for each infrastructure type, compliance scan results showing adherence to CIS Benchmarks or equivalent standards.",
+          "autoTaskTitle": "Verify secure configuration baselines for infrastructure (CIS 4.1)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are default credentials on all infrastructure assets changed before deployment, and is this verified through automated scanning or a documented verification checklist (CIS Controls v8 4.7)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 4.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Check for default credentials on infrastructure devices (CIS 4.7)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is a centralized account management process used for all infrastructure systems, including procedures for provisioning, modification, disabling, and deprovisioning of user and service accounts (CIS Controls v8 5.1)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 5.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess centralized account management for infrastructure (CIS 5.1)",
+          "controlCode": "5.1"
+        },
+        {
+          "question": "Are all administrative accounts on infrastructure systems inventoried, and is the list reviewed at least quarterly to disable or remove accounts that are no longer needed or associated with terminated personnel (CIS Controls v8 5.3)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 5.3",
+          "expectedEvidence": "List of all administrative accounts per infrastructure system with last-review date, and evidence of removal/disabling of stale accounts.",
+          "autoTaskTitle": "Review administrative account inventory and cleanup (CIS 5.3)",
+          "controlCode": "5.1"
+        },
+        {
+          "question": "Is role-based access control (RBAC) implemented across infrastructure management systems, and are access rights assigned based on job function rather than individual permissions (CIS Controls v8 6.8)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 6.8",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Evaluate role-based access control implementation on infrastructure (CIS 6.8)",
+          "controlCode": "6.1"
+        },
+        {
+          "question": "Are automated vulnerability scans performed against all infrastructure assets at least monthly, covering operating systems, installed software, and firmware, with results triaged and remediated based on risk severity within defined SLAs (CIS Controls v8 7.1, 7.4)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 7.1 / 7.4",
+          "expectedEvidence": "Recent vulnerability scan reports, remediation SLA definitions, and tracking data showing patch/remediation timelines for critical, high, and medium findings.",
+          "autoTaskTitle": "Verify continuous vulnerability scanning and remediation (CIS 7.1/7.4)",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Is audit logging enabled on all infrastructure systems, collecting logs for authentication events, privilege changes, configuration modifications, and system errors, and are logs forwarded to a centralized log management system (CIS Controls v8 8.2, 8.9)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 8.2 / 8.9",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify centralized audit log collection for infrastructure (CIS 8.2/8.9)",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Are audit logs retained for a minimum period consistent with organizational policy and regulatory requirements (e.g., 90 days online, 1 year archived), and are logs protected from unauthorized modification or deletion (CIS Controls v8 8.10)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 8.10",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Check audit log retention and integrity protection (CIS 8.10)",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Are DNS filtering and web proxy controls deployed to restrict infrastructure management systems from accessing known malicious domains, and are only approved browsers with security extensions permitted on admin workstations (CIS Controls v8 9.2)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify DNS filtering and browser security on admin workstations (CIS 9.2)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is anti-malware software deployed and configured for automatic updates and real-time scanning on all infrastructure endpoints (servers, hypervisors, admin workstations), and are scans configured to cover memory, boot records, and all attached storage (CIS Controls v8 10.1, 10.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 10.1 / 10.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify anti-malware deployment and configuration on infrastructure (CIS 10.1/10.2)",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Are automated backups performed for all infrastructure system configurations, critical data, and key management material, and are backup restoration procedures tested at least quarterly to ensure recoverability within the defined RTO (CIS Controls v8 11.1, 11.2, 11.4)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 11.1 / 11.2 / 11.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Evaluate backup and recovery testing for infrastructure (CIS 11.1/11.2/11.4)",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is the network infrastructure securely managed, including use of encrypted management protocols (SSH, HTTPS, SNMPv3), up-to-date firmware on all network devices, and documented network architecture diagrams that are reviewed at least annually (CIS Controls v8 12.1)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.1",
+          "expectedEvidence": "Network device firmware version inventory, management protocol configuration evidence (SSH, SNMPv3), and current network architecture diagrams with last-review date.",
+          "autoTaskTitle": "Review network infrastructure management practices (CIS 12.1)",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are network intrusion detection/prevention systems (IDS/IPS) deployed at key network boundaries and monitored continuously, with signatures and behavioral rules updated regularly and alerts investigated within defined response times (CIS Controls v8 13.3)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess network IDS/IPS deployment and monitoring (CIS 13.3)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Do infrastructure administrators receive role-specific security training covering secure configuration, incident response procedures, common attack techniques against infrastructure, and social engineering awareness, at least annually (CIS Controls v8 14.9)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 14.9",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify infrastructure admin security training program (CIS 14.9)",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are infrastructure management applications (orchestration tools, monitoring platforms, automation scripts) assessed for security vulnerabilities and updated with security patches in a timely manner (CIS Controls v8 16.4)?",
+          "itemType": "Score",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 16.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Evaluate security patching for infrastructure management applications (CIS 16.4)",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Are penetration tests conducted against infrastructure systems at least annually, covering both external-facing and internal infrastructure, with identified vulnerabilities prioritized and remediated within defined timelines (CIS Controls v8 18.1, 18.3)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 18.1 / 18.3",
+          "expectedEvidence": "Most recent penetration test report with scope, findings, risk ratings, and evidence of remediation tracking for identified vulnerabilities.",
+          "autoTaskTitle": "Review penetration testing program for infrastructure (CIS 18.1/18.3)",
+          "controlCode": "4.1"
+        }
+      ]
+    },
+    {
+      "title": "Pipeline - CIS Software Supply Chain Security",
+      "version": "1.0.0",
+      "domain": "SecurityPipeline",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Pipeline",
+        "Codebase"
+      ],
+      "description": "Security checklist based on the CIS Software Supply Chain Security Guide covering end-to-end supply chain protections. Addresses source code integrity measures including commit signing, branch protection, and code review enforcement. Covers build pipeline security including build environment hardening, build reproducibility, and provenance generation. Includes dependency management controls for vulnerability scanning, license compliance, and supply chain attack prevention. Addresses artifact security through signing, storage, and distribution controls. Concludes with deployment security covering promotion gates, environment integrity, and runtime verification.",
+      "items": [
+        {
+          "question": "Are all commits to protected branches required to be cryptographically signed (GPG or SSH signatures) to ensure author identity and prevent commit impersonation?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 1.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check commit signing enforcement on protected branches",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are branch protection rules configured on all release and main branches to require pull request reviews, status checks, and prevent force pushes, ensuring source code changes are controlled and traceable?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 1.2",
+          "expectedEvidence": "Branch protection configuration export showing required reviewers (minimum 2), required status checks, force push restrictions, and admin enforcement settings.",
+          "autoTaskTitle": "Verify branch protection rules on release branches",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is there a defined code ownership model (e.g., CODEOWNERS file) that automatically assigns reviewers based on the files modified, ensuring domain experts review changes to sensitive code areas?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 1.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm code ownership model and automatic reviewer assignment",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are repository access permissions configured following the principle of least privilege, with write access restricted to authorized contributors and admin access limited to repository maintainers?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 1.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess repository access control adherence to least privilege",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the build environment hardened with a minimal set of installed tools, network restrictions preventing egress to untrusted endpoints, and no persistent storage that carries over between builds?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 2.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess build environment hardening controls",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Are build pipeline credentials (service accounts, API tokens, deploy keys) scoped to the minimum permissions required, with separate credentials for each pipeline stage and no shared credentials across projects?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 2.2",
+          "expectedEvidence": "Inventory of pipeline service accounts and tokens with their assigned permissions, demonstrating minimal scope and per-stage separation.",
+          "autoTaskTitle": "Verify pipeline credentials follow least privilege principle",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Does the build pipeline generate and attach Software Bill of Materials (SBOM) to every produced artifact, in a standard format (SPDX or CycloneDX)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 2.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm SBOM generation for all build artifacts",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is build provenance automatically generated and attached to artifacts, containing the build platform identity, source reference, build parameters, and all dependency inputs?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 2.4",
+          "expectedEvidence": "Sample provenance attestation (in-toto, SLSA provenance format) attached to a recent build artifact, showing builder ID, source digest, entry point, and resolved dependencies.",
+          "autoTaskTitle": "Validate build provenance generation and attachment to artifacts",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are all dependencies pinned to exact versions with cryptographic hash verification (lock files with integrity hashes) to prevent dependency confusion, typosquatting, and unauthorized version substitution?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 3.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check dependencies are pinned with integrity hashes",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is automated dependency vulnerability scanning (SCA) integrated into the pipeline, blocking builds when critical or high severity vulnerabilities are detected in direct or transitive dependencies?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 3.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify dependency vulnerability scanning blocks builds on critical CVEs",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is there a private registry or proxy (e.g., Artifactory, Nexus, npm private registry) configured as the sole source for dependencies, preventing direct pulls from public registries and enabling centralized vulnerability scanning and caching?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 3.3",
+          "expectedEvidence": "Private registry or proxy configuration, network rules blocking direct public registry access from build environments, and dependency resolution configuration pointing to the private registry.",
+          "autoTaskTitle": "Validate private registry or proxy is enforced for dependencies",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are dependency license compliance checks performed as part of the pipeline to identify and flag dependencies with copyleft, restrictive, or unknown licenses that could pose legal or compliance risks?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 3.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm dependency license compliance scanning in pipeline",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are all produced artifacts (container images, packages, binaries) signed using keyless (Sigstore/Fulcio) or key-based signing before being pushed to the artifact registry?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 4.1",
+          "expectedEvidence": "Artifact signing pipeline step configuration, sample signed artifact with verification proof, and key management or Sigstore OIDC configuration documentation.",
+          "autoTaskTitle": "Verify all artifacts are signed before registry publication",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are artifact registries configured with access controls, vulnerability scanning, and immutability policies that prevent overwriting of published artifact versions (tag immutability)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 4.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess artifact registry security and immutability configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is there an artifact retention and lifecycle policy that defines how long artifacts are retained, when they are promoted or deprecated, and how end-of-life artifacts are securely purged?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 4.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm artifact retention and lifecycle policy exists",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are deployment pipelines configured to verify artifact signatures and provenance attestations before deploying to any environment, rejecting artifacts that fail verification?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 5.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check artifact verification is enforced before deployment",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is there a promotion model that ensures artifacts are deployed through each environment stage (dev, staging, production) in order, with security gates at each promotion boundary preventing stage skipping?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 5.2",
+          "expectedEvidence": "Pipeline configuration showing sequential environment promotion with gates, and evidence that direct-to-production deployments are blocked by policy.",
+          "autoTaskTitle": "Validate environment promotion model with security gates",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are runtime admission controllers (e.g., Kyverno, OPA Gatekeeper, Kubernetes admission webhooks) configured to enforce that only signed and verified artifacts from trusted registries can be deployed to production?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Supply Chain Security Guide 5.3",
+          "expectedEvidence": "Admission controller policies and configuration showing trusted registry allowlists, signature verification requirements, and deny-by-default rules for unsigned images.",
+          "autoTaskTitle": "Verify runtime admission controls for artifact trust enforcement",
+          "controlCode": "4.1"
+        }
+      ]
+    },
+    {
+      "title": "Network - CIS Controls v8 Network Security",
+      "version": "1.0.0",
+      "domain": "SecurityNetworking",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Network"
+      ],
+      "description": "Security checklist based on CIS Controls v8 for network security. Covers CIS Control 9 (Email and Web Browser Protections), Control 12 (Network Infrastructure Management), Control 13 (Network Monitoring and Defense), firewall rule management, IDS/IPS deployment, network segmentation, VLAN configuration, DNS security, DNSSEC implementation, WAF deployment, DDoS protection, VPN/SASE architecture, mTLS enforcement, and certificate management. This checklist ensures network assets are assessed against CIS Controls v8 best practices.",
+      "items": [
+        {
+          "question": "Are only fully supported browsers and email clients allowed to execute in the organization, and are unsupported versions blocked from network access (CIS Control 9.1)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify browser and email client version enforcement on the network",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are DNS filtering services used to block access to known malicious domains and content categories that violate enterprise policy (CIS Control 9.2)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.2",
+          "expectedEvidence": "DNS filtering service configuration showing blocked categories, malicious domain block lists, and sample DNS query logs demonstrating enforcement.",
+          "autoTaskTitle": "Validate DNS filtering service deployment and configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is a network-based URL filter deployed to limit connections to known malicious or unapproved websites, and is it configured to log all URL requests for monitoring purposes (CIS Control 9.3)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify network-based URL filtering deployment",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the network infrastructure kept up-to-date, with firmware and software on routers, switches, firewalls, and other network devices updated to the latest stable, vendor-supported versions (CIS Control 12.1)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess network infrastructure firmware and software currency",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is a secure network architecture established and maintained with up-to-date network diagrams that document data flows, trust boundaries, and security zones (CIS Control 12.2)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.2",
+          "expectedEvidence": "Current network architecture diagrams with timestamps, showing data flows, trust boundaries, security zones, and last-reviewed date.",
+          "autoTaskTitle": "Validate network architecture documentation and diagrams",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are all network infrastructure devices managed securely, with default credentials changed, unnecessary services disabled, and management interfaces accessible only from dedicated management networks (CIS Control 12.3)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify secure management configuration of network devices",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are all remote management sessions for network infrastructure devices encrypted using protocols such as SSH, HTTPS, or TLS, and are unencrypted protocols (Telnet, HTTP, SNMPv1/v2) disabled (CIS Control 12.6)?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.6",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify encrypted remote management for network devices",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are network intrusion detection/prevention systems (IDS/IPS) deployed at critical network boundaries and configured with up-to-date signature sets and behavioral rules (CIS Control 13.2)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.2",
+          "expectedEvidence": "IDS/IPS deployment topology, current signature version documentation, and sample alert reports from the past 30 days.",
+          "autoTaskTitle": "Validate IDS/IPS deployment and signature currency",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is network traffic filtered between network segments to restrict traffic to only the services and protocols that are explicitly required for business operations (CIS Control 13.4)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.4",
+          "expectedEvidence": "Firewall rule sets or ACLs governing inter-segment traffic, with documented business justification for each allowed rule.",
+          "autoTaskTitle": "Review network segmentation firewall rules and justifications",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is NetFlow or equivalent network flow data collected, retained, and analyzed to detect anomalous traffic patterns and potential security incidents (CIS Control 13.6)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.6",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess network flow data collection and analysis capabilities",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are firewall rules reviewed at least quarterly to remove stale, overly permissive, or conflicting rules, with a documented change management process for all firewall modifications?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.5",
+          "expectedEvidence": "Firewall rule review reports from the last two quarters, change request tickets, and rule cleanup records.",
+          "autoTaskTitle": "Verify quarterly firewall rule review process",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are VLANs configured to logically segment the network based on function, data sensitivity, and trust level, with inter-VLAN routing controlled by firewall or ACL policies?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify VLAN segmentation and inter-VLAN access controls",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is DNSSEC enabled for all externally facing domains to prevent DNS spoofing and cache poisoning attacks, and are DNSSEC validation checks performed on recursive resolvers?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify DNSSEC deployment and validation on DNS resolvers",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are internal DNS servers hardened, configured with response rate limiting, and monitored for DNS tunneling and exfiltration attempts?",
+          "itemType": "Score",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 9.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess internal DNS server hardening and monitoring",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is a Web Application Firewall (WAF) deployed in front of all internet-facing web applications, configured with OWASP Top 10 rulesets, and tuned to minimize false positives?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.10",
+          "expectedEvidence": "WAF deployment configuration, enabled rule sets, tuning records, and sample blocked request logs.",
+          "autoTaskTitle": "Validate WAF deployment and OWASP ruleset configuration",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is DDoS protection deployed at the network edge, including volumetric, protocol, and application-layer attack mitigation, with documented escalation procedures and SLAs with the DDoS mitigation provider?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.8",
+          "expectedEvidence": "DDoS protection service agreement, mitigation capacity documentation, runbook for DDoS response, and results from the most recent DDoS simulation test.",
+          "autoTaskTitle": "Verify DDoS protection deployment and response procedures",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is remote network access provided through a VPN or SASE solution that enforces strong authentication (MFA), encrypts all traffic, and applies zero-trust access policies based on user identity and device posture?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 12.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess VPN/SASE deployment with MFA and zero-trust policies",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is mutual TLS (mTLS) enforced for all service-to-service communication within the network, ensuring both client and server identities are cryptographically verified?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 3.10",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify mTLS enforcement for service-to-service communications",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is a centralized certificate management system deployed to track all TLS/SSL certificates across the network, with automated alerts for expiring certificates at least 30 days before expiration?",
+          "itemType": "Evidence",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 3.10",
+          "expectedEvidence": "Certificate inventory report from the certificate management platform, expiration alert configuration, and evidence of certificate renewal workflow.",
+          "autoTaskTitle": "Validate centralized certificate management and expiration alerting",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Are certificate authorities (CAs) used for internal PKI properly secured, with root CA keys stored in hardware security modules (HSMs) and intermediate CAs used for day-to-day issuance?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 3.10",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify internal PKI CA security and HSM key storage",
+          "controlCode": "3.1"
+        }
+      ]
+    },
+    {
+      "title": "Tool - CIS Controls v8 Security Operations",
+      "version": "1.0.0",
+      "domain": "SecurityTooling",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Tool",
+        "Infrastructure"
+      ],
+      "description": "Security checklist based on CIS Controls v8 for security operations tooling. Covers CIS Control 7 (Continuous Vulnerability Management), Control 8 (Audit Log Management), Control 10 (Malware Defenses), Control 13 (Network Monitoring and Defense), Control 16 (Application Software Security), Control 17 (Incident Response Management), Control 18 (Penetration Testing), EDR deployment, SOC operations, SOAR automation, and threat hunting capabilities. This checklist ensures security operations tools and processes are assessed against CIS Controls v8 best practices.",
+      "items": [
+        {
+          "question": "Is an enterprise vulnerability management tool deployed that performs automated vulnerability scanning of all enterprise assets on a recurring schedule, with credentialed scanning enabled for comprehensive coverage (CIS Control 7.1, 7.4)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 7.1",
+          "expectedEvidence": "Vulnerability scanner deployment documentation, scan schedule configuration, credentialed scan settings, and asset coverage percentage report.",
+          "autoTaskTitle": "Validate vulnerability management tool deployment and scanning coverage",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Is a risk-based remediation process established for vulnerabilities discovered by scanning tools, prioritizing remediation based on exploitability, asset criticality, and threat intelligence context (CIS Control 7.2, 7.4)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 7.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess risk-based vulnerability remediation process and prioritization",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Is a centralized log management tool deployed to collect, aggregate, and retain audit logs from all enterprise assets and software, with standardized log formats and timestamp synchronization via NTP (CIS Control 8.2, 8.4)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 8.2",
+          "expectedEvidence": "Log management platform architecture, log source inventory, NTP synchronization configuration, and retention policy documentation.",
+          "autoTaskTitle": "Validate centralized log management deployment and configuration",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Are audit logs protected from unauthorized access, modification, and deletion through access controls, immutable storage, or forwarding to a write-once repository (CIS Control 8.3)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 8.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify audit log integrity protections and access controls",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Are detailed audit logs collected for sensitive actions including command-line activity, DNS queries, email metadata, URL requests, and authentication events (CIS Control 8.5, 8.6, 8.7, 8.8, 8.11)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 8.5",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess detailed audit log collection for sensitive activities",
+          "controlCode": "8.1"
+        },
+        {
+          "question": "Is anti-malware software deployed and centrally managed on all enterprise assets, with automatic signature updates, behavioral detection capabilities, and centralized alerting enabled (CIS Control 10.1, 10.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 10.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify anti-malware deployment coverage and central management",
+          "controlCode": "1.1"
+        },
+        {
+          "question": "Is automatic scanning of removable media configured on endpoints, and are anti-exploitation features (DEP, ASLR, EMET) enabled on all supported systems (CIS Control 10.4, 10.5)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 10.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify removable media scanning and anti-exploitation features",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are network monitoring tools deployed to detect and alert on anomalous network behavior at network boundaries and key internal segments, using both signature-based and behavioral detection methods (CIS Control 13.1, 13.2)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.1",
+          "expectedEvidence": "Network monitoring tool deployment topology, detection method configuration (signature and behavioral), and sample alert reports from the past 30 days.",
+          "autoTaskTitle": "Validate network monitoring tool deployment and detection methods",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are application security testing tools (SAST, DAST, SCA) deployed and integrated into the software development lifecycle to identify vulnerabilities before code reaches production (CIS Control 16.4, 16.5, 16.6)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 16.4",
+          "expectedEvidence": "Application security tool inventory (SAST, DAST, SCA), CI/CD pipeline integration configuration, and sample scan results with remediation tracking.",
+          "autoTaskTitle": "Validate application security testing tool integration in SDLC",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Are incident response tools (case management, forensic analysis, communication platforms) deployed and operational, with documented procedures for their use during security incidents (CIS Control 17.4)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 17.4",
+          "expectedEvidence": "Incident response tool inventory, operational runbooks for each tool, and evidence from the most recent incident response exercise or actual incident.",
+          "autoTaskTitle": "Verify incident response tool readiness and operational documentation",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are incident response procedures tested through tabletop exercises or simulations at least annually, with lessons learned incorporated into tool configurations and playbook updates (CIS Control 17.7, 17.8)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 17.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify annual incident response testing and lessons learned process",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is a penetration testing program established using appropriate tools and methodologies, with tests conducted at least annually on external and internal network boundaries and critical applications (CIS Control 18.1, 18.2)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 18.1",
+          "expectedEvidence": "Penetration testing policy, scope documentation, most recent test reports (external and internal), and remediation tracking for identified findings.",
+          "autoTaskTitle": "Validate penetration testing program and recent test results",
+          "controlCode": "2.1"
+        },
+        {
+          "question": "Is an Endpoint Detection and Response (EDR) solution deployed on all endpoints and servers, providing real-time threat detection, automated containment, forensic data collection, and integration with the SIEM platform?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 10.7",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify EDR deployment coverage and SIEM integration",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is a Security Operations Center (SOC) established with defined operating hours (24x7 or risk-justified coverage), staffing levels, escalation procedures, and performance metrics (MTTD, MTTR)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess SOC operational maturity and performance metrics",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is a Security Orchestration, Automation, and Response (SOAR) platform deployed to automate repetitive security operations tasks such as alert triage, indicator enrichment, containment actions, and playbook execution?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.5",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess SOAR platform deployment and automation coverage",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are SOAR playbooks documented, version-controlled, and tested regularly, covering the most common incident types (phishing, malware, unauthorized access, data exfiltration) with defined response actions?",
+          "itemType": "Evidence",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.5",
+          "expectedEvidence": "SOAR playbook inventory, version control repository, test execution logs, and coverage mapping to common incident types.",
+          "autoTaskTitle": "Validate SOAR playbook documentation and testing",
+          "controlCode": "3.1"
+        },
+        {
+          "question": "Is a threat hunting program established with dedicated or assigned personnel who proactively search for indicators of compromise and adversary activity using hypothesis-driven methodologies and threat intelligence?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.11",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify threat hunting program establishment and methodology",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are threat hunting findings documented, shared with the detection engineering team, and used to create new detection rules in the SIEM and EDR platforms to improve future automated detection capabilities?",
+          "itemType": "Evidence",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Controls v8 13.11",
+          "expectedEvidence": "Threat hunting reports, new detection rules created from hunting findings, and feedback loop documentation between hunting and detection engineering teams.",
+          "autoTaskTitle": "Validate threat hunting to detection engineering feedback loop",
+          "controlCode": "4.1"
+        }
+      ]
+    },
+    {
+      "title": "Cluster - CIS Kubernetes Benchmark v1.8",
+      "version": "1.0.0",
+      "domain": "SecurityCluster",
+      "checklistType": "Compliance",
+      "criticality": "Critical",
+      "applicability": [
+        "Cluster"
+      ],
+      "description": "Comprehensive security checklist based on the CIS Kubernetes Benchmark v1.8 covering all major control sections. Includes API Server configuration and security settings (Section 1), etcd node configuration for data-at-rest protection (Section 2), Controller Manager and Scheduler settings (Section 3), Worker Node security including kubelet configuration (Section 4), and Kubernetes security policies covering RBAC (5.1), Pod Security Standards (5.2), Network Policies (5.3), Secrets Management (5.4), and General Policies (5.7). This checklist ensures Kubernetes clusters are hardened according to industry-recognized best practices to protect against unauthorized access, privilege escalation, data exfiltration, and lateral movement.",
+      "items": [
+        {
+          "question": "Is anonymous authentication disabled on the Kubernetes API server by setting --anonymous-auth=false, preventing unauthenticated access to the API (CIS 1.1.1)?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.1.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check anonymous authentication is disabled on API server",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the --insecure-port flag set to 0 (or the insecure port disabled entirely) on the API server, ensuring all API traffic is served over TLS-encrypted connections (CIS 1.1.2)?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.1.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check API server insecure port is disabled",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the --profiling flag set to false on the API server, disabling profiling endpoints that could expose sensitive runtime information to attackers (CIS 1.1.3)?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.1.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify API server profiling is disabled",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are appropriate admission controllers enabled on the API server (NodeRestriction, PodSecurity, AlwaysPullImages, ResourceQuota, LimitRanger, NetworkPolicy) while dangerous ones (AlwaysAdmit) are disabled (CIS 1.2.1)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.2.1",
+          "expectedEvidence": "API server configuration or manifest showing the --enable-admission-plugins flag with the list of enabled admission controllers, and confirmation AlwaysAdmit is not present.",
+          "autoTaskTitle": "Verify admission controller configuration on API server",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is audit logging enabled on the API server with a comprehensive audit policy that captures authentication, authorization, and resource modification events at the RequestResponse level for sensitive resources (CIS 1.2.2)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.2.2",
+          "expectedEvidence": "Audit policy YAML file showing logging levels per resource type, --audit-log-path and --audit-policy-file flags in API server configuration, and sample audit log entries.",
+          "autoTaskTitle": "Validate API server audit logging configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the API server configured with TLS 1.2 or higher (--tls-min-version=VersionTLS12) and strong cipher suites, with weak ciphers explicitly excluded (CIS 1.2.3)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.2.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check API server TLS version and cipher suite configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are API server authentication mechanisms properly configured, with at minimum OIDC-based authentication for human users and service account tokens for workloads, and are static token files and basic auth disabled (CIS 1.2.4)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 1.2.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess API server authentication mechanism configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is etcd configured with client certificate authentication (--client-cert-auth=true) and TLS encryption for all client connections (--cert-file, --key-file), preventing unauthorized access to the cluster data store (CIS 2.1)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 2.1",
+          "expectedEvidence": "Etcd configuration file or command-line flags showing --client-cert-auth=true, --cert-file, --key-file, and --trusted-ca-file settings.",
+          "autoTaskTitle": "Verify etcd client certificate authentication and TLS",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is etcd peer communication encrypted using TLS with mutual authentication (--peer-cert-file, --peer-key-file, --peer-client-cert-auth=true) to prevent eavesdropping and man-in-the-middle attacks between etcd cluster members (CIS 2.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 2.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check etcd peer communication TLS and mutual authentication",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is etcd data encryption at rest enabled using a properly configured EncryptionConfiguration resource, encrypting Secrets and other sensitive resources stored in etcd (CIS 2.3)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 2.3",
+          "expectedEvidence": "EncryptionConfiguration YAML showing encryption providers (aescbc, aesgcm, kms) for secrets resources, and API server --encryption-provider-config flag pointing to the configuration.",
+          "autoTaskTitle": "Verify etcd data encryption at rest configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the Controller Manager configured with --use-service-account-credentials=true to use individual service account credentials for each controller, limiting the blast radius if any single controller is compromised (CIS 3.1)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 3.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify Controller Manager uses per-controller service accounts",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the Controller Manager configured to rotate kubelet serving certificates automatically (--rotate-kubelet-serving-certificates=true) and is the certificate rotation threshold set appropriately (CIS 3.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 3.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check kubelet serving certificate rotation configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the kubelet configured with authentication enabled (--anonymous-auth=false) and authorization mode set to Webhook, ensuring all requests to the kubelet API are authenticated and authorized by the API server (CIS 4.1)?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 4.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check kubelet authentication and authorization configuration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are kubelet configuration files and certificates protected with appropriate file permissions (600 or 644 for config, 600 for keys) and owned by root, preventing unauthorized reading or modification (CIS 4.2)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 4.2",
+          "expectedEvidence": "Output of file permission checks on kubelet configuration files (/var/lib/kubelet/config.yaml, /etc/kubernetes/kubelet.conf) and certificate files showing correct ownership and permissions.",
+          "autoTaskTitle": "Verify kubelet file permissions and ownership",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the kubelet configured to enforce read-only access to the kubelet read-only port by setting --read-only-port=0, disabling unauthenticated health and metrics endpoints (CIS 4.3)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 4.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify kubelet read-only port is disabled",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are RBAC policies configured following the principle of least privilege, with no overly permissive ClusterRoleBindings granting cluster-admin to default or user-facing service accounts (CIS 5.1.1)?",
+          "itemType": "Score",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.1.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess RBAC policies for least privilege adherence",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Is the automounting of service account tokens disabled by default (automountServiceAccountToken: false) in namespace-level defaults and pod specifications, requiring explicit opt-in when workloads need API access (CIS 5.1.2)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.1.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check default service account token automounting is disabled",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are Pod Security Standards (PSS) enforced across all namespaces using Pod Security Admission (PSA) labels, with production namespaces set to \"restricted\" or \"baseline\" at the enforce level (CIS 5.2.1)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.2.1",
+          "expectedEvidence": "Namespace labels showing pod-security.kubernetes.io/enforce: restricted (or baseline) across production namespaces, and PSA configuration demonstrating cluster-wide defaults.",
+          "autoTaskTitle": "Verify Pod Security Standards enforcement on namespaces",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are privileged containers prohibited across all workloads in production namespaces, and are containers required to run as non-root with a read-only root filesystem where possible (CIS 5.2.2)?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.2.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Auto-check privileged containers and root execution are blocked",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are default-deny NetworkPolicies applied to all namespaces for both ingress and egress traffic, ensuring workloads cannot communicate unless explicitly permitted by policy (CIS 5.3.1)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.3.1",
+          "expectedEvidence": "Default-deny NetworkPolicy YAML applied to namespaces, and namespace listing showing all production namespaces have the default-deny policies applied.",
+          "autoTaskTitle": "Verify default-deny NetworkPolicies across namespaces",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are NetworkPolicies configured to restrict pod-to-pod communication to only necessary traffic flows, and are they regularly reviewed and updated as workload communication requirements change (CIS 5.3.2)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.3.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess NetworkPolicy granularity and maintenance process",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are Kubernetes Secrets encrypted at rest using the EncryptionConfiguration resource with a KMS provider or strong encryption algorithm, and are secrets not stored in plain text in etcd (CIS 5.4.1)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.4.1",
+          "expectedEvidence": "EncryptionConfiguration showing KMS or aescbc/aesgcm provider for secrets, and verification command output confirming secrets are encrypted in etcd.",
+          "autoTaskTitle": "Verify Kubernetes Secrets are encrypted at rest",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are external secrets management solutions (e.g., HashiCorp Vault, AWS Secrets Manager, Azure Key Vault) integrated via CSI Secret Store Driver or External Secrets Operator to avoid storing sensitive data directly in Kubernetes Secret objects (CIS 5.4.2)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.4.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm external secrets management integration",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are resource quotas and limit ranges defined for all namespaces to prevent resource exhaustion attacks (CPU/memory bombs) and ensure fair resource allocation across workloads (CIS 5.7.1)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.7.1",
+          "expectedEvidence": "ResourceQuota and LimitRange objects applied to production namespaces, showing CPU, memory, and pod count limits.",
+          "autoTaskTitle": "Verify resource quotas and limit ranges on namespaces",
+          "controlCode": "4.1"
+        },
+        {
+          "question": "Are namespaces used to provide logical isolation between different teams, applications, and environments, with RBAC, NetworkPolicies, and ResourceQuotas scoped per namespace (CIS 5.7.2)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "CIS Kubernetes Benchmark v1.8 5.7.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess namespace-based isolation strategy and implementation",
+          "controlCode": "4.1"
+        }
+      ]
+    }
+  ]
+}

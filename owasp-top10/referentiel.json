@@ -1,0 +1,2168 @@
+{
+  "code": "OWASP",
+  "name": "OWASP Top 10",
+  "description": "The OWASP Top 10 is a standard awareness document for developers and web application security. It represents a broad consensus about the most critical security risks to web applications.",
+  "version": "2021",
+  "type": "OWASP",
+  "domain": "SecurityCode",
+  "metadata": {},
+  "controls": [
+    {
+      "code": "A01",
+      "title": "Broken Access Control",
+      "description": null,
+      "orderIndex": 0
+    },
+    {
+      "code": "A02",
+      "title": "Cryptographic Failures",
+      "description": null,
+      "orderIndex": 1
+    },
+    {
+      "code": "A03",
+      "title": "Injection",
+      "description": null,
+      "orderIndex": 2
+    },
+    {
+      "code": "A04",
+      "title": "Insecure Design",
+      "description": null,
+      "orderIndex": 3
+    },
+    {
+      "code": "A05",
+      "title": "Security Misconfiguration",
+      "description": null,
+      "orderIndex": 4
+    },
+    {
+      "code": "A06",
+      "title": "Vulnerable and Outdated Components",
+      "description": null,
+      "orderIndex": 5
+    },
+    {
+      "code": "A07",
+      "title": "Identification and Authentication Failures",
+      "description": null,
+      "orderIndex": 6
+    },
+    {
+      "code": "A08",
+      "title": "Software and Data Integrity Failures",
+      "description": null,
+      "orderIndex": 7
+    },
+    {
+      "code": "A09",
+      "title": "Security Logging and Monitoring Failures",
+      "description": null,
+      "orderIndex": 8
+    },
+    {
+      "code": "A10",
+      "title": "Server-Side Request Forgery",
+      "description": null,
+      "orderIndex": 9
+    }
+  ],
+  "checklists": [
+    {
+      "title": "Security Code",
+      "version": "1.0",
+      "domain": "SecurityCode",
+      "checklistType": "Compliance",
+      "criticality": "Critical",
+      "applicability": [
+        "Codebase",
+        "Project"
+      ],
+      "description": "Secure coding practices assessment based on OWASP ASVS, OWASP Top 10, and NIST SSDF",
+      "items": [
+        {
+          "question": "Is SAST (Static Application Security Testing) integrated and passing with no critical/high findings?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS V1.1",
+          "expectedEvidence": "SAST scan report",
+          "autoTaskTitle": "Integrate SAST and fix critical/high findings",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are all user inputs validated, sanitized, and parameterized (no SQL/NoSQL injection)?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A03:2021 Injection",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement input validation and parameterized queries",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is output encoding applied to prevent XSS (Cross-Site Scripting)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A03:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement output encoding for XSS prevention",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are all dependencies free of known critical CVEs (SCA scan)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A06:2021 Vulnerable Components",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Update or replace vulnerable dependencies",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is CSRF protection enabled on all state-changing endpoints?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS V4.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement CSRF protection tokens",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are error messages generic (no stack traces, internal paths, or sensitive data leaked)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A04:2021 Insecure Design",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Sanitize error messages in production",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are all cryptographic operations using approved algorithms (AES-256, SHA-256+, RSA 2048+)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SP 800-175B",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Replace weak cryptographic algorithms",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Are sensitive data fields properly classified and handled (no logging of PII/secrets)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "ISO",
+          "reference": "ISO 27001:2022 A.5.12",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Classify sensitive data and prevent logging of PII",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is security-focused code review performed by a trained reviewer on all PRs?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST SSDF RV.1.1",
+          "expectedEvidence": "Code review approval records with security checklist",
+          "autoTaskTitle": "Enforce security code review on all PRs",
+          "controlCode": "A04"
+        },
+        {
+          "question": "DAST scan coverage and pass rate",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ZAP / Burp Suite",
+          "expectedEvidence": "DAST scan report with remediation status",
+          "autoTaskTitle": null,
+          "controlCode": "A06"
+        }
+      ]
+    },
+    {
+      "title": "IA et Prompting Security",
+      "version": "1.0",
+      "domain": "IAPrompting",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "AISystem",
+        "Project",
+        "Codebase"
+      ],
+      "description": "AI/ML and LLM security assessment: prompt injection, data leakage, model security (OWASP LLM Top 10)",
+      "items": [
+        {
+          "question": "Is prompt injection protection implemented (input sanitization, system prompt isolation)?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM01: Prompt Injection",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement prompt injection protection",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is there strict separation between system prompts and user input?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM01",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce system prompt / user input separation",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is sensitive data excluded from LLM training data and context windows?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM06: Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Audit and exclude sensitive data from LLM context",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are LLM outputs validated and sanitized before being used in downstream systems?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM02: Insecure Output Handling",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement LLM output validation and sanitization",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are all AI/LLM API calls logged with user context and content (audit trail)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Governance Policy",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable comprehensive AI/LLM audit logging",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is there rate limiting and abuse detection on AI/LLM endpoints?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM04: Model Denial of Service",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement rate limiting on AI/LLM endpoints",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is AI red teaming conducted to test for adversarial attacks and jailbreaks?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "NIST",
+          "reference": "NIST AI RMF / MITRE ATLAS",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Conduct AI red teaming exercises",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are model access controls and API keys properly managed (no overprivileged access)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM05: Supply Chain Vulnerabilities",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Review and restrict AI model access controls",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is there a data governance framework for AI training and fine-tuning data?",
+          "itemType": "Evidence",
+          "weight": 1.5,
+          "referenceType": "NIST",
+          "reference": "NIST AI 100-1 (AI RMF)",
+          "expectedEvidence": "AI data governance framework document",
+          "autoTaskTitle": "Establish AI data governance framework",
+          "controlCode": "A04"
+        }
+      ]
+    },
+    {
+      "title": "Codebase - OWASP ASVS v4.0",
+      "version": "1.0.0",
+      "domain": "SecurityCode",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Codebase"
+      ],
+      "description": "Comprehensive security verification checklist based on the OWASP Application Security Verification Standard (ASVS) v4.0. Covers architecture, authentication, session management, access control, input validation, cryptography, data protection, communications, business logic, file handling, API security, and configuration hardening.",
+      "items": [
+        {
+          "question": "Is the application architecture documented with clearly defined security boundaries between trusted and untrusted components, including threat modeling artifacts (e.g., STRIDE, PASTA)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V1.1",
+          "expectedEvidence": "Architecture diagrams showing trust boundaries, threat model documents, and data flow diagrams that identify entry points and security-critical components.",
+          "autoTaskTitle": "Document application architecture with security boundaries and threat model",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are all application components, modules, and libraries inventoried and verified to be actively maintained, with no known critical vulnerabilities?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V1.14",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Inventory all application components and verify maintenance status",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Does the application enforce strong password policies (minimum 8 characters, no maximum length below 128, no composition rules, checked against breached password lists)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V2.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement NIST 800-63b compliant password policy",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are credentials stored using a strong adaptive hashing algorithm (bcrypt, scrypt, Argon2id) with appropriate work factors, salts, and peppering?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V2.4",
+          "expectedEvidence": "Code snippets or configuration showing usage of Argon2id, bcrypt (cost >= 10), or scrypt with appropriate parameters. Evidence that plaintext or weakly hashed passwords are not stored.",
+          "autoTaskTitle": "Verify credential storage uses Argon2id or bcrypt with proper parameters",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Is multi-factor authentication (MFA) implemented and enforced for privileged accounts and sensitive operations (e.g., TOTP, WebAuthn, hardware tokens)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V2.8",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement multi-factor authentication for privileged accounts",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are session tokens generated using a cryptographically secure pseudo-random number generator (CSPRNG) with at least 128 bits of entropy, and are they invalidated on logout, idle timeout, and absolute timeout?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V3.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Ensure session tokens use CSPRNG and enforce proper timeout policies",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are session tokens protected against fixation attacks (regenerated after authentication), and are cookie-based tokens set with Secure, HttpOnly, SameSite, and appropriate Path attributes?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V3.4",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Harden session cookie attributes and prevent session fixation",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Does the application enforce access control rules on the server side (or trusted service layer), ensuring that client-side access controls cannot be bypassed?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V4.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce server-side access control with deny-by-default policy",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is the principle of least privilege applied across all application layers, with role-based or attribute-based access control (RBAC/ABAC) consistently enforced and auditable?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V4.2",
+          "expectedEvidence": "Access control matrix or policy document, code showing centralized authorization enforcement, and evidence of access control unit/integration tests.",
+          "autoTaskTitle": "Implement least-privilege RBAC/ABAC with centralized enforcement",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Does the application use parameterized queries or ORM-based query builders for all database interactions to prevent SQL injection, with no raw query string concatenation?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V5.3",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Ensure all database queries use parameterized statements or ORM",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is all user input validated on the server side using allowlists (whitelists) for type, length, range, and format, with context-appropriate output encoding applied (HTML, JavaScript, URL, CSS, SQL)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V5.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement server-side input validation and context-aware output encoding",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Does the application use only current, strong cryptographic algorithms and protocols (AES-256-GCM, ChaCha20-Poly1305, RSA >= 2048, ECDSA P-256+, SHA-256+), avoiding deprecated algorithms (DES, 3DES, MD5, SHA-1, RC4)?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V7.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Audit and upgrade all cryptographic algorithms to current standards",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are cryptographic keys managed securely with proper generation (CSPRNG), rotation schedules, storage in hardware security modules (HSM) or key vaults, and no hardcoded keys in source code?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V7.3",
+          "expectedEvidence": "Key management policy document, evidence of key vault integration (e.g., AWS KMS, Azure Key Vault, HashiCorp Vault), scan results showing no hardcoded keys, and key rotation schedule.",
+          "autoTaskTitle": "Implement secure key management with vault integration and rotation policy",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is sensitive data classified and protected both at rest and in transit according to its classification level, with PII and financial data receiving the highest protection controls?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V8.1",
+          "expectedEvidence": "Data classification policy, data flow diagrams annotating sensitive fields, encryption configuration for data at rest, and evidence of TLS enforcement for data in transit.",
+          "autoTaskTitle": "Classify sensitive data and implement protection controls per classification",
+          "controlCode": "A08"
+        },
+        {
+          "question": "Does the application prevent caching of sensitive data in HTTP responses (Cache-Control: no-store, Pragma: no-cache) and avoid storing sensitive data in browser local/session storage or logs?",
+          "itemType": "YesNo",
+          "weight": 1.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V8.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Prevent caching and client-side storage of sensitive data",
+          "controlCode": "A08"
+        },
+        {
+          "question": "Is TLS 1.2 or higher enforced for all connections (including internal service-to-service), with strong cipher suites, HSTS headers (max-age >= 1 year, includeSubDomains), and certificate pinning where appropriate?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V9.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce TLS 1.2+ with strong cipher suites and HSTS headers",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Does the application enforce business logic controls to prevent abuse such as rate limiting, transaction velocity checks, and sequential step enforcement for multi-step workflows?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V11.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement business logic abuse prevention controls",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are anti-automation controls in place to detect and prevent credential stuffing, brute-force attacks, and automated abuse of critical functionality (e.g., account lockout, CAPTCHA, progressive delays)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V11.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy anti-automation controls for critical application endpoints",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are file uploads validated for type (magic bytes, not just extension), size limits enforced, files stored outside the web root with randomized names, and antivirus scanning applied?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V12.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Secure file upload handling with validation and sandboxed storage",
+          "controlCode": "A10"
+        },
+        {
+          "question": "Are all API endpoints protected with proper authentication and authorization, with API keys not used as the sole authentication mechanism, and rate limiting applied per client?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V13.1",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Secure API endpoints with authentication, authorization, and rate limiting",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Does the API validate and sanitize all input parameters (query, path, body, headers), enforce strict content-type checking, and reject unexpected or oversized payloads?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V13.2",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement strict API input validation and content-type enforcement",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are all security-relevant HTTP headers configured (Content-Security-Policy, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy) and are server/framework version headers removed?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP ASVS v4.0 V14.4",
+          "expectedEvidence": "HTTP response header scan results (e.g., securityheaders.com), configuration files showing header settings, and evidence that server version banners are suppressed.",
+          "autoTaskTitle": "Configure security HTTP headers and remove version disclosure",
+          "controlCode": "A05"
+        }
+      ]
+    },
+    {
+      "title": "Codebase - OWASP Top 10 (2021)",
+      "version": "1.0.0",
+      "domain": "SecurityCode",
+      "checklistType": "Compliance",
+      "criticality": "Critical",
+      "applicability": [
+        "Codebase"
+      ],
+      "description": "Critical security checklist covering all ten categories of the OWASP Top 10 (2021 edition). Each category is addressed with at least two verification items to ensure comprehensive coverage of the most critical web application security risks.",
+      "items": [
+        {
+          "question": "Does the application enforce deny-by-default access control, ensuring that all resources and endpoints require explicit authorization grants and that users cannot access resources belonging to other users (IDOR prevention)?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A01:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce deny-by-default access control and prevent IDOR vulnerabilities",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are CORS policies restrictively configured, directory listing disabled, JWT tokens validated on the server, and access control checks applied uniformly at the controller/API gateway layer rather than relying on client-side enforcement?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A01:2021",
+          "expectedEvidence": "CORS configuration files showing restrictive origin allowlists, evidence of server-side access control middleware, JWT validation code, and penetration test results for authorization bypass.",
+          "autoTaskTitle": "Harden CORS, JWT validation, and centralize access control checks",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is all sensitive data (passwords, tokens, PII, financial data) encrypted at rest using AES-256 or equivalent, and are no deprecated algorithms (MD5, SHA-1, DES, RC4) used anywhere in the codebase?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A02:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Encrypt sensitive data at rest and eliminate deprecated cryptographic algorithms",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is all data transmitted over TLS 1.2+ with strong cipher suites, are cryptographic keys rotated on schedule, and is forward secrecy (ECDHE) enabled for all TLS connections?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A02:2021",
+          "expectedEvidence": "TLS configuration showing minimum version 1.2, cipher suite list, SSL Labs scan results (grade A or higher), key rotation policy, and certificate management procedures.",
+          "autoTaskTitle": "Enforce TLS 1.2+ with forward secrecy and key rotation",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Are parameterized queries, prepared statements, or ORM-based query builders used exclusively for all data access layers, with static analysis tools configured to detect raw query string concatenation?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A03:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Eliminate injection risks with parameterized queries and SAST scanning",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is context-aware output encoding applied to prevent XSS (HTML, JavaScript, URL, CSS contexts), and are Content-Security-Policy headers deployed to mitigate the impact of any encoding bypasses?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A03:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement context-aware output encoding and Content-Security-Policy",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Has threat modeling (STRIDE, PASTA, or equivalent) been performed for the application, with identified threats tracked as security requirements and mitigations verified during code review?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A04:2021",
+          "expectedEvidence": "Threat model document, list of identified threats with corresponding mitigations, evidence of security requirements in the backlog, and sign-off from security team on design review.",
+          "autoTaskTitle": "Perform threat modeling and track security design requirements",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Does the application implement defense-in-depth patterns such as rate limiting on business-critical flows, resource consumption limits, and separation of duties for sensitive operations (e.g., dual approval for financial transactions)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A04:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement defense-in-depth controls for business-critical workflows",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are all environments (dev, staging, production) hardened with unnecessary features, ports, accounts, and default credentials removed, and are security configurations managed through infrastructure-as-code with drift detection?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A05:2021",
+          "expectedEvidence": "Infrastructure-as-code templates (Terraform, CloudFormation), CIS benchmark scan results, evidence of removed default accounts, and configuration drift detection alerts.",
+          "autoTaskTitle": "Harden all environments and manage security config as code with drift detection",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are detailed error messages and stack traces suppressed in production, with generic error responses returned to users while detailed diagnostics are logged server-side only?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A05:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Suppress detailed error messages in production and log diagnostics server-side",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is automated dependency scanning (e.g., Dependabot, Snyk, Renovate) enabled in the CI/CD pipeline, with a policy to remediate critical/high vulnerabilities within defined SLAs (e.g., critical within 48 hours)?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A06:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable automated dependency scanning with vulnerability remediation SLAs",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is a Software Bill of Materials (SBOM) generated and maintained for the application, and are all direct and transitive dependencies regularly audited for known vulnerabilities and license compliance?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A06:2021",
+          "expectedEvidence": "Generated SBOM document (CycloneDX or SPDX format), dependency audit report, license compliance report, and evidence of regular update cadence.",
+          "autoTaskTitle": "Generate SBOM and audit dependencies for vulnerabilities and licenses",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Are brute-force protections in place for all authentication endpoints (progressive delays, account lockout after N failed attempts, CAPTCHA), and does the application prevent credential stuffing through breached password checks?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A07:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement brute-force protection and breached credential checks",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Does the application enforce secure session management with proper token expiration, session invalidation on password change, and prevention of session fixation through token regeneration after login?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A07:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce secure session lifecycle management and token regeneration",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are all CI/CD pipeline artifacts (container images, packages, binaries) signed and verified before deployment, and are integrity checks (checksums, signatures) applied to downloaded dependencies and updates?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A08:2021",
+          "expectedEvidence": "Artifact signing configuration (e.g., cosign, GPG), signature verification steps in CI/CD pipeline, integrity check scripts for dependencies, and evidence of subresource integrity (SRI) for CDN assets.",
+          "autoTaskTitle": "Sign and verify all CI/CD artifacts and dependency integrity",
+          "controlCode": "A08"
+        },
+        {
+          "question": "Are deserialization operations restricted to trusted data sources with strict type constraints, and are code review processes in place to prevent insecure deserialization of untrusted data?",
+          "itemType": "YesNo",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A08:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict deserialization to trusted sources with type enforcement",
+          "controlCode": "A08"
+        },
+        {
+          "question": "Does the application log all security-relevant events (authentication successes/failures, access control failures, input validation failures, privilege changes) in a structured, tamper-evident format with sufficient context for forensic analysis?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A09:2021",
+          "expectedEvidence": "Sample log entries showing structured format (JSON), list of logged security events, log integrity controls (append-only, signed), and SIEM integration configuration.",
+          "autoTaskTitle": "Implement comprehensive security event logging with tamper-evident format",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are real-time alerting and monitoring configured for suspicious activities (multiple failed logins, privilege escalation attempts, anomalous data access patterns), with incident response runbooks for each alert type?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A09:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure real-time security alerting with incident response runbooks",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Does the application validate and sanitize all user-supplied URLs and IP addresses, block requests to internal/private IP ranges (RFC 1918, link-local, loopback, cloud metadata endpoints), and enforce an allowlist for outbound connections?",
+          "itemType": "YesNo",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A10:2021",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Prevent SSRF by validating URLs and blocking internal network access",
+          "controlCode": "A10"
+        },
+        {
+          "question": "Are network-level controls (egress firewall rules, DNS rebinding protection, cloud metadata service IMDSv2 enforcement) in place to limit the blast radius of any SSRF vulnerability that bypasses application-level controls?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP Top 10 A10:2021",
+          "expectedEvidence": "Egress firewall rule documentation, IMDSv2 enforcement configuration, DNS rebinding protections, and network segmentation diagram showing isolation of sensitive internal services.",
+          "autoTaskTitle": "Deploy network-level SSRF mitigations and enforce IMDSv2",
+          "controlCode": "A10"
+        }
+      ]
+    },
+    {
+      "title": "AISystem - OWASP ML/LLM Top 10 Security",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Compliance",
+      "criticality": "Critical",
+      "applicability": [
+        "AISystem"
+      ],
+      "description": "Comprehensive AI/ML security checklist covering the OWASP Top 10 for LLM Applications and ML-specific security risks. Addresses LLM01 (Prompt Injection), LLM02 (Insecure Output Handling), LLM03 (Training Data Poisoning), LLM04 (Model Denial of Service), LLM05 (Supply Chain Vulnerabilities), LLM06 (Sensitive Information Disclosure), LLM07 (Insecure Plugin Design), LLM08 (Excessive Agency), LLM09 (Overreliance), LLM10 (Model Theft). Additionally covers ML-specific concerns including adversarial attack resilience, data pipeline security, model versioning, and model integrity verification. This checklist ensures AI systems are hardened against the most critical security threats identified by OWASP.",
+      "items": [
+        {
+          "question": "Are input validation and sanitization controls implemented to detect and prevent direct and indirect prompt injection attacks, including filtering of adversarial instructions embedded in user inputs and external data sources (LLM01)?",
+          "itemType": "AutoCheck",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM01",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify prompt injection prevention controls",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is privilege separation enforced between the LLM and backend systems so that prompt injection cannot escalate to unauthorized actions on databases, APIs, or critical systems (LLM01)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM01",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess privilege separation between LLM and backend systems",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are LLM outputs validated, sanitized, and encoded before being rendered or passed to downstream systems to prevent cross-site scripting (XSS), server-side request forgery (SSRF), code injection, or other injection attacks (LLM02)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM02",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify output validation and sanitization controls for LLM responses",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are content security policies and output encoding mechanisms enforced to prevent LLM-generated outputs from executing unintended actions in client-side or server-side contexts (LLM02)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM02",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm content security policies for LLM output handling",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are training data sources vetted, validated, and monitored for integrity to prevent data poisoning attacks that could introduce biases, backdoors, or incorrect behaviors into the model (LLM03)?",
+          "itemType": "Evidence",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM03",
+          "expectedEvidence": "Training data provenance records, data validation pipeline documentation, integrity verification logs, and data source audit reports.",
+          "autoTaskTitle": "Review training data integrity and poisoning prevention controls",
+          "controlCode": "A08"
+        },
+        {
+          "question": "Are data provenance tracking and supply chain verification mechanisms in place for all training, fine-tuning, and retrieval-augmented generation (RAG) data sources (LLM03)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM03",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess data provenance tracking for AI training pipelines",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Are rate limiting, input size restrictions, and resource allocation controls implemented to prevent model denial of service attacks that exhaust computational resources through crafted inputs (LLM04)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM04",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify rate limiting and resource controls against model DoS attacks",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are timeouts, token limits, and query complexity restrictions enforced to prevent resource exhaustion from excessively long or recursive prompts (LLM04)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM04",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Confirm token limits and timeout controls for AI model queries",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are supply chain security controls in place for AI/ML components, including verification of model provenance, integrity checks on pre-trained models, and security assessment of third-party ML libraries and frameworks (LLM05)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM05",
+          "expectedEvidence": "Model provenance documentation, ML framework security assessment, dependency scanning results, and signed model artifact verification records.",
+          "autoTaskTitle": "Review AI/ML supply chain security and component verification",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Are controls implemented to prevent the AI system from disclosing sensitive information, including PII, proprietary data, credentials, or internal system details through its responses (LLM06)?",
+          "itemType": "Score",
+          "weight": 3,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM06",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess controls against sensitive information disclosure by AI",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are data sanitization and redaction mechanisms applied to training data to remove sensitive information before model training, and are output filtering mechanisms in place to catch sensitive data leakage at inference time (LLM06)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM06",
+          "expectedEvidence": "Data sanitization procedures, PII redaction pipeline documentation, output filtering rules, and DLP integration evidence for AI outputs.",
+          "autoTaskTitle": "Verify data sanitization and output filtering for sensitive data",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are plugins, tools, and extensions used by the AI system designed with security in mind, including input validation, least-privilege access, and proper authentication before executing actions (LLM07)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM07",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Evaluate security design of AI system plugins and tools",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are the AI system's permissions and capabilities limited to the minimum required for its intended function, with human-in-the-loop approval required for high-impact actions such as data modification, financial transactions, or system configuration changes (LLM08)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM08",
+          "expectedEvidence": "Permission matrix for AI system actions, human-in-the-loop workflow documentation, and approval gate configurations for high-impact operations.",
+          "autoTaskTitle": "Review AI system permission boundaries and human oversight controls",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are safeguards in place to mitigate the risks of overreliance on AI system outputs, including disclaimers, confidence scores, uncertainty indicators, and processes for human verification of critical outputs (LLM09)?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM09",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify safeguards against overreliance on AI outputs",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are model assets protected against theft and unauthorized extraction, including access controls on model weights, API rate limiting to prevent model extraction attacks, and monitoring for suspicious query patterns (LLM10)?",
+          "itemType": "AutoCheck",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM10",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify model theft prevention controls and monitoring",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are model artifacts, weights, and configuration files encrypted at rest and in transit, with access restricted to authorized personnel and systems through role-based access controls (LLM10)?",
+          "itemType": "Score",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM10",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess model artifact encryption and access controls",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are adversarial robustness testing procedures established and regularly performed, including testing with adversarial examples, perturbation attacks, and evasion techniques specific to the model type (ML-specific)?",
+          "itemType": "Evidence",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM01",
+          "expectedEvidence": "Adversarial robustness testing reports, attack simulation results, and model hardening actions taken in response to findings.",
+          "autoTaskTitle": "Review adversarial robustness testing procedures and results",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is the ML data pipeline secured end-to-end, including data collection, preprocessing, feature engineering, and storage stages, with integrity checks and access controls at each stage (ML-specific)?",
+          "itemType": "Score",
+          "weight": 2.5,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM03",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Assess end-to-end ML data pipeline security controls",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is model versioning and lineage tracking implemented, including version control for model artifacts, reproducibility of training runs, and the ability to roll back to previous model versions in case of security incidents or performance degradation (ML-specific)?",
+          "itemType": "Evidence",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM05",
+          "expectedEvidence": "Model version control system records, training run reproducibility evidence, model registry entries, and rollback procedure documentation.",
+          "autoTaskTitle": "Verify model versioning, lineage tracking, and rollback capabilities",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are cryptographic integrity verification mechanisms (e.g., hash verification, digital signatures) applied to model artifacts to detect tampering during storage, transfer, and deployment (ML-specific)?",
+          "itemType": "AutoCheck",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 LLM05",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Verify cryptographic integrity checks on model artifacts",
+          "controlCode": "A02"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Cursor IDE Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Cursor AI IDE. Covers file exclusion, privacy mode, code review controls, workspace restrictions, and audit trail.",
+      "items": [
+        {
+          "question": "Is .cursorignore configured to exclude sensitive files such as .env, secrets, credentials, and private keys from AI context?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - File Exclusion",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure .cursorignore to exclude sensitive files",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is privacy mode enabled to prevent code from being used for model training by the Cursor service?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Privacy Mode",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable privacy mode to prevent model training on code",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is auto-apply disabled for AI-generated code changes, requiring manual review before any modifications are applied?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Code Review Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable auto-apply for AI-generated code changes",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is workspace indexing restricted to project files only, excluding node_modules, .git, and build artifacts from AI context?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Workspace Indexing",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict workspace indexing to project files only",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is the allowed AI models whitelist configured to restrict usage to approved models only?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Model Whitelist",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure allowed AI models whitelist",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is automatic context sharing of terminal output with AI disabled to prevent leakage of sensitive runtime data?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Terminal Context",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable automatic context sharing of terminal output with AI",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is audit logging enabled for all AI-generated code suggestions and acceptances to maintain an activity trail?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit logging of AI-generated code suggestions and acceptances",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is the maximum context window size configured to limit the amount of sensitive data exposed to the AI model?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Context Window",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure maximum context window size to limit data exposure",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Have Cursor extension permissions been reviewed and restricted to only those necessary for operation?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Extension Permissions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Review and restrict Cursor extension permissions",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is AI chat history persistence disabled for sensitive projects to prevent storage of confidential conversations?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Chat History",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable AI chat history persistence for sensitive projects",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are network proxy settings configured for Cursor to ensure corporate compliance and traffic inspection?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Network Proxy",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure network proxy settings for corporate compliance",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is code review enforced before committing any AI-generated changes to ensure quality and security standards are met?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Cursor IDE Security - Commit Review",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce code review before committing AI-generated changes",
+          "controlCode": "A04"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Windsurf IDE Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Windsurf AI IDE (Codeium). Covers Cascade controls, file exclusion, review mode, filesystem restrictions, and audit trail.",
+      "items": [
+        {
+          "question": "Are file exclusion patterns configured to prevent sensitive files (.env, credentials, private keys) from being sent to the AI service?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - File Exclusion",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure file exclusion patterns for sensitive files",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is Cascade auto-execute mode disabled, requiring explicit approval for all AI-initiated actions?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Cascade Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable Cascade auto-execute mode and require explicit approval",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is review mode enabled for all AI-generated code modifications before they are applied to the codebase?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Review Mode",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable review mode for all AI-generated code modifications",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is filesystem access restricted to the project directory only, preventing parent directory traversal by the AI agent?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Filesystem Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict filesystem access to project directory only",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is automatic terminal command execution by AI agents disabled to prevent unreviewed system-level operations?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Terminal Execution",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable automatic terminal command execution by AI agents",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are data residency settings configured to meet organizational compliance requirements for data sovereignty?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Data Residency",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure data residency settings for compliance requirements",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is an audit trail enabled for all Cascade interactions and file modifications performed by the AI agent?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Audit Trail",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit trail for all Cascade interactions and file modifications",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is AI model selection restricted to enterprise-approved models only, preventing use of unapproved model versions?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Model Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict AI model selection to enterprise-approved models",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are telemetry and usage data sharing features disabled to prevent unintended data exfiltration?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Telemetry",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable telemetry and usage data sharing",
+          "controlCode": null
+        },
+        {
+          "question": "Is workspace isolation configured between projects to prevent cross-project data leakage through AI context?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Workspace Isolation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure workspace isolation between projects",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are notification alerts enabled for AI-initiated file system changes to ensure visibility of all modifications?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Change Notifications",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable notification alerts for AI-initiated file system changes",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is network access for AI features restricted to approved endpoints only, blocking unauthorized external connections?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Windsurf IDE Security - Network Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict network access for AI features to approved endpoints only",
+          "controlCode": "A04"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - ChatGPT Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for ChatGPT (OpenAI). Covers data training opt-out, plugin restrictions, enterprise SSO, DLP, and browsing controls.",
+      "items": [
+        {
+          "question": "Is chat history and model training on conversations disabled via Settings > Data Controls to prevent organizational data from being used for training?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Data Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable chat history and model training on conversations",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is plugin and GPT usage restricted to approved enterprise plugins only, preventing use of unvetted third-party extensions?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Plugin Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict plugin and GPT usage to approved enterprise plugins only",
+          "controlCode": null
+        },
+        {
+          "question": "Is enterprise SSO (SAML/OIDC) configured for team access management with appropriate role-based access controls?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Enterprise SSO",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure enterprise SSO for team access management",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is DLP scanning implemented on prompts before submission to detect and prevent leakage of PII, secrets, and source code?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement DLP scanning on prompts before submission",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is the web browsing feature disabled for sessions involving internal or confidential data to prevent data leakage through web queries?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Browsing Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable web browsing feature for confidential data sessions",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Are data export controls configured to restrict bulk conversation exports and prevent mass data exfiltration?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Export Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure data export controls to restrict bulk conversation exports",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is an API key rotation schedule established with a maximum rotation period of 90 days for all OpenAI API keys?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - API Key Rotation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up API key rotation schedule with 90-day maximum",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is admin audit logging enabled for all team member activities including login events, configuration changes, and conversation access?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable admin audit logging for all team member activities",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is IP allowlisting configured for API access to restrict connections to authorized corporate network ranges?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - IP Allowlisting",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure IP allowlisting for API access",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is file upload disabled for conversations involving sensitive documents to prevent accidental data exposure to the model?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - File Upload Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable file upload for conversations involving sensitive documents",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are prompt templates established that include confidentiality reminders and data handling instructions for users?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Prompt Templates",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Establish prompt templates with confidentiality reminders",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are content filtering policies configured for output validation to detect and flag potentially harmful or non-compliant responses?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "ChatGPT Security - Content Filtering",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure content filtering policies for output validation",
+          "controlCode": "A05"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Claude (Anthropic) Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Claude AI (Anthropic). Covers API key management, MCP server restrictions, data persistence controls, and compliance.",
+      "items": [
+        {
+          "question": "Is API key rotation configured on a 90-day schedule to minimize the impact of potential key compromise?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - API Key Rotation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure API key rotation on 90-day schedule",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Are MCP (Model Context Protocol) servers restricted to an approved list only, preventing connection to unauthorized external tools?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - MCP Server Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict MCP servers to approved list only",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is conversation persistence disabled for sensitive projects to prevent storage of confidential data in Anthropic systems?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Data Persistence",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable conversation persistence for sensitive projects",
+          "controlCode": null
+        },
+        {
+          "question": "Is API usage audit logging enabled and monitored for detecting unauthorized access or anomalous usage patterns?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable API usage audit logging and monitoring",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are data residency requirements configured by selecting the appropriate endpoint (US/EU) based on organizational compliance needs?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Data Residency",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure data residency requirements for endpoint selection",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is rate limiting set up on API keys per team and project to prevent abuse and control costs?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Rate Limiting",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up rate limiting on API keys per team and project",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is input sanitization implemented to detect and prevent prompt injection attacks targeting the Claude API?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM01 Prompt Injection",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement input sanitization for prompt injection prevention",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are maximum token limits configured per request to control cost exposure and limit the amount of sensitive data processed?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Token Limits",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure maximum token limits per request",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is team workspace isolation enabled with separate API keys per workspace to prevent cross-team data access?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Workspace Isolation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable team workspace isolation with separate API keys",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is training data contribution disabled and verified through enterprise agreement terms to prevent organizational data from being used for model training?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Training Data Opt-Out",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable training data contribution and verify enterprise agreement terms",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are webhook notifications configured to alert on unusual API usage patterns such as volume spikes, off-hours access, or new IP addresses?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Claude Security - Usage Monitoring",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure webhook notifications for unusual API usage patterns",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is output filtering implemented to detect sensitive data leakage in AI responses before they reach end users?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement output filtering for sensitive data leakage detection",
+          "controlCode": "A09"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - GitHub Copilot Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for GitHub Copilot. Covers content exclusion, code referencing, SAST integration, regulated repository controls, and audit.",
+      "items": [
+        {
+          "question": "Are content exclusion rules configured for sensitive repositories and file patterns to prevent Copilot from accessing confidential code?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Content Exclusion",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure content exclusion rules for sensitive repositories and files",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is the code referencing filter enabled to detect and flag AI suggestions that match publicly available code with potential license issues?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Code Referencing",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable code referencing filter to detect matching public code",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is SAST scanning integrated in pre-commit hooks to automatically analyze AI-generated code for security vulnerabilities before it enters the repository?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM04 Insecure Output Handling",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Integrate SAST scanning in pre-commit hooks for AI-generated code",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Is Copilot disabled on repositories containing regulated data (PCI, HIPAA, SOX) to prevent exposure of compliance-sensitive information?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Regulated Repository Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable Copilot on repositories containing regulated data",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is audit logging enabled for Copilot suggestion acceptance and rejection events to track AI-generated code adoption?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit logging for Copilot suggestion acceptance and rejection",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is the organization-level Copilot policy configured to enable or disable Copilot on a per-team basis according to security requirements?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Organization Policy",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure organization-level Copilot policy per team",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are Copilot suggestions that include license-restricted code patterns blocked to prevent intellectual property compliance violations?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - License Filtering",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Block Copilot suggestions containing license-restricted code patterns",
+          "controlCode": null
+        },
+        {
+          "question": "Is a code review requirement enforced for all AI-suggested changes before they are merged into protected branches?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Code Review Enforcement",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce code review requirement for all AI-suggested changes",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are Copilot Chat data retention policies configured to limit how long conversation data is stored and accessible?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Data Retention",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure Copilot Chat data retention policies",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is Copilot disabled for infrastructure-as-code files that may contain secrets, tokens, or sensitive configuration values?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - IaC File Exclusion",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable Copilot for infrastructure-as-code files containing secrets",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is monitoring set up for AI-generated code quality and security metrics to track trends and identify potential risks?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Quality Metrics",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up monitoring for AI-generated code quality and security metrics",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are network restrictions configured for Copilot connectivity, including proxy settings, to ensure traffic is routed through corporate inspection infrastructure?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "GitHub Copilot Security - Network Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure network restrictions for Copilot connectivity",
+          "controlCode": "A05"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Google Gemini Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Google Gemini AI. Covers Workspace admin controls, extension management, DLP integration, and training data controls.",
+      "items": [
+        {
+          "question": "Are Google Workspace admin controls configured for Gemini access management, including user provisioning and deprovisioning?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Workspace Admin Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure Google Workspace admin controls for Gemini access management",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are non-essential Gemini extensions and integrations disabled to reduce the attack surface and limit data exposure?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Extension Management",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable non-essential Gemini extensions and integrations",
+          "controlCode": null
+        },
+        {
+          "question": "Are DLP policies integrated with Gemini to detect and prevent sensitive data from being included in prompts?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Integrate DLP policies with Gemini for sensitive data detection",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is training on organizational data disabled and verified through enterprise settings to prevent data leakage into model training?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Training Data Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable training on organizational data in enterprise settings",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is Gemini access configured per organizational unit (OU) with granular policies based on team roles and data sensitivity?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - OU-Based Policies",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure Gemini access per organizational unit with OU-based policies",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is audit logging enabled via Google Workspace Admin Console to track all Gemini usage and administrative actions?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit logging via Google Workspace Admin Console",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is Gemini API access restricted with API key restrictions, quotas, and project-level access controls?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - API Access Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict Gemini API access with API key restrictions and quotas",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Are data region settings configured for compliance with EU/US data residency requirements?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Data Residency",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure data region settings for compliance and data residency",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are alerts set up for anomalous Gemini usage patterns such as excessive queries, off-hours access, or bulk data processing?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Usage Monitoring",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up alerts for anomalous Gemini usage patterns",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are Gemini features disabled for users handling classified or highly restricted information?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Classified Data Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable Gemini features for users handling classified information",
+          "controlCode": null
+        },
+        {
+          "question": "Are content safety filters configured for output moderation to prevent generation of harmful or policy-violating content?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Content Safety Filters",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure content safety filters for output moderation",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are Google Workspace Assured Controls enforced for regulated industries requiring additional compliance guarantees?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Gemini Security - Assured Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce Google Workspace Assured Controls for regulated industries",
+          "controlCode": null
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Perplexity AI Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Perplexity AI. Covers search history, API key management, source restrictions, enterprise SSO, and audit.",
+      "items": [
+        {
+          "question": "Is search history retention disabled for sensitive research topics to prevent exposure of confidential queries?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Search History",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable search history retention for sensitive research topics",
+          "controlCode": null
+        },
+        {
+          "question": "Is API key rotation configured on a 90-day schedule to reduce the risk of key compromise?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - API Key Rotation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure API key rotation on 90-day schedule",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is source access restricted to approved and trusted domains only, preventing results from unreliable or malicious sources?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Source Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Restrict source access to approved and trusted domains only",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is enterprise SSO configured for team access management with centralized authentication and authorization?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Enterprise SSO",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure enterprise SSO for team access management",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is audit logging enabled for all search queries and API calls to maintain a comprehensive activity trail?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit logging for all search queries and API calls",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Is Pro Search disabled for queries involving confidential data to prevent enhanced web crawling of sensitive topics?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Pro Search Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable Pro Search for queries involving confidential data",
+          "controlCode": null
+        },
+        {
+          "question": "Are data export restrictions configured to meet compliance requirements and prevent unauthorized data extraction?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Export Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure data export restrictions for compliance",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is usage monitoring and alerting set up to detect anomalous patterns such as volume spikes or unusual query topics?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Usage Monitoring",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up usage monitoring and alerting for anomalous patterns",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are prompt templates implemented that prevent accidental data leakage by providing guardrails for user queries?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement prompt templates that prevent accidental data leakage",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are network access restrictions configured, including proxy and VPN requirements, for all Perplexity AI connections?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Perplexity Security - Network Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure network access restrictions for Perplexity AI connections",
+          "controlCode": "A05"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Mistral AI Security Hardening",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Actionable security checklist for Mistral AI. Covers API key management, data residency, output guardrails, fine-tuning controls, and VPC endpoints.",
+      "items": [
+        {
+          "question": "Is API key rotation configured on a 90-day schedule to minimize the risk of credential compromise?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - API Key Rotation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure API key rotation on 90-day schedule",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is EU data residency enforced for data sovereignty compliance, ensuring all data processing occurs within European boundaries?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Data Residency",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce EU data residency for data sovereignty compliance",
+          "controlCode": null
+        },
+        {
+          "question": "Are output guardrails enabled for content filtering and safety to prevent generation of harmful or non-compliant responses?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Output Guardrails",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable output guardrails for content filtering and safety",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is fine-tuning disabled on production API keys to prevent unauthorized model modifications in the production environment?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Fine-Tuning Controls",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Disable fine-tuning on production API keys",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is a VPC endpoint configured for private API access, ensuring traffic does not traverse the public internet?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - VPC Endpoint",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure VPC endpoint for private API access",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is audit logging enabled for all API interactions to provide a comprehensive record of requests and responses?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Audit Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enable audit logging for all API interactions",
+          "controlCode": "A09"
+        },
+        {
+          "question": "Are rate limits set per API key based on team and project allocation to prevent abuse and control usage costs?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Rate Limiting",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set rate limits per API key based on team and project allocation",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is input validation and prompt injection detection implemented to protect against adversarial prompt manipulation?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM01 Prompt Injection",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement input validation and prompt injection detection",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Are model access restrictions configured to allow only approved model versions, preventing use of deprecated or untested models?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Model Access Restrictions",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure model access restrictions for approved model versions only",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is monitoring and alerting set up for API usage anomalies such as unexpected volume spikes, error rate increases, or new source IPs?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "Mistral Security - Usage Monitoring",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Set up monitoring and alerting for API usage anomalies",
+          "controlCode": "A09"
+        }
+      ]
+    },
+    {
+      "title": "AgentTool - Generic AI Agent Security Framework",
+      "version": "1.0.0",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "AgentTool"
+      ],
+      "description": "Universal actionable security checklist applicable to any AI agent or LLM tool. Covers DLP, prompt injection, human review, API management, inventory, data flow mapping, and incident response.",
+      "items": [
+        {
+          "question": "Is DLP scanning implemented on all prompts before submission to AI services to detect and prevent leakage of PII, secrets, and source code?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement DLP scanning on all prompts before submission to AI services",
+          "controlCode": "A06"
+        },
+        {
+          "question": "Are prompt injection detection mechanisms deployed on all AI input channels to identify and block adversarial prompt manipulation?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM01 Prompt Injection",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Deploy prompt injection detection mechanisms on all AI input channels",
+          "controlCode": "A03"
+        },
+        {
+          "question": "Is mandatory human review enforced for all AI-generated code before production deployment to prevent introduction of vulnerabilities?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM04 Insecure Output Handling",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce mandatory human review for AI-generated code before production",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is API key rotation configured on a 90-day maximum schedule for all AI services to limit credential exposure?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - API Key Management",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure API key rotation on 90-day maximum schedule for all AI services",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is a centralized inventory maintained of all AI agents and tools in use across the organization, including version, owner, and risk classification?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Asset Inventory",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Maintain a centralized inventory of all AI agents and tools in use",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is a data flow mapping created and maintained for all AI service integrations, documenting what data is sent, processed, and stored by each service?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Data Flow Mapping",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Create and maintain data flow mapping for all AI service integrations",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are AI-specific incident response procedures and runbooks established to handle security events involving AI tools and services?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Incident Response",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Establish AI-specific incident response procedures and runbooks",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is output filtering configured to detect sensitive data leakage in AI responses before they are presented to users or integrated into systems?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM06 Sensitive Information Disclosure",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure output filtering to detect sensitive data leakage in AI responses",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is rate limiting implemented on all AI API calls per user and team to prevent abuse, control costs, and limit blast radius of compromised credentials?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Rate Limiting",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement rate limiting on all AI API calls per user and team",
+          "controlCode": "A07"
+        },
+        {
+          "question": "Is network segmentation enforced for AI service communications to isolate AI traffic and prevent lateral movement through AI channels?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Network Segmentation",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Enforce network segmentation for AI service communications",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are quarterly access reviews conducted for all AI tool permissions to ensure least-privilege access is maintained?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Access Reviews",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Conduct quarterly access reviews for all AI tool permissions",
+          "controlCode": "A01"
+        },
+        {
+          "question": "Is an AI usage acceptable use policy implemented with mandatory employee acknowledgment to define permitted and prohibited AI tool behaviors?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Acceptable Use Policy",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement AI usage acceptable use policy with mandatory acknowledgment",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is centralized logging configured for all AI interactions across the organization to enable correlation, investigation, and compliance reporting?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Centralized Logging",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure centralized logging for all AI interactions",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Is an AI model risk assessment process established for evaluating security, privacy, and compliance implications before adopting new AI tools?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Risk Assessment",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Establish AI model risk assessment process for new tool adoption",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Is data classification tagging implemented to distinguish AI-processable data from restricted data that must not be sent to AI services?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Data Classification",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement data classification tagging for AI-processable vs restricted data",
+          "controlCode": "A04"
+        },
+        {
+          "question": "Are automated alerts configured for policy violations in AI tool usage, including unauthorized data sharing and unapproved tool access?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Policy Violation Alerts",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Configure automated alerts for policy violations in AI tool usage",
+          "controlCode": "A05"
+        },
+        {
+          "question": "Are vendor security assessment criteria established for evaluating AI service providers, including data handling, encryption, and compliance certifications?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "Internal",
+          "reference": "AI Agent Security - Vendor Assessment",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Establish vendor security assessment criteria for AI service providers",
+          "controlCode": "A02"
+        },
+        {
+          "question": "Is an AI output validation pipeline implemented to verify, sanitize, and approve AI-generated content before it is integrated into business processes?",
+          "itemType": "YesNo",
+          "weight": 2,
+          "referenceType": "OWASP",
+          "reference": "OWASP LLM Top 10 - LLM04 Insecure Output Handling",
+          "expectedEvidence": null,
+          "autoTaskTitle": "Implement AI output validation pipeline before business process integration",
+          "controlCode": "A03"
+        }
+      ]
+    }
+  ]
+}
