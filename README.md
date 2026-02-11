@@ -5,7 +5,7 @@ Community-maintained security frameworks, controls, and checklists for the [OSCI
 ## Available Referentiels
 
 | Folder | Framework | Controls | Checklists | Domain |
-|--------|-----------|----------|------------|--------Dans|
+|--------|-----------|----------|------------|------------|
 | `iso-27001/` | ISO/IEC 27001:2022 | 11 | 25 | Governance |
 | `nist-csf/` | NIST CSF 2.0 | 9 | 46 | Governance |
 | `owasp-top10/` | OWASP Top 10 (2021) | 10 | 14 | Security Code |
