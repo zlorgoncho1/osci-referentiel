@@ -1,0 +1,4722 @@
+{
+  "code": "OSCI_STRATEGY",
+  "name": "Référentiel Général Sécurité (OSCI - Alignement SECURITY-STRATEGY)",
+  "description": "Référentiel interne exhaustif couvrant les 21 sections et l'annexe de SECURITY-STRATEGY.md. Priorité aux actions concrètes de remédiation et de protection sur chaque type d'objet, suivies des contrôles de conformité et gouvernance.",
+  "version": "1.0",
+  "type": "Internal",
+  "domain": "Governance",
+  "metadata": {
+    "source": "INTERNAL",
+    "sections": "1-21 + Annexe",
+    "approach": "Actions concrètes d'abord, conformité ensuite"
+  },
+  "controls": [
+    {
+      "code": "STRAT-1.1",
+      "title": "Confidentialité - Chiffrer les données sensibles au repos et en transit",
+      "description": "Appliquer AES-256 (repos) et TLS 1.2+ (transit) sur toutes les données classifiées confidentielles ou sensibles.",
+      "orderIndex": 0
+    },
+    {
+      "code": "STRAT-1.2",
+      "title": "Confidentialité - Restreindre les accès aux données classifiées",
+      "description": "Configurer les ACL/permissions pour que seuls les utilisateurs autorisés accèdent aux données selon leur classification.",
+      "orderIndex": 1
+    },
+    {
+      "code": "STRAT-1.3",
+      "title": "Intégrité - Contrôles d'intégrité des fichiers (FIM)",
+      "description": "Déployer AIDE/Tripwire/OSSEC sur les serveurs critiques pour détecter toute modification non autorisée.",
+      "orderIndex": 2
+    },
+    {
+      "code": "STRAT-1.4",
+      "title": "Intégrité - Signer numériquement les artefacts et releases",
+      "description": "Signer builds, images conteneur et releases avec GPG/Sigstore/Cosign.",
+      "orderIndex": 3
+    },
+    {
+      "code": "STRAT-1.5",
+      "title": "Disponibilité - Haute disponibilité des services critiques",
+      "description": "Clustering, load balancing, failover automatique pour les services critiques (RTO < 4h).",
+      "orderIndex": 4
+    },
+    {
+      "code": "STRAT-1.6",
+      "title": "Disponibilité - Tester les mécanismes de basculement",
+      "description": "Tests de failover trimestriels documentés. Valider la transparence du basculement.",
+      "orderIndex": 5
+    },
+    {
+      "code": "STRAT-1.7",
+      "title": "Authentification - MFA sur tous les comptes",
+      "description": "MFA TOTP/FIDO2/WebAuthn sur tous les comptes. Aucun accès sans second facteur.",
+      "orderIndex": 6
+    },
+    {
+      "code": "STRAT-1.8",
+      "title": "Non-répudiation - Journaux d'audit immuables",
+      "description": "Journalisation append-only/WORM. Chaque action horodatée et liée à une identité vérifiée.",
+      "orderIndex": 7
+    },
+    {
+      "code": "STRAT-1.9",
+      "title": "AAA - Authentification centralisée (IdP/SSO)",
+      "description": "Déployer IdP (Keycloak/AD/Okta) avec SSO OIDC/SAML pour tous les services.",
+      "orderIndex": 8
+    },
+    {
+      "code": "STRAT-1.10",
+      "title": "AAA - RBAC/ABAC sur toutes les applications",
+      "description": "Configurer rôles et permissions. Vérifier qu'aucun utilisateur n'a de droits excessifs.",
+      "orderIndex": 9
+    },
+    {
+      "code": "STRAT-1.11",
+      "title": "AAA - Centraliser les logs d'audit dans le SIEM",
+      "description": "Tous les logs d'auth, d'autorisation et d'actions vers le SIEM. Rétention 12 mois minimum.",
+      "orderIndex": 10
+    },
+    {
+      "code": "STRAT-1.12",
+      "title": "Moindre privilège - Auditer et réduire les permissions",
+      "description": "Lister tous les comptes et permissions. Supprimer les droits inutiles.",
+      "orderIndex": 11
+    },
+    {
+      "code": "STRAT-1.13",
+      "title": "Moindre privilège - Just-in-time access pour les admins",
+      "description": "Élévation temporaire via PAM. Droits admin actifs uniquement pendant la tâche.",
+      "orderIndex": 12
+    },
+    {
+      "code": "STRAT-1.14",
+      "title": "Séparation des rôles - Séparer les fonctions critiques",
+      "description": "Personne ne réalise une transaction critique de bout en bout. Séparer dev/deploy/approve.",
+      "orderIndex": 13
+    },
+    {
+      "code": "STRAT-1.15",
+      "title": "Défense en profondeur - Vérifier les couches de protection",
+      "description": "Au moins 3 couches indépendantes par actif critique (réseau + endpoint + applicatif).",
+      "orderIndex": 14
+    },
+    {
+      "code": "STRAT-1.16",
+      "title": "Réduction surface - Désactiver services et ports inutiles",
+      "description": "Scanner nmap, désactiver services non requis (systemctl disable), fermer ports inutiles (iptables/nftables).",
+      "orderIndex": 15
+    },
+    {
+      "code": "STRAT-1.17",
+      "title": "Réduction surface - Supprimer les comptes inactifs",
+      "description": "Lister comptes inactifs 90+ jours. Désactiver puis supprimer après validation.",
+      "orderIndex": 16
+    },
+    {
+      "code": "STRAT-1.18",
+      "title": "Zero Trust - Vérifier chaque accès indépendamment du réseau",
+      "description": "Vérification continue : chaque requête authentifiée et autorisée, même depuis le réseau interne.",
+      "orderIndex": 17
+    },
+    {
+      "code": "STRAT-1.19",
+      "title": "Secure by default - Durcir les configurations par défaut",
+      "description": "Nouveau déploiement = configs durcies. Pas de mots de passe par défaut, ports fermés, services minimaux.",
+      "orderIndex": 18
+    },
+    {
+      "code": "STRAT-2.1",
+      "title": "Threat Intel - Configurer des flux de Threat Intelligence",
+      "description": "Abonner SIEM/EDR à des flux TI (MISP, OTX, abuse.ch). Enrichir les alertes avec les IOC connus.",
+      "orderIndex": 19
+    },
+    {
+      "code": "STRAT-2.2",
+      "title": "Threat Intel - Cartographier les menaces sectorielles",
+      "description": "Identifier APT et groupes criminels ciblant le secteur. Adapter les règles de détection.",
+      "orderIndex": 20
+    },
+    {
+      "code": "STRAT-2.3",
+      "title": "Insiders - Détection des comportements anormaux (UEBA)",
+      "description": "Activer UEBA : accès inhabituels, téléchargements massifs, horaires atypiques.",
+      "orderIndex": 21
+    },
+    {
+      "code": "STRAT-2.4",
+      "title": "Shadow IT - Scanner le réseau pour services non autorisés",
+      "description": "Scanner régulièrement pour identifier services, apps et équipements non inventoriés.",
+      "orderIndex": 22
+    },
+    {
+      "code": "STRAT-2.5",
+      "title": "Vecteurs - Bloquer les périphériques USB non autorisés",
+      "description": "GPO/MDM pour désactiver USB stockage. Whitelister uniquement les périphériques approuvés.",
+      "orderIndex": 23
+    },
+    {
+      "code": "STRAT-2.6",
+      "title": "Vecteurs - Filtrage email avancé (SPF/DKIM/DMARC)",
+      "description": "SPF+DKIM+DMARC sur tous les domaines. Anti-phishing, anti-spam, sandboxing PJ.",
+      "orderIndex": 24
+    },
+    {
+      "code": "STRAT-3.1.1",
+      "title": "Physique - Contrôles d'accès aux locaux",
+      "description": "Badges RFID/NFC, sas anti-tailgating, caméras aux entrées. Logger tous les accès physiques.",
+      "orderIndex": 25
+    },
+    {
+      "code": "STRAT-3.1.2",
+      "title": "Physique - Sécuriser les salles serveurs",
+      "description": "Badge + code, caméras 24/7, détection incendie/inondation, clim redondante, onduleur.",
+      "orderIndex": 26
+    },
+    {
+      "code": "STRAT-3.1.3",
+      "title": "Physique - Contrôle visiteurs et zones restreintes",
+      "description": "Registre visiteurs, badge temporaire, accompagnement permanent, zones restreintes signalées.",
+      "orderIndex": 27
+    },
+    {
+      "code": "STRAT-3.1.4",
+      "title": "Physique - Inventaire et étiquetage matériel",
+      "description": "Étiqueter tous les équipements. Inventaire physique semestriel.",
+      "orderIndex": 28
+    },
+    {
+      "code": "STRAT-3.1.5",
+      "title": "Physique - Destruction sécurisée des supports",
+      "description": "Broyer disques, déchiqueter documents. Certificat de destruction obligatoire.",
+      "orderIndex": 29
+    },
+    {
+      "code": "STRAT-3.2.1",
+      "title": "Social Engineering - Simulations de phishing mensuelles",
+      "description": "Campagnes GoPhish mensuelles. Tracker taux de clic par département.",
+      "orderIndex": 30
+    },
+    {
+      "code": "STRAT-3.2.2",
+      "title": "Social Engineering - Filtre anti-phishing email",
+      "description": "Analyse liens temps réel, sandboxing PJ, détection usurpation (impersonation protection).",
+      "orderIndex": 31
+    },
+    {
+      "code": "STRAT-3.2.3",
+      "title": "Social Engineering - Procédures de vérification call-back",
+      "description": "Call-back obligatoire pour demandes sensibles (virements, changement RIB, accès admin).",
+      "orderIndex": 32
+    },
+    {
+      "code": "STRAT-3.2.4",
+      "title": "Social Engineering - Canal de signalement facile",
+      "description": "Bouton 'Signaler phishing' dans client mail. Canal dédié. Réponse < 1h. Pas de blâme.",
+      "orderIndex": 33
+    },
+    {
+      "code": "STRAT-3.3.1",
+      "title": "Malware - EDR sur 100% des endpoints",
+      "description": "EDR installé et actif sur tous postes et serveurs. Agents à jour.",
+      "orderIndex": 34
+    },
+    {
+      "code": "STRAT-3.3.2",
+      "title": "Malware - Bloquer macros non signées",
+      "description": "GPO/MDM : bloquer macros VBA Office provenant d'Internet.",
+      "orderIndex": 35
+    },
+    {
+      "code": "STRAT-3.3.3",
+      "title": "Malware - Filtrage web/DNS",
+      "description": "Proxy web ou DNS filtrant. Bloquer catégories malveillantes et domaines connus.",
+      "orderIndex": 36
+    },
+    {
+      "code": "STRAT-3.3.4",
+      "title": "Malware - Détection exfiltration de données",
+      "description": "Règles DLP sur proxy/EDR pour transferts anormaux (volume, destination, protocole).",
+      "orderIndex": 37
+    },
+    {
+      "code": "STRAT-3.3.5",
+      "title": "Malware - Segmentation réseau anti-propagation",
+      "description": "VLAN : postes utilisateurs, serveurs prod, DMZ, admin. Firewall inter-VLAN restrictif.",
+      "orderIndex": 38
+    },
+    {
+      "code": "STRAT-3.4.1",
+      "title": "Data - Classifier toutes les données",
+      "description": "Matrice Public/Interne/Confidentiel/Sensible. Étiqueter dépôts, bases, fichiers.",
+      "orderIndex": 39
+    },
+    {
+      "code": "STRAT-3.4.2",
+      "title": "Data - Chiffrer les bases de données au repos",
+      "description": "TDE/encryption at rest sur PostgreSQL, MySQL, MongoDB. Clés dans KMS dédié.",
+      "orderIndex": 40
+    },
+    {
+      "code": "STRAT-3.4.3",
+      "title": "Data - Forcer TLS 1.2+ sur toutes les connexions",
+      "description": "Désactiver TLS 1.0/1.1 et SSL. TLS 1.2+ avec cipher suites fortes uniquement.",
+      "orderIndex": 41
+    },
+    {
+      "code": "STRAT-3.4.4",
+      "title": "Data - DLP sur les points de sortie",
+      "description": "Agents DLP endpoints, proxy, email. Bloquer envoi données sensibles non chiffrées.",
+      "orderIndex": 42
+    },
+    {
+      "code": "STRAT-3.4.5",
+      "title": "Data - Minimiser collecte et rétention",
+      "description": "Auditer collectes. Supprimer champs non nécessaires. Anonymiser/pseudonymiser.",
+      "orderIndex": 43
+    },
+    {
+      "code": "STRAT-3.4.6",
+      "title": "Data - Sauvegardes 3-2-1 avec tests restauration",
+      "description": "3 copies, 2 supports, 1 hors site. Quotidien. Tester restauration mensuellement.",
+      "orderIndex": 44
+    },
+    {
+      "code": "STRAT-3.4.7",
+      "title": "Data - Immutabilité des sauvegardes",
+      "description": "WORM/immutabilité (Veeam, Restic, S3 Object Lock) contre ransomware.",
+      "orderIndex": 45
+    },
+    {
+      "code": "STRAT-3.5.1",
+      "title": "Crypto - Remplacer algorithmes faibles",
+      "description": "Remplacer MD5/SHA1/DES/3DES/RC4. Utiliser SHA-256+/AES-256/ChaCha20.",
+      "orderIndex": 46
+    },
+    {
+      "code": "STRAT-3.5.2",
+      "title": "Crypto - Rotation automatique des clés (90j)",
+      "description": "Rotation automatique KMS tous les 90 jours minimum.",
+      "orderIndex": 47
+    },
+    {
+      "code": "STRAT-3.5.3",
+      "title": "Crypto - Gestionnaire de certificats automatique",
+      "description": "cert-manager ou équivalent. Renouvellement auto. Alerte 30j avant expiration.",
+      "orderIndex": 48
+    },
+    {
+      "code": "STRAT-3.5.4",
+      "title": "Crypto - Clés dans HSM/KMS uniquement",
+      "description": "Aucune clé privée en fichier. HSM matériel ou KMS managé.",
+      "orderIndex": 49
+    },
+    {
+      "code": "STRAT-3.6.1",
+      "title": "Risk - Analyse de risques par actif critique",
+      "description": "Identifier menaces, vulnérabilités, calculer impact et probabilité par actif.",
+      "orderIndex": 50
+    },
+    {
+      "code": "STRAT-3.6.2",
+      "title": "Risk - Registre des risques maintenu",
+      "description": "Description, propriétaire, traitement (éviter/réduire/transférer/accepter), échéance, statut.",
+      "orderIndex": 51
+    },
+    {
+      "code": "STRAT-3.6.3",
+      "title": "Risk - Plans de traitement avec actions concrètes",
+      "description": "Actions concrètes, responsable, échéance, budget pour chaque risque non accepté.",
+      "orderIndex": 52
+    },
+    {
+      "code": "STRAT-4.1",
+      "title": "Tiers - Due diligence sécurité avant engagement",
+      "description": "Questionnaire SIG/CAIQ. Certifications ISO 27001/SOC2. Audit si données sensibles.",
+      "orderIndex": 53
+    },
+    {
+      "code": "STRAT-4.2",
+      "title": "Tiers - Clauses sécurité dans les contrats",
+      "description": "SLA sécurité, notification incident <24h, droit d'audit, sous-traitance soumise à approbation.",
+      "orderIndex": 54
+    },
+    {
+      "code": "STRAT-4.3",
+      "title": "Tiers - Segmenter les accès prestataires",
+      "description": "VPN dédié/Zero Trust. Compte nominatif. MFA. Bastion SSH/RDP. Logs centralisés.",
+      "orderIndex": 55
+    },
+    {
+      "code": "STRAT-4.4",
+      "title": "Tiers - Révoquer les accès fin de mission",
+      "description": "Révocation automatique fin contrat. Vérification 48h. Audit trimestriel comptes tiers.",
+      "orderIndex": 56
+    },
+    {
+      "code": "STRAT-4.5",
+      "title": "Tiers - Risques supply chain logicielle (SBOM)",
+      "description": "Scanner dépendances (Snyk/Dependabot/Trivy). Signatures packages. Maintenir SBOM.",
+      "orderIndex": 57
+    },
+    {
+      "code": "STRAT-5.1",
+      "title": "Gouvernance - Politiques de sécurité",
+      "description": "Politique générale, accès, chiffrement, BYOD, incident. Approuvées et communiquées.",
+      "orderIndex": 58
+    },
+    {
+      "code": "STRAT-5.2",
+      "title": "Gouvernance - Rôles et responsabilités",
+      "description": "CISO, DPO, propriétaires d'actifs, correspondants sécurité. Documentés.",
+      "orderIndex": 59
+    },
+    {
+      "code": "STRAT-5.3",
+      "title": "Gouvernance - Exigences de conformité",
+      "description": "RGPD, réglementations sectorielles, contrats clients, normes internes. Matrice conformité.",
+      "orderIndex": 60
+    },
+    {
+      "code": "STRAT-5.4",
+      "title": "Gouvernance - KPI/KRI sécurité",
+      "description": "Taux de patch, MTTR, incidents, couverture EDR, taux MFA, score conformité. Tableaux de bord.",
+      "orderIndex": 61
+    },
+    {
+      "code": "STRAT-6.1",
+      "title": "Assets - Inventaire matériel complet",
+      "description": "Nmap/Lansweeper. Serveurs, postes, réseau, IoT. Propriétaire et criticité.",
+      "orderIndex": 62
+    },
+    {
+      "code": "STRAT-6.2",
+      "title": "Assets - Inventaire logiciels et SaaS",
+      "description": "Applications, SaaS, licences. Détecter Shadow IT.",
+      "orderIndex": 63
+    },
+    {
+      "code": "STRAT-6.3",
+      "title": "Assets - CMDB déployée et à jour",
+      "description": "GLPI/Snipe-IT/NetBox avec relations entre actifs. Mise à jour auto par scan.",
+      "orderIndex": 64
+    },
+    {
+      "code": "STRAT-6.4",
+      "title": "Change - Processus de gestion des changements",
+      "description": "Demande → analyse risque → approbation → déploiement → validation → rollback.",
+      "orderIndex": 65
+    },
+    {
+      "code": "STRAT-7.1",
+      "title": "Audit - Audits réguliers planifiés",
+      "description": "Interne semestriel, externe annuel, pentest annuel minimum.",
+      "orderIndex": 66
+    },
+    {
+      "code": "STRAT-7.2",
+      "title": "Audit - Scans de configuration CIS",
+      "description": "CIS-CAT, Lynis, ScoutSuite (cloud). Corriger écarts critiques sous 30j.",
+      "orderIndex": 67
+    },
+    {
+      "code": "STRAT-7.3",
+      "title": "Audit - Suivi des écarts jusqu'à résolution",
+      "description": "Chaque écart = tâche remédiation avec responsable et échéance.",
+      "orderIndex": 68
+    },
+    {
+      "code": "STRAT-8.1",
+      "title": "Résilience - Éliminer les SPOF",
+      "description": "2 DNS, 2 liens internet, 2 alimentations, cluster DB. Identifier tous les SPOF.",
+      "orderIndex": 69
+    },
+    {
+      "code": "STRAT-8.2",
+      "title": "Résilience - Réplication données critiques",
+      "description": "Réplication synchrone/asynchrone DB critiques. Cross-region cloud.",
+      "orderIndex": 70
+    },
+    {
+      "code": "STRAT-8.3",
+      "title": "Résilience - DRP documenté et testé annuellement",
+      "description": "Plan reprise RTO/RPO par service. Tester basculement annuellement.",
+      "orderIndex": 71
+    },
+    {
+      "code": "STRAT-8.4",
+      "title": "Résilience - BCP documenté et exercé",
+      "description": "Scénarios crise, procédures dégradées, communication, activation.",
+      "orderIndex": 72
+    },
+    {
+      "code": "STRAT-8.5",
+      "title": "Résilience - Alimentation secours (UPS/groupe)",
+      "description": "UPS équipements critiques. Groupe électrogène datacenter. Tester mensuellement.",
+      "orderIndex": 73
+    },
+    {
+      "code": "STRAT-9.1",
+      "title": "Architecture - Segmentation réseau en zones",
+      "description": "DMZ, LAN utilisateurs, LAN serveurs, management, invités. Firewall entre zones.",
+      "orderIndex": 74
+    },
+    {
+      "code": "STRAT-9.2",
+      "title": "Architecture - Micro-segmentation",
+      "description": "Isoler chaque workload/application. Firewall par service, pas par réseau.",
+      "orderIndex": 75
+    },
+    {
+      "code": "STRAT-9.3",
+      "title": "Architecture - Bastion/jump host pour administration",
+      "description": "Aucun SSH/RDP direct. Bastion avec MFA, logging, session recording.",
+      "orderIndex": 76
+    },
+    {
+      "code": "STRAT-9.4",
+      "title": "Architecture - Séparation dev/staging/prod",
+      "description": "Environnements isolés réseau. Pas de données prod en dev. Credentials différents.",
+      "orderIndex": 77
+    },
+    {
+      "code": "STRAT-9.5",
+      "title": "Architecture - Threat modeling applications critiques",
+      "description": "STRIDE par app critique : assets, menaces, vecteurs, contre-mesures.",
+      "orderIndex": 78
+    },
+    {
+      "code": "STRAT-10.1",
+      "title": "Infra - Pare-feu deny-all par défaut",
+      "description": "Politique default deny. Ouvrir uniquement flux documentés nécessaires.",
+      "orderIndex": 79
+    },
+    {
+      "code": "STRAT-10.2",
+      "title": "Infra - WAF sur applications web exposées",
+      "description": "ModSecurity/Cloudflare WAF/AWS WAF. Règles OWASP CRS activées.",
+      "orderIndex": 80
+    },
+    {
+      "code": "STRAT-10.3",
+      "title": "Infra - IDS/IPS sur segments critiques",
+      "description": "Suricata/Snort. Mise à jour règles quotidienne. Alerte SOC.",
+      "orderIndex": 81
+    },
+    {
+      "code": "STRAT-10.4",
+      "title": "Infra - NAC (802.1X + posture check)",
+      "description": "Aucun équipement connecté sans auth et conformité vérifiées.",
+      "orderIndex": 82
+    },
+    {
+      "code": "STRAT-10.5",
+      "title": "Infra - EDR/XDR couverture 100%",
+      "description": "Dashboard centralisé. Alertes temps réel. Quarantaine à distance.",
+      "orderIndex": 83
+    },
+    {
+      "code": "STRAT-10.6",
+      "title": "Infra - MDM mobiles et BYOD",
+      "description": "Enrôlement tous mobiles. Chiffrement, PIN/biométrie, effacement à distance.",
+      "orderIndex": 84
+    },
+    {
+      "code": "STRAT-10.7",
+      "title": "Infra - SIEM déployé et configuré",
+      "description": "Wazuh/ELK/Splunk. Logs tous actifs. Cas d'usage détection prioritaires.",
+      "orderIndex": 85
+    },
+    {
+      "code": "STRAT-10.8",
+      "title": "Infra - Synchronisation NTP < 1s",
+      "description": "Tous équipements même source NTP. Dérive < 1 seconde.",
+      "orderIndex": 86
+    },
+    {
+      "code": "STRAT-10.9",
+      "title": "Infra - Sauvegardes réseau isolé et immuables",
+      "description": "Réseau isolé, compte dédié, credentials uniques, immutabilité.",
+      "orderIndex": 87
+    },
+    {
+      "code": "STRAT-11.1",
+      "title": "IAM - SSO centralisé OIDC/SAML",
+      "description": "SSO via IdP toutes applications. Supprimer comptes locaux.",
+      "orderIndex": 88
+    },
+    {
+      "code": "STRAT-11.2",
+      "title": "IAM - MFA TOTP/FIDO2 obligatoire",
+      "description": "MFA sans exception. FIDO2 admins. Pas de SMS.",
+      "orderIndex": 89
+    },
+    {
+      "code": "STRAT-11.3",
+      "title": "IAM - PAM comptes privilégiés",
+      "description": "CyberArk/Vault/Teleport. Coffre-fort secrets, rotation auto, session recording.",
+      "orderIndex": 90
+    },
+    {
+      "code": "STRAT-11.4",
+      "title": "IAM - Provisioning/deprovisioning automatique (JML)",
+      "description": "Création onboarding, modification mouvements, désactivation immédiate départ.",
+      "orderIndex": 91
+    },
+    {
+      "code": "STRAT-11.5",
+      "title": "IAM - Revues d'accès trimestrielles",
+      "description": "Propriétaire vérifie accès. Supprimer non justifiés. Documenter.",
+      "orderIndex": 92
+    },
+    {
+      "code": "STRAT-11.6",
+      "title": "IAM - Sécuriser comptes de service",
+      "description": "Pas de mot de passe partagé. Rotation auto. Moindre privilège. Pas d'interactif.",
+      "orderIndex": 93
+    },
+    {
+      "code": "STRAT-12.1",
+      "title": "Vuln - Scans hebdomadaires",
+      "description": "Nessus/OpenVAS/Qualys hebdomadaire. OWASP ZAP/Burp apps web.",
+      "orderIndex": 94
+    },
+    {
+      "code": "STRAT-12.2",
+      "title": "Vuln - Patchs critiques sous 72h",
+      "description": "CVSS 9+ : 72h. CVSS 7-8.9 : 30j. CVSS 4-6.9 : 90j.",
+      "orderIndex": 95
+    },
+    {
+      "code": "STRAT-12.3",
+      "title": "Vuln - Mises à jour auto OS",
+      "description": "unattended-upgrades (Linux), WSUS (Windows) patchs sécurité.",
+      "orderIndex": 96
+    },
+    {
+      "code": "STRAT-12.4",
+      "title": "Vuln - Bloquer mouvement latéral",
+      "description": "Désactiver SMB/WMI/PsExec inutiles. Segmentation stricte.",
+      "orderIndex": 97
+    },
+    {
+      "code": "STRAT-12.5",
+      "title": "Vuln - Filtrage egress strict",
+      "description": "HTTP/HTTPS uniquement via proxy. Bloquer connexions directes sortantes.",
+      "orderIndex": 98
+    },
+    {
+      "code": "STRAT-12.6",
+      "title": "Vuln - Pentest annuel interne et externe",
+      "description": "Équipe indépendante. Réseau, apps web, ingénierie sociale.",
+      "orderIndex": 99
+    },
+    {
+      "code": "STRAT-13.1",
+      "title": "Malicious - Détection impossible travel",
+      "description": "SIEM : alerte si 2 localisations incompatibles < 2h.",
+      "orderIndex": 100
+    },
+    {
+      "code": "STRAT-13.2",
+      "title": "Malicious - Détection élévation de privilèges",
+      "description": "Alerte ajout admin, sudo inhabituel, changement rôle, création compte admin.",
+      "orderIndex": 101
+    },
+    {
+      "code": "STRAT-13.3",
+      "title": "Malicious - Blocage automatique IOC",
+      "description": "Feeds TI → firewall/proxy/EDR. Blocage auto IP/domaines/hash malveillants.",
+      "orderIndex": 102
+    },
+    {
+      "code": "STRAT-13.4",
+      "title": "Malicious - Quarantaine réseau d'urgence",
+      "description": "Scripts pour isoler poste/serveur compromis < 5 minutes. Procédure testée.",
+      "orderIndex": 103
+    },
+    {
+      "code": "STRAT-13.5",
+      "title": "Malicious - Rotation d'urgence des secrets",
+      "description": "Scripts rotation massive passwords, tokens API, clés SSH si compromission.",
+      "orderIndex": 104
+    },
+    {
+      "code": "STRAT-14.1",
+      "title": "Hardening - CIS Benchmarks serveurs",
+      "description": "Appliquer benchmarks CIS par OS. CIS-CAT scan. Score min 80%.",
+      "orderIndex": 105
+    },
+    {
+      "code": "STRAT-14.2",
+      "title": "Hardening - Désactiver services non nécessaires",
+      "description": "Lister services actifs. Désactiver non requis. Documenter autorisés.",
+      "orderIndex": 106
+    },
+    {
+      "code": "STRAT-14.3",
+      "title": "Hardening - Fermer ports non utilisés",
+      "description": "nmap scan → iptables/nftables config → ne garder que nécessaires.",
+      "orderIndex": 107
+    },
+    {
+      "code": "STRAT-14.4",
+      "title": "Hardening - Sécuriser SSH serveurs",
+      "description": "Désactiver root login et auth mot de passe. Clés SSH. Fail2ban.",
+      "orderIndex": 108
+    },
+    {
+      "code": "STRAT-14.5",
+      "title": "Hardening - Security groups cloud restrictifs",
+      "description": "Deny all défaut. Pas de 0.0.0.0/0 sauf LB public. Revue mensuelle.",
+      "orderIndex": 109
+    },
+    {
+      "code": "STRAT-14.6",
+      "title": "Hardening - Logs cloud activés",
+      "description": "CloudTrail/Activity Log/Audit Log. Multi-region. SIEM. 12 mois.",
+      "orderIndex": 110
+    },
+    {
+      "code": "STRAT-14.7",
+      "title": "Hardening - Chiffrement disque postes",
+      "description": "BitLocker/FileVault/LUKS 100% postes. Clé récupération MDM.",
+      "orderIndex": 111
+    },
+    {
+      "code": "STRAT-14.8",
+      "title": "Hardening - Contrôle applications (AppLocker/WDAC)",
+      "description": "Uniquement exécutables signés/approuvés. Bloquer scripts non signés.",
+      "orderIndex": 112
+    },
+    {
+      "code": "STRAT-14.9",
+      "title": "Hardening - Sécuriser bases de données",
+      "description": "Pas root/sa direct. Moindre privilège. TDE. Audit log. Pas port exposé public.",
+      "orderIndex": 113
+    },
+    {
+      "code": "STRAT-14.10",
+      "title": "Hardening - SNMPv3 équipements réseau",
+      "description": "Désactiver SNMPv1/v2c. SNMPv3 avec auth et chiffrement.",
+      "orderIndex": 114
+    },
+    {
+      "code": "STRAT-14.11",
+      "title": "Hardening - Conteneurs Docker sécurisés",
+      "description": "Images distroless/alpine. Pas root. Read-only FS. Scan avant deploy.",
+      "orderIndex": 115
+    },
+    {
+      "code": "STRAT-14.12",
+      "title": "Hardening - Kubernetes durci",
+      "description": "CIS Benchmark K8s. NetworkPolicies, PodSecurityStandards, RBAC strict, secrets chiffrés.",
+      "orderIndex": 116
+    },
+    {
+      "code": "STRAT-14.13",
+      "title": "Hardening - Applications web OWASP",
+      "description": "Validation entrées, encodage sorties, headers sécurité CSP/HSTS, protection CSRF/XSS/SQLi.",
+      "orderIndex": 117
+    },
+    {
+      "code": "STRAT-14.14",
+      "title": "Hardening - Secrets dans vault uniquement",
+      "description": "Aucun secret dans code/env/config. HashiCorp Vault ou AWS Secrets Manager.",
+      "orderIndex": 118
+    },
+    {
+      "code": "STRAT-15.1",
+      "title": "Techniques - Allow-listing applicative",
+      "description": "Applications autorisées uniquement. Bloquer tout le reste. Postes et serveurs.",
+      "orderIndex": 119
+    },
+    {
+      "code": "STRAT-15.2",
+      "title": "Techniques - Honeypots et honeytokens",
+      "description": "Faux services et faux credentials pour détecter intrusions. Alerte immédiate.",
+      "orderIndex": 120
+    },
+    {
+      "code": "STRAT-15.3",
+      "title": "Techniques - Sandboxing fichiers suspects",
+      "description": "Sandbox auto pour PJ email et téléchargements. Détonation isolée.",
+      "orderIndex": 121
+    },
+    {
+      "code": "STRAT-16.1",
+      "title": "VM - Couverture scan 100% des actifs",
+      "description": "Scanner vulns couvre 100% actifs. Comparer vs CMDB.",
+      "orderIndex": 122
+    },
+    {
+      "code": "STRAT-16.2",
+      "title": "VM - Analyse avec contexte métier",
+      "description": "Prioriser : exposition Internet, criticité actif, exploit public, données sensibles.",
+      "orderIndex": 123
+    },
+    {
+      "code": "STRAT-16.3",
+      "title": "VM - Vérification par re-scan post-patch",
+      "description": "Re-scan après patch. Pas de clôture sans preuve re-scan OK.",
+      "orderIndex": 124
+    },
+    {
+      "code": "STRAT-16.4",
+      "title": "VM - Root cause analysis vulns récurrentes",
+      "description": "Même vuln récurrente → identifier cause racine → corriger à la source.",
+      "orderIndex": 125
+    },
+    {
+      "code": "STRAT-17.1",
+      "title": "Monitoring - Centraliser tous les logs SIEM",
+      "description": "Serveurs, apps, réseau, cloud, IdP → SIEM. Aucun angle mort.",
+      "orderIndex": 126
+    },
+    {
+      "code": "STRAT-17.2",
+      "title": "Monitoring - Cas d'usage détection prioritaires",
+      "description": "Brute force, impossible travel, élévation privilèges, exfiltration, modif config critique.",
+      "orderIndex": 127
+    },
+    {
+      "code": "STRAT-17.3",
+      "title": "Monitoring - Alertes et escalades",
+      "description": "Critique : notification immédiate. Haute : 15 min. Escalade si non traité 1h.",
+      "orderIndex": 128
+    },
+    {
+      "code": "STRAT-17.4",
+      "title": "Monitoring - Réduire faux positifs < 10%",
+      "description": "Revue hebdo. Tuner seuils. Whitelister légitimes.",
+      "orderIndex": 129
+    },
+    {
+      "code": "STRAT-17.5",
+      "title": "Monitoring - Rétention logs 12 mois / 3 ans",
+      "description": "12 mois en ligne, 3 ans archivés. Conformité RGPD. Immuables.",
+      "orderIndex": 130
+    },
+    {
+      "code": "STRAT-18.1",
+      "title": "IR - Runbooks réponse à incident",
+      "description": "Runbooks : ransomware, phishing, compromission compte, fuite données, DDoS, insider.",
+      "orderIndex": 131
+    },
+    {
+      "code": "STRAT-18.2",
+      "title": "IR - Rôles et canaux de communication",
+      "description": "Incident manager, analyste, com, juridique, direction. Canaux hors-bande.",
+      "orderIndex": 132
+    },
+    {
+      "code": "STRAT-18.3",
+      "title": "IR - Contacts d'urgence à jour",
+      "description": "CERT, forensic, avocat, assureur cyber, communication crise.",
+      "orderIndex": 133
+    },
+    {
+      "code": "STRAT-18.4",
+      "title": "IR - Exercices de simulation",
+      "description": "Tabletop trimestriel. Exercice technique semestriel. Purple team annuel.",
+      "orderIndex": 134
+    },
+    {
+      "code": "STRAT-18.5",
+      "title": "IR - Confinement rapide < 5 min",
+      "description": "Scripts testés : isoler poste (EDR), bloquer compte (IdP), isoler VLAN, bloquer IP.",
+      "orderIndex": 135
+    },
+    {
+      "code": "STRAT-18.6",
+      "title": "IR - Éradication de la menace",
+      "description": "Nettoyage malware, réinstallation, correction vuln, rotation credentials compromis.",
+      "orderIndex": 136
+    },
+    {
+      "code": "STRAT-18.7",
+      "title": "IR - Récupération et validation",
+      "description": "Restauration sauvegardes vérifiées. Validation intégrité. Surveillance renforcée 72h.",
+      "orderIndex": 137
+    },
+    {
+      "code": "STRAT-18.8",
+      "title": "IR - Post-mortem sous 5 jours",
+      "description": "Timeline, cause racine, actions amélioration, lessons learned, mise à jour runbooks.",
+      "orderIndex": 138
+    },
+    {
+      "code": "STRAT-19.1",
+      "title": "Forensic - Kit de collecte prêt",
+      "description": "KAPE, FTK Imager, Volatility, AVML. Disques preuves. Documentation procédure.",
+      "orderIndex": 139
+    },
+    {
+      "code": "STRAT-19.2",
+      "title": "Forensic - Chaîne de conservation des preuves",
+      "description": "Hash SHA-256 chaque preuve, horodatage, qui a collecté/transféré, stockage sécurisé.",
+      "orderIndex": 140
+    },
+    {
+      "code": "STRAT-19.3",
+      "title": "Forensic - Collecte auto artefacts EDR",
+      "description": "EDR collecte auto artefacts alerte critique : processus, connexions, fichiers, mémoire.",
+      "orderIndex": 141
+    },
+    {
+      "code": "STRAT-20.1",
+      "title": "Automation - Triage auto alertes SIEM",
+      "description": "Playbooks SOAR : lookup IP/domaine/hash TI, géolocalisation, réputation.",
+      "orderIndex": 142
+    },
+    {
+      "code": "STRAT-20.2",
+      "title": "Automation - Quarantaine auto endpoints",
+      "description": "Alerte critique EDR → isolation auto. Notification analyste. Ticket créé.",
+      "orderIndex": 143
+    },
+    {
+      "code": "STRAT-20.3",
+      "title": "Automation - Blocage auto IOC confirmés",
+      "description": "IOC confirmé → blocage auto firewall + proxy + EDR. Validation humaine blocs larges.",
+      "orderIndex": 144
+    },
+    {
+      "code": "STRAT-20.4",
+      "title": "Automation - Garde-fous actions critiques",
+      "description": "Actions fort impact (blocage IP prod, désactivation compte VIP) → approbation humaine.",
+      "orderIndex": 145
+    },
+    {
+      "code": "STRAT-21.1",
+      "title": "Awareness - Formation onboarding obligatoire",
+      "description": "Formation sécurité 7 premiers jours. Quiz validation.",
+      "orderIndex": 146
+    },
+    {
+      "code": "STRAT-21.2",
+      "title": "Awareness - Phishing simulé mensuel",
+      "description": "Campagnes mensuelles ciblées. Objectif < 5% clic. Formation immédiate si clic.",
+      "orderIndex": 147
+    },
+    {
+      "code": "STRAT-21.3",
+      "title": "Awareness - Mesurer culture sécurité",
+      "description": "Taux signalement, temps signalement, quiz, incidents évités.",
+      "orderIndex": 148
+    },
+    {
+      "code": "STRAT-21.4",
+      "title": "Awareness - Signalement sans blâme",
+      "description": "Récompenser signalements. Pas de sanction si signalé. Gamification.",
+      "orderIndex": 149
+    },
+    {
+      "code": "STRAT-ANN.1",
+      "title": "Express - MFA partout, PAM admin, revues trimestrielles",
+      "description": "MFA 100%, PAM opérationnel, revues d'accès faites.",
+      "orderIndex": 150
+    },
+    {
+      "code": "STRAT-ANN.2",
+      "title": "Express - Patching, EDR, durcissement",
+      "description": "Systèmes patchés, EDR 100%, durcissement CIS appliqué.",
+      "orderIndex": 151
+    },
+    {
+      "code": "STRAT-ANN.3",
+      "title": "Express - Segmentation, egress, WAF",
+      "description": "Segmentation effective, filtrage sortant, WAF apps web.",
+      "orderIndex": 152
+    },
+    {
+      "code": "STRAT-ANN.4",
+      "title": "Express - Classification, chiffrement, sauvegardes",
+      "description": "Données classifiées, chiffrées repos/transit, sauvegardes testées.",
+      "orderIndex": 153
+    },
+    {
+      "code": "STRAT-ANN.5",
+      "title": "Express - SIEM, playbooks IR, exercices",
+      "description": "SIEM opérationnel, playbooks IR documentés, exercices réalisés.",
+      "orderIndex": 154
+    },
+    {
+      "code": "STRAT-ANN.6",
+      "title": "Express - Due diligence, clauses, revues fournisseurs",
+      "description": "Due diligence faite, clauses sécurité incluses, revues planifiées.",
+      "orderIndex": 155
+    },
+    {
+      "code": "STRAT-DEVOPS.1",
+      "title": "Sécurisation des pipelines CI/CD",
+      "description": "Protéger les pipelines d'intégration et de déploiement continu contre les injections, les dépendances malveillantes et les accès non autorisés.",
+      "orderIndex": 156
+    },
+    {
+      "code": "STRAT-DEVOPS.2",
+      "title": "Contrôle des artefacts et images",
+      "description": "Vérifier l'intégrité et la sécurité des artefacts de build, images Docker et packages avant déploiement.",
+      "orderIndex": 157
+    },
+    {
+      "code": "STRAT-DEVOPS.3",
+      "title": "Séparation des environnements DevOps",
+      "description": "Isoler les environnements de développement, staging et production avec des contrôles d'accès distincts.",
+      "orderIndex": 158
+    },
+    {
+      "code": "STRAT-DEVOPS.4",
+      "title": "Audit des actions DevOps",
+      "description": "Tracer et auditer toutes les actions effectuées dans les pipelines et outils DevOps.",
+      "orderIndex": 159
+    },
+    {
+      "code": "STRAT-REPO.1",
+      "title": "Protection des branches principales",
+      "description": "Configurer des règles de protection de branches (branch protection rules) pour empêcher les push directs et exiger des revues de code.",
+      "orderIndex": 160
+    },
+    {
+      "code": "STRAT-REPO.2",
+      "title": "Détection de secrets dans le code",
+      "description": "Scanner automatiquement les dépôts pour détecter les secrets, clés API et credentials commitées accidentellement.",
+      "orderIndex": 161
+    },
+    {
+      "code": "STRAT-REPO.3",
+      "title": "Signature des commits",
+      "description": "Exiger la signature GPG/SSH des commits pour garantir l'authenticité des contributions.",
+      "orderIndex": 162
+    },
+    {
+      "code": "STRAT-REPO.4",
+      "title": "Gestion des dépendances",
+      "description": "Auditer et mettre à jour régulièrement les dépendances pour corriger les vulnérabilités connues.",
+      "orderIndex": 163
+    },
+    {
+      "code": "STRAT-TOOL.1",
+      "title": "Inventaire des outils de sécurité",
+      "description": "Maintenir un inventaire complet de tous les outils de sécurité déployés (SIEM, EDR, scanner, WAF, etc.).",
+      "orderIndex": 164
+    },
+    {
+      "code": "STRAT-TOOL.2",
+      "title": "Configuration et durcissement des outils",
+      "description": "Configurer chaque outil de sécurité selon les bonnes pratiques et vérifier régulièrement sa configuration.",
+      "orderIndex": 165
+    },
+    {
+      "code": "STRAT-TOOL.3",
+      "title": "Intégration et corrélation des outils",
+      "description": "Assurer l'intégration entre les outils de sécurité pour permettre la corrélation d'événements et la détection avancée.",
+      "orderIndex": 166
+    },
+    {
+      "code": "STRAT-TOOL.4",
+      "title": "Mise à jour des outils de sécurité",
+      "description": "Maintenir tous les outils de sécurité à jour avec les dernières signatures, règles et versions.",
+      "orderIndex": 167
+    },
+    {
+      "code": "STRAT-DR.1",
+      "title": "Plan de reprise d'activité (PRA)",
+      "description": "Définir et documenter un plan de reprise d'activité avec RTO et RPO pour chaque service critique.",
+      "orderIndex": 168
+    },
+    {
+      "code": "STRAT-DR.2",
+      "title": "Tests de reprise d'activité",
+      "description": "Tester régulièrement le PRA par des exercices de bascule et de restauration complète.",
+      "orderIndex": 169
+    },
+    {
+      "code": "STRAT-DR.3",
+      "title": "Site de secours et redondance",
+      "description": "Mettre en place une infrastructure de secours géographiquement séparée pour les services critiques.",
+      "orderIndex": 170
+    },
+    {
+      "code": "STRAT-DR.4",
+      "title": "Procédures de bascule automatique",
+      "description": "Configurer le failover automatique pour les composants critiques (base de données, load balancer, DNS).",
+      "orderIndex": 171
+    },
+    {
+      "code": "STRAT-HUMAN.1",
+      "title": "Vérification des antécédents",
+      "description": "Effectuer des vérifications de background pour les employés ayant accès à des données sensibles ou des systèmes critiques.",
+      "orderIndex": 172
+    },
+    {
+      "code": "STRAT-HUMAN.2",
+      "title": "Processus de départ sécurisé",
+      "description": "Révoquer immédiatement tous les accès lors du départ d'un collaborateur (comptes, VPN, badges, clés).",
+      "orderIndex": 173
+    },
+    {
+      "code": "STRAT-HUMAN.3",
+      "title": "Sensibilisation continue à la sécurité",
+      "description": "Mettre en place un programme de sensibilisation continu incluant phishing simulé, quiz et formations.",
+      "orderIndex": 174
+    },
+    {
+      "code": "STRAT-HUMAN.4",
+      "title": "Gestion des accès privilégiés humains",
+      "description": "Contrôler et auditer les accès administratifs humains avec des solutions PAM (Privileged Access Management).",
+      "orderIndex": 175
+    },
+    {
+      "code": "STRAT-MALACT.1",
+      "title": "Détection d'activités malveillantes",
+      "description": "Déployer des solutions de détection comportementale (UEBA, NDR) pour identifier les activités suspectes.",
+      "orderIndex": 176
+    },
+    {
+      "code": "STRAT-MALACT.2",
+      "title": "Blocage des menaces connues",
+      "description": "Maintenir des listes de blocage (IP, domaines, hash) à jour via des flux de threat intelligence.",
+      "orderIndex": 177
+    },
+    {
+      "code": "STRAT-MALACT.3",
+      "title": "Analyse des comportements anormaux",
+      "description": "Configurer des règles de détection d'anomalies sur les connexions, transferts de données et accès.",
+      "orderIndex": 178
+    },
+    {
+      "code": "STRAT-MALACT.4",
+      "title": "Réponse automatisée aux menaces",
+      "description": "Mettre en place des playbooks SOAR pour automatiser la réponse aux incidents de sécurité détectés.",
+      "orderIndex": 179
+    },
+    {
+      "code": "STRAT-SECRET.1",
+      "title": "Gestionnaire de secrets centralisé",
+      "description": "Déployer un vault centralisé (HashiCorp Vault, AWS Secrets Manager) pour stocker et distribuer les secrets.",
+      "orderIndex": 180
+    },
+    {
+      "code": "STRAT-SECRET.2",
+      "title": "Rotation automatique des secrets",
+      "description": "Configurer la rotation automatique des clés API, mots de passe de service et certificats.",
+      "orderIndex": 181
+    },
+    {
+      "code": "STRAT-SECRET.3",
+      "title": "Élimination des secrets en dur",
+      "description": "Identifier et supprimer tous les secrets codés en dur dans le code source, les configs et les scripts.",
+      "orderIndex": 182
+    },
+    {
+      "code": "STRAT-SECRET.4",
+      "title": "Audit d'accès aux secrets",
+      "description": "Journaliser et auditer tous les accès aux secrets avec alertes sur les accès anormaux.",
+      "orderIndex": 183
+    },
+    {
+      "code": "STRAT-CARTO.1",
+      "title": "Cartographie des actifs",
+      "description": "Maintenir une cartographie complète et à jour de tous les actifs informatiques (serveurs, applications, données).",
+      "orderIndex": 184
+    },
+    {
+      "code": "STRAT-CARTO.2",
+      "title": "Cartographie des flux réseau",
+      "description": "Documenter et visualiser tous les flux réseau entre les zones de sécurité et les systèmes.",
+      "orderIndex": 185
+    },
+    {
+      "code": "STRAT-CARTO.3",
+      "title": "Cartographie des dépendances applicatives",
+      "description": "Identifier et documenter les dépendances entre applications, services et composants d'infrastructure.",
+      "orderIndex": 186
+    },
+    {
+      "code": "STRAT-CARTO.4",
+      "title": "Cartographie des données sensibles",
+      "description": "Localiser et classifier toutes les données sensibles avec leur lieu de stockage et flux de traitement.",
+      "orderIndex": 187
+    },
+    {
+      "code": "STRAT-PWD.1",
+      "title": "Politique de mots de passe robuste",
+      "description": "Appliquer une politique de complexité minimale (12+ caractères, majuscules, chiffres, spéciaux) sur tous les systèmes.",
+      "orderIndex": 188
+    },
+    {
+      "code": "STRAT-PWD.2",
+      "title": "Déploiement du MFA",
+      "description": "Activer l'authentification multi-facteurs (TOTP, FIDO2) sur tous les accès critiques et VPN.",
+      "orderIndex": 189
+    },
+    {
+      "code": "STRAT-PWD.3",
+      "title": "Gestionnaire de mots de passe",
+      "description": "Déployer un gestionnaire de mots de passe d'entreprise (Bitwarden, 1Password) pour tous les utilisateurs.",
+      "orderIndex": 190
+    },
+    {
+      "code": "STRAT-PWD.4",
+      "title": "Détection de mots de passe compromis",
+      "description": "Vérifier régulièrement les mots de passe contre les bases de données de fuites (Have I Been Pwned, etc.).",
+      "orderIndex": 191
+    },
+    {
+      "code": "STRAT-AI.1",
+      "title": "Sécurisation des systèmes IA",
+      "description": "Protéger les modèles d'IA contre l'extraction, l'empoisonnement de données et les attaques adversariales.",
+      "orderIndex": 192
+    },
+    {
+      "code": "STRAT-AI.2",
+      "title": "Contrôle des entrées/sorties IA",
+      "description": "Valider et filtrer les entrées et sorties des systèmes IA pour prévenir les injections et fuites de données.",
+      "orderIndex": 193
+    },
+    {
+      "code": "STRAT-AI.3",
+      "title": "Audit des décisions IA",
+      "description": "Journaliser et auditer les décisions prises par les systèmes IA, en particulier celles impactant la sécurité.",
+      "orderIndex": 194
+    },
+    {
+      "code": "STRAT-AI.4",
+      "title": "Isolation des environnements IA",
+      "description": "Isoler les environnements d'entraînement et d'inférence IA du reste de l'infrastructure de production.",
+      "orderIndex": 195
+    },
+    {
+      "code": "STRAT-ASSUR.1",
+      "title": "Couverture cyber-assurance",
+      "description": "Souscrire une assurance cyber couvrant les incidents de sécurité, les ransomwares, les fuites de données et l'interruption d'activité.",
+      "orderIndex": 196
+    },
+    {
+      "code": "STRAT-ASSUR.2",
+      "title": "Évaluation des risques assurables",
+      "description": "Identifier et évaluer les risques résiduels transférables à l'assureur avec estimation de l'impact financier.",
+      "orderIndex": 197
+    },
+    {
+      "code": "STRAT-ASSUR.3",
+      "title": "Conformité aux prérequis d'assurance",
+      "description": "Maintenir les contrôles de sécurité exigés par la police d'assurance pour garantir la couverture.",
+      "orderIndex": 198
+    },
+    {
+      "code": "STRAT-ASSUR.4",
+      "title": "Processus de déclaration sinistre",
+      "description": "Documenter et tester le processus de déclaration de sinistre cyber auprès de l'assureur.",
+      "orderIndex": 199
+    },
+    {
+      "code": "STRAT-POLIT.1",
+      "title": "Politique de sécurité de l'information (PSSI)",
+      "description": "Rédiger, approuver et diffuser une PSSI couvrant l'ensemble du périmètre de l'organisation.",
+      "orderIndex": 200
+    },
+    {
+      "code": "STRAT-POLIT.2",
+      "title": "Politique d'utilisation acceptable",
+      "description": "Définir les règles d'utilisation des ressources informatiques (internet, email, BYOD, réseaux sociaux).",
+      "orderIndex": 201
+    },
+    {
+      "code": "STRAT-POLIT.3",
+      "title": "Politique de classification des données",
+      "description": "Définir les niveaux de classification et les règles de manipulation pour chaque niveau.",
+      "orderIndex": 202
+    },
+    {
+      "code": "STRAT-POLIT.4",
+      "title": "Politique de gestion des accès",
+      "description": "Formaliser les règles d'attribution, de révision et de révocation des droits d'accès.",
+      "orderIndex": 203
+    },
+    {
+      "code": "STRAT-POLIT.5",
+      "title": "Revue annuelle des politiques",
+      "description": "Revoir et mettre à jour toutes les politiques de sécurité au moins une fois par an.",
+      "orderIndex": 204
+    },
+    {
+      "code": "STRAT-RAPPORT.1",
+      "title": "Reporting sécurité direction",
+      "description": "Produire un tableau de bord sécurité mensuel pour la direction avec KPI, incidents et risques.",
+      "orderIndex": 205
+    },
+    {
+      "code": "STRAT-RAPPORT.2",
+      "title": "Rapport d'incidents",
+      "description": "Documenter chaque incident de sécurité avec chronologie, impact, actions et leçons apprises.",
+      "orderIndex": 206
+    },
+    {
+      "code": "STRAT-RAPPORT.3",
+      "title": "Rapport de conformité",
+      "description": "Produire des rapports de conformité pour chaque référentiel applicable (ISO, SOC2, réglementaire).",
+      "orderIndex": 207
+    },
+    {
+      "code": "STRAT-RAPPORT.4",
+      "title": "Rapport de vulnérabilités",
+      "description": "Générer des rapports de vulnérabilités avec tendances, SLA de correction et couverture de scan.",
+      "orderIndex": 208
+    },
+    {
+      "code": "STRAT-NEWATK.1",
+      "title": "Veille sur les nouvelles menaces",
+      "description": "Maintenir une veille active sur les nouvelles techniques d'attaque (MITRE ATT&CK, CVE, threat feeds).",
+      "orderIndex": 209
+    },
+    {
+      "code": "STRAT-NEWATK.2",
+      "title": "Protection contre les attaques supply chain",
+      "description": "Sécuriser la chaîne d'approvisionnement logicielle contre les compromissions (SolarWinds, Log4j).",
+      "orderIndex": 210
+    },
+    {
+      "code": "STRAT-NEWATK.3",
+      "title": "Protection contre les attaques zero-day",
+      "description": "Déployer des solutions de détection comportementale capables de détecter des exploits zero-day.",
+      "orderIndex": 211
+    },
+    {
+      "code": "STRAT-NEWATK.4",
+      "title": "Protection contre les deepfakes et fraudes avancées",
+      "description": "Mettre en place des procédures de vérification pour contrer les deepfakes audio/vidéo et les fraudes au président.",
+      "orderIndex": 212
+    },
+    {
+      "code": "STRAT-IAPROMPT.1",
+      "title": "Protection contre l'injection de prompt",
+      "description": "Filtrer et valider toutes les entrées utilisateur envoyées aux LLM pour prévenir les injections de prompt.",
+      "orderIndex": 213
+    },
+    {
+      "code": "STRAT-IAPROMPT.2",
+      "title": "Prévention de la fuite de données via IA",
+      "description": "Empêcher les systèmes IA d'exposer des données sensibles, des secrets ou des informations internes.",
+      "orderIndex": 214
+    },
+    {
+      "code": "STRAT-IAPROMPT.3",
+      "title": "Contrôle d'accès aux outils IA",
+      "description": "Restreindre les actions que les agents IA peuvent effectuer et les données auxquelles ils accèdent.",
+      "orderIndex": 215
+    },
+    {
+      "code": "STRAT-IAPROMPT.4",
+      "title": "Politique d'utilisation de l'IA",
+      "description": "Définir une politique encadrant l'utilisation des outils IA (ChatGPT, Copilot, etc.) par les collaborateurs.",
+      "orderIndex": 216
+    }
+  ],
+  "checklists": [
+    {
+      "title": "Durcissement Serveurs - Actions concrètes",
+      "domain": "Hardening",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Infrastructure",
+        "Database",
+        "Application",
+        "Cloud",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Scanner tous les ports ouverts avec nmap et documenter les résultats",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-14.3"
+        },
+        {
+          "question": "Fermer tous les ports non nécessaires via iptables/nftables/firewalld",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.3"
+        },
+        {
+          "question": "Désactiver tous les services non nécessaires (systemctl disable <service>)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.2"
+        },
+        {
+          "question": "Appliquer le benchmark CIS correspondant à l'OS du serveur",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.1"
+        },
+        {
+          "question": "Exécuter un scan CIS-CAT/Lynis et atteindre un score >= 80%",
+          "itemType": "Score",
+          "controlCode": "STRAT-14.1"
+        },
+        {
+          "question": "Configurer SSH : désactiver root login, auth par mot de passe, forcer clés SSH",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.4"
+        },
+        {
+          "question": "Installer et configurer Fail2ban sur le service SSH",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.4"
+        },
+        {
+          "question": "Installer l'agent EDR et vérifier qu'il est actif et à jour",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.1"
+        },
+        {
+          "question": "Configurer la synchronisation NTP (chrony/ntpd) sur source fiable",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.8"
+        },
+        {
+          "question": "Installer et configurer l'agent de monitoring FIM (AIDE/Tripwire/OSSEC)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.3"
+        },
+        {
+          "question": "Configurer le forwarding des logs vers le SIEM (rsyslog/filebeat)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Activer les mises à jour automatiques de sécurité (unattended-upgrades/WSUS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.3"
+        },
+        {
+          "question": "Vérifier qu'aucun mot de passe par défaut n'est présent",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.19"
+        },
+        {
+          "question": "Configurer les sauvegardes automatiques quotidiennes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Tester la restauration depuis la sauvegarde du serveur",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Configurer l'allow-listing applicative (AppLocker, WDAC, fapolicyd) pour n'autoriser que les exécutables approuvés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-15.1"
+        },
+        {
+          "question": "Contrôler les périphériques amovibles (USB, disques externes) : désactiver l'autorun, restreindre les ports USB sur les postes sensibles, scanner automatiquement tout média amovible connecté",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.1"
+        },
+        {
+          "question": "Activer le chiffrement disque complet sur tous les endpoints : BitLocker (Windows), FileVault (macOS), LUKS (Linux), avec gestion centralisée des clés de récupération et vérification de conformité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.1"
+        },
+        {
+          "question": "Mettre en place le contrôle périphérique strict : politique de restriction USB via GPO/MDM, whitelist des périphériques autorisés, journalisation et alerte sur connexion de device non approuvé",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.1"
+        }
+      ]
+    },
+    {
+      "title": "Durcissement Postes de travail - Actions concrètes",
+      "domain": "Hardening",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Device",
+        "PhysicalAsset",
+        "Database",
+        "Application",
+        "Cloud",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Activer le chiffrement de disque (BitLocker/FileVault/LUKS) sur le poste",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.7"
+        },
+        {
+          "question": "Vérifier que la clé de récupération est stockée dans le MDM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.7"
+        },
+        {
+          "question": "Installer et vérifier l'agent EDR actif sur le poste",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.1"
+        },
+        {
+          "question": "Bloquer les macros VBA non signées via GPO/MDM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.2"
+        },
+        {
+          "question": "Désactiver les ports USB de stockage (GPO/MDM)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-2.5"
+        },
+        {
+          "question": "Configurer AppLocker/WDAC pour bloquer les exécutables non approuvés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.8"
+        },
+        {
+          "question": "Enrôler le poste dans le MDM avec politique de conformité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.6"
+        },
+        {
+          "question": "Vérifier que les mises à jour automatiques OS sont activées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.3"
+        },
+        {
+          "question": "Configurer le verrouillage automatique de l'écran après 5 min d'inactivité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.16"
+        },
+        {
+          "question": "Configurer le pare-feu local du poste (deny entrant par défaut)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.1"
+        },
+        {
+          "question": "S'assurer que le DNS filtrant (proxy/Pi-hole/Umbrella) est actif",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.3"
+        },
+        {
+          "question": "Vérifier que le navigateur est configuré avec extensions de sécurité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.19"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Réseau - Actions concrètes",
+      "domain": "SecurityNetworking",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Network",
+        "Infrastructure",
+        "Server",
+        "Cloud"
+      ],
+      "items": [
+        {
+          "question": "Configurer les règles de firewall en deny-all par défaut (entrant ET sortant)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.1"
+        },
+        {
+          "question": "Documenter tous les flux réseau autorisés dans une matrice de flux",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-10.1"
+        },
+        {
+          "question": "Créer les VLAN de segmentation : utilisateurs, serveurs, DMZ, management, invités",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.1"
+        },
+        {
+          "question": "Configurer les règles inter-VLAN restrictives sur le firewall",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.5"
+        },
+        {
+          "question": "Déployer l'IDS/IPS (Suricata/Snort) sur les segments critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.3"
+        },
+        {
+          "question": "Configurer la mise à jour automatique quotidienne des règles IDS/IPS",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.3"
+        },
+        {
+          "question": "Configurer le filtrage egress : HTTP/HTTPS uniquement via proxy",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.5"
+        },
+        {
+          "question": "Bloquer les connexions sortantes directes (bypass proxy)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.5"
+        },
+        {
+          "question": "Déployer le WAF devant les applications web exposées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.2"
+        },
+        {
+          "question": "Activer les règles OWASP Core Rule Set sur le WAF",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.2"
+        },
+        {
+          "question": "Configurer le NAC 802.1X sur les ports switch",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.4"
+        },
+        {
+          "question": "Désactiver SNMPv1/v2c et configurer SNMPv3 sur les équipements",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.10"
+        },
+        {
+          "question": "Sécuriser l'administration réseau : SSH/HTTPS uniquement, pas de telnet/HTTP",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.4"
+        },
+        {
+          "question": "Configurer le DNS filtrant (bloquer domaines malveillants)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.3"
+        },
+        {
+          "question": "Scanner le réseau pour détecter les équipements non autorisés (Shadow IT)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-2.4"
+        },
+        {
+          "question": "Implémenter la micro-segmentation réseau pour isoler chaque workload/application (NSX, Calico, security groups granulaires)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.2"
+        },
+        {
+          "question": "Déployer un bastion/jump host pour tous les accès administratifs (SSH, RDP) avec enregistrement de session",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.3"
+        },
+        {
+          "question": "Déployer des honeytokens (faux credentials, faux fichiers) sur les systèmes critiques pour détecter les accès non autorisés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-15.2"
+        },
+        {
+          "question": "Sécuriser le WiFi entreprise : WPA3/WPA2-Enterprise avec authentification RADIUS, isoler le WiFi invité du réseau interne, interdire la connexion aux réseaux WiFi publics non sécurisés sans VPN",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.4"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Bases de données - Actions concrètes",
+      "domain": "SecurityData",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Database",
+        "DataAsset",
+        "Storage",
+        "Application"
+      ],
+      "items": [
+        {
+          "question": "Activer le chiffrement au repos (TDE) sur toutes les bases de données",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.2"
+        },
+        {
+          "question": "Configurer TLS 1.2+ pour toutes les connexions client-serveur DB",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.3"
+        },
+        {
+          "question": "Supprimer les comptes par défaut et l'accès root/sa direct",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.9"
+        },
+        {
+          "question": "Créer des comptes applicatifs avec moindre privilège (pas de GRANT ALL)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.9"
+        },
+        {
+          "question": "Activer l'audit logging sur la base de données",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.9"
+        },
+        {
+          "question": "Vérifier que le port de la base n'est pas exposé sur Internet",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.9"
+        },
+        {
+          "question": "Configurer les sauvegardes automatiques avec test de restauration",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Activer l'immutabilité des sauvegardes de la base",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.7"
+        },
+        {
+          "question": "Configurer la réplication vers un serveur secondaire",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.2"
+        },
+        {
+          "question": "Stocker les clés de chiffrement dans un KMS dédié (pas sur le serveur DB)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.4"
+        },
+        {
+          "question": "Appliquer la minimisation des données : supprimer colonnes/tables inutiles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.5"
+        },
+        {
+          "question": "Anonymiser les données de production avant copie vers dev/staging",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.4"
+        },
+        {
+          "question": "Activer le chiffrement au repos (AES-256) sur toutes les bases de données et volumes de stockage contenant des données sensibles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.1"
+        },
+        {
+          "question": "Configurer les ACL pour restreindre l'accès aux données classifiées selon le principe need-to-know",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.2"
+        },
+        {
+          "question": "Classifier toutes les données de l'organisation selon 4 niveaux : public, interne, confidentiel, secret — et étiqueter les supports",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.1"
+        },
+        {
+          "question": "Déployer une solution DLP (Data Loss Prevention) sur les points de sortie : email, web, USB, cloud storage",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.4"
+        },
+        {
+          "question": "Appliquer le masquage ou la tokenisation des données sensibles (numéros de carte, PII) dans les environnements non-production et les logs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.1"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Applications - Actions concrètes",
+      "domain": "SecurityCode",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Application",
+        "Codebase",
+        "Pipeline",
+        "AISystem"
+      ],
+      "items": [
+        {
+          "question": "Configurer les headers de sécurité HTTP (CSP, HSTS, X-Frame-Options, X-Content-Type)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.13"
+        },
+        {
+          "question": "Implémenter la validation stricte de toutes les entrées utilisateur (whitelist)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.13"
+        },
+        {
+          "question": "Encoder toutes les sorties pour prévenir les XSS",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.13"
+        },
+        {
+          "question": "Utiliser des requêtes paramétrées (prepared statements) pour prévenir les SQLi",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.13"
+        },
+        {
+          "question": "Implémenter la protection CSRF sur tous les formulaires",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.13"
+        },
+        {
+          "question": "Stocker tous les secrets applicatifs dans un vault (pas dans le code ni les env vars en dur)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.14"
+        },
+        {
+          "question": "Forcer TLS 1.2+ et désactiver les cipher suites faibles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.3"
+        },
+        {
+          "question": "Configurer le SAST (analyse statique) dans le pipeline CI",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Configurer le DAST (analyse dynamique) dans le pipeline CI",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Scanner les dépendances pour vulnérabilités (Snyk/Dependabot/Trivy)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.5"
+        },
+        {
+          "question": "Configurer la signature des builds et releases (GPG/Sigstore)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.4"
+        },
+        {
+          "question": "Mettre en place la protection brute force (rate limiting, captcha)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.2"
+        },
+        {
+          "question": "Configurer les logs applicatifs vers le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Réaliser un scan de vulnérabilités web (OWASP ZAP/Burp)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Effectuer un threat modeling (STRIDE/DREAD) sur chaque application critique avant la mise en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.5"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Cloud - Actions concrètes",
+      "domain": "SecurityArchitecture",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Cloud",
+        "Application",
+        "Server",
+        "Network",
+        "Cluster"
+      ],
+      "items": [
+        {
+          "question": "Configurer les security groups en deny-all par défaut (pas de 0.0.0.0/0)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.5"
+        },
+        {
+          "question": "Activer les logs d'audit cloud (CloudTrail/Activity Log/Audit Log)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.6"
+        },
+        {
+          "question": "Configurer l'envoi des logs cloud vers le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Appliquer le MFA sur tous les comptes cloud (console et API)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.2"
+        },
+        {
+          "question": "Supprimer les clés d'accès root/admin et utiliser des rôles IAM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.12"
+        },
+        {
+          "question": "Activer le chiffrement par défaut sur tous les services de stockage",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.2"
+        },
+        {
+          "question": "Configurer la rotation automatique des clés KMS",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.2"
+        },
+        {
+          "question": "Scanner la configuration cloud avec ScoutSuite/Prowler",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-7.2"
+        },
+        {
+          "question": "Configurer les alertes budget et anomalies de consommation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.1"
+        },
+        {
+          "question": "Configurer les VPC et sous-réseaux avec isolation public/privé",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.1"
+        },
+        {
+          "question": "Activer le versioning et l'immutabilité sur les buckets de stockage",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.7"
+        },
+        {
+          "question": "Vérifier qu'aucun bucket/blob n'est exposé publiquement par erreur",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.19"
+        },
+        {
+          "question": "Vérifier la présence de contrôles à chaque couche : périmètre (WAF), réseau (firewall), hôte (EDR), application (auth), données (chiffrement)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.15"
+        },
+        {
+          "question": "Implémenter le chiffrement bout-à-bout (E2E) sur les communications sensibles entre services (mTLS, WireGuard)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.1"
+        },
+        {
+          "question": "Appliquer le principe de réduction du blast radius : isolation des composants critiques pour limiter l'impact d'une compromission",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.1"
+        },
+        {
+          "question": "Assurer la séparation stricte des environnements prod/dev/staging : réseaux distincts, credentials différents, interdire l'accès direct des développeurs à la production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.1"
+        },
+        {
+          "question": "Garantir la séparation prod/dev/staging : aucun accès développeur direct en production, credentials distincts par environnement, données de production jamais copiées en dev sans anonymisation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.1"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Conteneurs et Kubernetes - Actions concrètes",
+      "domain": "SecurityCluster",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Cluster",
+        "Application",
+        "Pipeline"
+      ],
+      "items": [
+        {
+          "question": "Scanner toutes les images conteneur avant déploiement (Trivy/Grype)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.11"
+        },
+        {
+          "question": "Utiliser uniquement des images de base minimales (distroless/alpine)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.11"
+        },
+        {
+          "question": "Configurer les conteneurs pour ne pas tourner en root",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.11"
+        },
+        {
+          "question": "Activer le read-only filesystem sur les conteneurs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.11"
+        },
+        {
+          "question": "Appliquer les NetworkPolicies Kubernetes (deny par défaut)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Configurer les PodSecurityStandards (restricted)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Configurer le RBAC Kubernetes avec moindre privilège",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Chiffrer les secrets Kubernetes au repos (etcd encryption)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Exécuter le benchmark CIS Kubernetes et corriger les écarts",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Configurer les limites de ressources (CPU/mémoire) sur les pods",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.16"
+        },
+        {
+          "question": "Interdire les conteneurs privilégiés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.12"
+        },
+        {
+          "question": "Configurer le logging centralisé des pods vers le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        }
+      ]
+    },
+    {
+      "title": "Sécurisation Pipeline CI/CD - Actions concrètes",
+      "domain": "SecurityPipeline",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Pipeline",
+        "Codebase"
+      ],
+      "items": [
+        {
+          "question": "Intégrer le SAST dans le pipeline CI (SonarQube/Semgrep/CodeQL)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Intégrer le SCA dans le pipeline (Snyk/Dependabot/Trivy)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.5"
+        },
+        {
+          "question": "Intégrer le scan d'images conteneur dans le pipeline",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.11"
+        },
+        {
+          "question": "Stocker les secrets du pipeline dans un vault (pas de variables en clair)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.14"
+        },
+        {
+          "question": "Configurer la signature automatique des artefacts de build",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.4"
+        },
+        {
+          "question": "Durcir les runners/agents CI (image minimale, pas de root, réseau isolé)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.1"
+        },
+        {
+          "question": "Configurer l'approbation obligatoire avant déploiement en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.4"
+        },
+        {
+          "question": "Activer le branch protection sur la branche principale (reviews obligatoires)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.14"
+        },
+        {
+          "question": "Configurer la détection de secrets dans le code (git-secrets/trufflehog)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-14.14"
+        },
+        {
+          "question": "Séparer les pipelines dev/staging/prod avec credentials différents",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-9.4"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité Physique - Actions concrètes",
+      "domain": "SecurityPhysique",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Site",
+        "PhysicalAsset",
+        "Device",
+        "Human"
+      ],
+      "items": [
+        {
+          "question": "Installer des lecteurs de badge RFID/NFC sur toutes les entrées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Installer des caméras de surveillance aux points d'entrée/sortie",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Installer un sas anti-tailgating à l'entrée principale",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Sécuriser la salle serveur : badge + code + caméra + détection incendie",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.2"
+        },
+        {
+          "question": "Configurer un système de climatisation redondant en salle serveur",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.2"
+        },
+        {
+          "question": "Installer un onduleur (UPS) sur tous les équipements critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.5"
+        },
+        {
+          "question": "Mettre en place le registre des visiteurs et badges temporaires",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.3"
+        },
+        {
+          "question": "Étiqueter tous les équipements avec un identifiant unique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.4"
+        },
+        {
+          "question": "Réaliser l'inventaire physique semestriel et signaler les disparitions",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.1.4"
+        },
+        {
+          "question": "Installer un broyeur de documents et de disques durs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.5"
+        },
+        {
+          "question": "Vérifier que les logs d'accès physique sont envoyés au SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Installer un éclairage de sécurité automatique (détection de mouvement) aux entrées, parkings et zones sensibles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Déployer des capteurs de mouvement et détecteurs d'intrusion aux points d'entrée et en salle serveur",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.2"
+        },
+        {
+          "question": "Configurer des alertes anti-tamper sur les caméras de surveillance (détection d'obstruction, de déconnexion ou d'aveuglement)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Déployer des badges anti-clonage (MIFARE DESFire ou équivalent chiffré) et désactiver les technologies de badge obsolètes (125 kHz)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Mettre en place un service de gardiennage/agents de sécurité pour les locaux critiques : rondes, contrôle d'accès physique, gestion des incidents sur site",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Déployer des bornes anti-véhicule et barrières physiques autour des bâtiments critiques pour prévenir les intrusions par véhicule-bélier",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        },
+        {
+          "question": "Installer des sas de sécurité de type mantrap aux entrées des zones critiques : passage individuel obligatoire, détection de piggybacking, verrouillage en cas d'anomalie",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.1"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des identités et accès (IAM) - Actions concrètes",
+      "domain": "IAMManagement",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Human",
+        "Device",
+        "Application",
+        "Tool",
+        "Cloud",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Déployer l'IdP centralisé (Keycloak/AD/Okta) avec SSO OIDC/SAML",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.1"
+        },
+        {
+          "question": "Activer MFA TOTP/FIDO2 sur 100% des comptes (vérifier le dashboard)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-11.2"
+        },
+        {
+          "question": "Déployer le PAM (CyberArk/Vault/Teleport) pour les comptes admin",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.3"
+        },
+        {
+          "question": "Configurer le session recording pour les accès privilégiés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.3"
+        },
+        {
+          "question": "Configurer le provisioning automatique à l'onboarding",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.4"
+        },
+        {
+          "question": "Configurer le deprovisioning automatique au départ",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.4"
+        },
+        {
+          "question": "Exécuter la revue d'accès trimestrielle : lister les accès par application",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-11.5"
+        },
+        {
+          "question": "Supprimer les comptes inactifs depuis plus de 90 jours",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.17"
+        },
+        {
+          "question": "Auditer les comptes de service : rotation, moindre privilège, pas d'interactif",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-11.6"
+        },
+        {
+          "question": "Vérifier qu'aucun compte n'utilise le MFA par SMS (SIM swapping)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.2"
+        },
+        {
+          "question": "Configurer le just-in-time access pour l'élévation de privilèges",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.13"
+        },
+        {
+          "question": "Supprimer les comptes locaux sur les applications avec SSO actif",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.1"
+        },
+        {
+          "question": "Configurer un IdP centralisé (Keycloak, Azure AD, Okta) avec SSO OIDC/SAML pour toutes les applications",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.9"
+        },
+        {
+          "question": "Implémenter RBAC ou ABAC sur toutes les applications avec des rôles définis et documentés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.10"
+        },
+        {
+          "question": "Vérifier chaque accès indépendamment de l'emplacement réseau : authentification + autorisation + posture du device à chaque requête",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.18"
+        },
+        {
+          "question": "Configurer la fédération d'identités entre l'IdP interne et les services cloud/SaaS (SCIM provisioning, SAML/OIDC federation)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.1"
+        },
+        {
+          "question": "Automatiser le processus d'offboarding : désactivation immédiate des comptes au départ d'un collaborateur, révocation des accès VPN/SSO/email, récupération du matériel, audit des accès résiduels",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.1"
+        },
+        {
+          "question": "Imposer le MFA partout sans exception : VPN, email, SSO, applications cloud, consoles d'administration, accès distant — aucun système critique ne doit être accessible avec un seul facteur",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.1"
+        }
+      ]
+    },
+    {
+      "title": "Protection Malware et Endpoints - Actions concrètes",
+      "domain": "SecurityMalware",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Device",
+        "Server",
+        "Application",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Vérifier le taux de couverture EDR (objectif : 100% des endpoints)",
+          "itemType": "Score",
+          "controlCode": "STRAT-10.5"
+        },
+        {
+          "question": "Mettre à jour les signatures et l'agent EDR sur tous les endpoints",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.1"
+        },
+        {
+          "question": "Bloquer l'exécution de macros VBA non signées (GPO/MDM)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.2"
+        },
+        {
+          "question": "Configurer le filtrage DNS/Web pour bloquer les domaines malveillants",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.3"
+        },
+        {
+          "question": "Configurer les règles DLP pour détecter l'exfiltration de données",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.4"
+        },
+        {
+          "question": "Vérifier la segmentation réseau : postes isolés des serveurs de production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.5"
+        },
+        {
+          "question": "Configurer le sandboxing automatique des pièces jointes email",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-15.3"
+        },
+        {
+          "question": "Bloquer les protocoles de mouvement latéral inutiles (SMB/WMI/PsExec)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.4"
+        },
+        {
+          "question": "Tester la procédure de quarantaine d'un endpoint compromis",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-13.4"
+        },
+        {
+          "question": "Préparer et tester les scripts de rotation d'urgence des secrets",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-13.5"
+        },
+        {
+          "question": "Configurer la détection de rootkits sur les serveurs et postes critiques (rkhunter, chkrootkit, GMER) avec scan hebdomadaire automatisé",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.1"
+        },
+        {
+          "question": "Configurer la détection de trafic botnet : identifier les communications C2 (Command & Control) via analyse DNS, détection de beaconing et corrélation avec les IOC de botnets connus",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.4"
+        },
+        {
+          "question": "Déployer la détection spécifique de trojan/RAT : analyse comportementale des processus, détection de reverse shells, blocage des outils d'accès distant non approuvés (TeamViewer, AnyDesk si non autorisés)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.1"
+        }
+      ]
+    },
+    {
+      "title": "Monitoring et SIEM - Actions concrètes",
+      "domain": "AlertingMonitoring",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Network",
+        "Application",
+        "Cloud",
+        "AISystem"
+      ],
+      "items": [
+        {
+          "question": "Déployer et configurer le SIEM (Wazuh/ELK/Splunk)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.7"
+        },
+        {
+          "question": "Vérifier que tous les serveurs envoient leurs logs au SIEM",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Vérifier que tous les équipements réseau envoient leurs logs au SIEM",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Vérifier que les logs applicatifs critiques sont dans le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Configurer la règle de détection : brute force (>5 échecs en 5 min)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.2"
+        },
+        {
+          "question": "Configurer la règle de détection : impossible travel",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.1"
+        },
+        {
+          "question": "Configurer la règle de détection : élévation de privilèges anormale",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.2"
+        },
+        {
+          "question": "Configurer la règle de détection : exfiltration données (volume anormal)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.3.4"
+        },
+        {
+          "question": "Configurer la règle de détection : modification config critique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.2"
+        },
+        {
+          "question": "Configurer les alertes et escalades (critique: immédiat, haute: 15 min)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.3"
+        },
+        {
+          "question": "Intégrer les feeds de Threat Intelligence dans le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-2.1"
+        },
+        {
+          "question": "Configurer la rétention des logs (12 mois en ligne, 3 ans archivés)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.5"
+        },
+        {
+          "question": "Réaliser une revue hebdomadaire des faux positifs et tuner les règles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.4"
+        },
+        {
+          "question": "Configurer la synchronisation NTP sur toutes les sources de logs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.8"
+        },
+        {
+          "question": "Configurer l'immutabilité des journaux d'audit (WORM storage, append-only) pour empêcher la falsification",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.8"
+        },
+        {
+          "question": "Vérifier que tous les logs d'audit (authentification, autorisation, modifications) sont centralisés dans le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.11"
+        },
+        {
+          "question": "Déployer une solution UEBA (User and Entity Behavior Analytics) pour détecter les comportements anormaux des insiders",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-2.3"
+        },
+        {
+          "question": "Configurer une règle de détection des sessions concurrentes anormales (même utilisateur connecté depuis 2+ emplacements simultanément)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.2"
+        },
+        {
+          "question": "Configurer une alerte lorsqu'un système critique cesse d'envoyer des logs au SIEM (détection de logs manquants/gap de logs)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.2"
+        },
+        {
+          "question": "Normaliser le format des logs de toutes les sources (timestamp ISO 8601, champs communs) avant ingestion dans le SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Configurer une règle de détection des pics de trafic anormaux (volumétrie inhabituelle, possible DDoS ou exfiltration massive)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.1"
+        },
+        {
+          "question": "Configurer une règle de détection des accès hors horaires de travail (connexions à des heures inhabituelles, weekends, jours fériés) avec alerte",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.1"
+        },
+        {
+          "question": "Configurer une règle de détection des modifications inattendues de fichiers système, bases de registre ou données critiques (FIM + alertes SIEM)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.2"
+        },
+        {
+          "question": "Assurer la centralisation de tous les logs de sécurité dans le SIEM : serveurs, réseau, endpoints, cloud, applications, avec horodatage NTP synchronisé et rétention conforme aux exigences légales",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Appliquer la normalisation des logs collectés : format unifié (CEF, JSON structuré), taxonomie commune des événements (MITRE ATT&CK), enrichissement contextuel automatique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        }
+      ]
+    },
+    {
+      "title": "Réponse aux incidents - Actions concrètes",
+      "domain": "IncidentResponse",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Project",
+        "Human",
+        "Server",
+        "Application",
+        "Network",
+        "Device",
+        "Cloud"
+      ],
+      "items": [
+        {
+          "question": "Rédiger le runbook ransomware (détection, isolation, restauration)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Rédiger le runbook phishing (signalement, analyse, blocage, communication)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Rédiger le runbook compromission de compte (blocage, rotation, investigation)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Rédiger le runbook fuite de données (identification, confinement, notification)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Rédiger le runbook DDoS (détection, mitigation, communication)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Définir les rôles IR : incident manager, analyste, communication, juridique",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.2"
+        },
+        {
+          "question": "Configurer les canaux de communication hors-bande pour les incidents",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.2"
+        },
+        {
+          "question": "Mettre à jour la liste des contacts d'urgence (CERT, forensic, avocat, assureur)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.3"
+        },
+        {
+          "question": "Préparer et tester les scripts de confinement rapide (isolation poste/VLAN/IP)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.5"
+        },
+        {
+          "question": "Réaliser un exercice tabletop de simulation d'incident",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-18.4"
+        },
+        {
+          "question": "Préparer le kit forensic (KAPE, FTK Imager, disques preuves)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.1"
+        },
+        {
+          "question": "Documenter la procédure de chaîne de conservation des preuves",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-19.2"
+        },
+        {
+          "question": "Documenter la procédure d'éradication : suppression du malware, fermeture des accès compromis, nettoyage des systèmes affectés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.6"
+        },
+        {
+          "question": "Documenter la procédure de récupération : restauration depuis backup vérifié, validation de l'intégrité, remise en production progressive",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.7"
+        },
+        {
+          "question": "Exiger un post-mortem écrit dans les 5 jours suivant chaque incident avec root cause, timeline et actions correctives",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.8"
+        },
+        {
+          "question": "Conduire un retour d'expérience (post-mortem) après chaque incident : chronologie détaillée, causes racines identifiées, actions correctives avec responsables et délais, mise à jour des playbooks",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.1"
+        }
+      ]
+    },
+    {
+      "title": "Protection Social Engineering - Actions concrètes",
+      "domain": "SecuritySocialEngineering",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Human",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Configurer et lancer une campagne de phishing simulé (GoPhish)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Mesurer le taux de clic par département et identifier les points faibles",
+          "itemType": "Score",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Configurer le filtre anti-phishing avancé sur le serveur email",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.2"
+        },
+        {
+          "question": "Activer le sandboxing des pièces jointes email",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-15.3"
+        },
+        {
+          "question": "Configurer la protection contre l'usurpation d'identité (impersonation)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.2"
+        },
+        {
+          "question": "Documenter la procédure de vérification call-back pour les demandes sensibles",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.2.3"
+        },
+        {
+          "question": "Installer le bouton 'Signaler un phishing' dans le client email",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.4"
+        },
+        {
+          "question": "Créer le canal de signalement dédié (Slack/Teams)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.4"
+        },
+        {
+          "question": "Configurer SPF + DKIM + DMARC sur tous les domaines de l'entreprise",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-2.6"
+        },
+        {
+          "question": "Former les équipes au vishing (appels téléphoniques frauduleux) : ne jamais communiquer de mot de passe ou code par téléphone",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Sensibiliser au baiting : ne jamais connecter de clé USB ou périphérique trouvé, signaler au service sécurité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Mettre en place la destruction sécurisée des documents (broyeur) pour prévenir le dumpster diving",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.1.5"
+        },
+        {
+          "question": "Déployer des filtres de confidentialité (privacy screen) sur les écrans des collaborateurs travaillant en espace ouvert ou en déplacement (anti-shoulder surfing)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Former les collaborateurs au pretexting : ne jamais divulguer d'informations sensibles à un interlocuteur non vérifié, même s'il se présente comme un supérieur ou un prestataire",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Mettre en place une protection anti-whaling pour les dirigeants : filtrage renforcé des emails, procédure de double validation pour les virements, formation spécifique cadres dirigeants",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.2"
+        },
+        {
+          "question": "Configurer un filtrage anti-spear-phishing ciblé pour les collaborateurs à profil exposé (dirigeants, finance, RH) : analyse comportementale des emails, alertes sur usurpation de domaines proches",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        },
+        {
+          "question": "Former les collaborateurs au smishing (phishing par SMS) : ne jamais cliquer sur les liens reçus par SMS prétendant venir de l'entreprise, vérifier via les canaux officiels",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.2.1"
+        }
+      ]
+    },
+    {
+      "title": "Cryptographie - Actions concrètes",
+      "domain": "SecurityCrypto",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Application",
+        "Database",
+        "Storage",
+        "Server",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Auditer tous les services pour identifier les algorithmes faibles (MD5/SHA1/DES/RC4)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.5.1"
+        },
+        {
+          "question": "Remplacer tous les algorithmes faibles par SHA-256+/AES-256/ChaCha20",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.1"
+        },
+        {
+          "question": "Configurer la rotation automatique des clés dans le KMS (90 jours)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.2"
+        },
+        {
+          "question": "Déployer cert-manager pour le renouvellement automatique des certificats TLS",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.3"
+        },
+        {
+          "question": "Configurer les alertes d'expiration de certificats (30 jours avant)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.3"
+        },
+        {
+          "question": "Migrer toutes les clés privées vers un HSM/KMS (pas de fichier sur disque)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.4"
+        },
+        {
+          "question": "Désactiver TLS 1.0/1.1 et forcer TLS 1.2+ sur tous les services",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.3"
+        },
+        {
+          "question": "Vérifier la configuration SSL/TLS avec SSL Labs (score A+)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.4.3"
+        },
+        {
+          "question": "Utiliser le chiffrement symétrique (AES-256) pour les données au repos et le chiffrement asymétrique (RSA/ECDSA) pour l'échange de clés et l'authentification, en respectant les standards actuels",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Déployer et gérer une PKI (Public Key Infrastructure) : autorité de certification interne ou externe, émission/renouvellement/révocation de certificats, monitoring des expirations, OCSP/CRL",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des tiers et fournisseurs - Actions concrètes",
+      "domain": "ThirdPartyVendor",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "ThirdParty",
+        "Tool",
+        "Cloud",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Envoyer le questionnaire de sécurité (SIG/CAIQ) avant engagement",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-4.1"
+        },
+        {
+          "question": "Demander et vérifier les certifications sécurité (ISO 27001, SOC2)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-4.1"
+        },
+        {
+          "question": "Inclure les clauses sécurité dans le contrat (SLA, notification <24h, droit d'audit)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.2"
+        },
+        {
+          "question": "Créer un compte nominatif par prestataire avec MFA obligatoire",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.3"
+        },
+        {
+          "question": "Configurer l'accès prestataire via bastion/VPN dédié avec logging",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.3"
+        },
+        {
+          "question": "Configurer l'expiration automatique des comptes prestataires à fin de contrat",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.4"
+        },
+        {
+          "question": "Réaliser l'audit trimestriel des comptes tiers actifs",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-4.4"
+        },
+        {
+          "question": "Scanner les dépendances logicielles tierces (Snyk/Dependabot/Trivy)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-4.5"
+        },
+        {
+          "question": "Générer et maintenir le SBOM (Software Bill of Materials)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-4.5"
+        },
+        {
+          "question": "Documenter un plan de continuité pour chaque fournisseur critique : actions en cas de panne, fournisseur de secours, procédure de bascule, données récupérables",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.2"
+        },
+        {
+          "question": "Vérifier que les données hébergées chez le fournisseur sont récupérables (export, backup) et tester l'extraction au moins une fois par an",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.1"
+        },
+        {
+          "question": "Vérifier que chaque fournisseur ayant accès à des données personnelles a signé un accord de traitement de données (DPA) conforme au RGPD",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.2"
+        },
+        {
+          "question": "Demander annuellement les attestations de sécurité à jour (SOC2, ISO 27001, rapport de pentest) de chaque fournisseur critique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.1"
+        },
+        {
+          "question": "Exiger contractuellement la transparence sur les sous-traitants du fournisseur : liste des sous-traitants, notification avant changement, mêmes exigences de sécurité appliquées en cascade",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-4.2"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des vulnérabilités - Actions concrètes",
+      "domain": "VulnerabilityManagement",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Application",
+        "Codebase",
+        "Pipeline",
+        "Cluster",
+        "Network",
+        "Cloud",
+        "AISystem",
+        "Tool"
+      ],
+      "items": [
+        {
+          "question": "Exécuter un scan de vulnérabilités complet de l'infrastructure (Nessus/OpenVAS/Qualys)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Exécuter un scan de vulnérabilités web (OWASP ZAP/Burp)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-12.1"
+        },
+        {
+          "question": "Vérifier la couverture du scan vs la CMDB (objectif : 100% des actifs)",
+          "itemType": "Score",
+          "controlCode": "STRAT-16.1"
+        },
+        {
+          "question": "Prioriser les vulnérabilités critiques selon CVSS + contexte métier",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-16.2"
+        },
+        {
+          "question": "Appliquer les patchs critiques (CVSS 9+) dans les 72 heures",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.2"
+        },
+        {
+          "question": "Appliquer les patchs hauts (CVSS 7-8.9) dans les 30 jours",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.2"
+        },
+        {
+          "question": "Re-scanner après chaque campagne de patch pour vérifier la correction",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-16.3"
+        },
+        {
+          "question": "Réaliser un pentest annuel interne et externe",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-12.6"
+        },
+        {
+          "question": "Analyser les root causes des vulnérabilités récurrentes",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-16.4"
+        },
+        {
+          "question": "Documenter les exceptions de patch avec justification et compensation",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-12.2"
+        },
+        {
+          "question": "Activer une surveillance accrue (monitoring renforcé, seuils d'alerte abaissés) pendant 30 jours après chaque remédiation de vulnérabilité critique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-16.3"
+        },
+        {
+          "question": "Documenter la procédure de désactivation d'urgence d'un service vulnérable non patchable : isolation, WAF compensatoire, contrôle d'accès renforcé en attendant le correctif",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.2"
+        },
+        {
+          "question": "Appliquer la désactivation de service comme mesure de remédiation prioritaire : si un service vulnérable n'est pas critique, le désactiver en attendant le correctif plutôt que de laisser la faille exposée",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.1"
+        }
+      ]
+    },
+    {
+      "title": "Résilience et Disaster Recovery - Actions concrètes",
+      "domain": "Resilience",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Cluster",
+        "Database",
+        "Storage",
+        "Site",
+        "Application"
+      ],
+      "items": [
+        {
+          "question": "Identifier et documenter tous les points uniques de défaillance (SPOF)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-8.1"
+        },
+        {
+          "question": "Mettre en place la redondance réseau (2 liens internet, 2 DNS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.1"
+        },
+        {
+          "question": "Configurer la réplication des bases de données critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.2"
+        },
+        {
+          "question": "Documenter le DRP avec RTO/RPO pour chaque service critique",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-8.3"
+        },
+        {
+          "question": "Tester le basculement vers le site de secours",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-8.3"
+        },
+        {
+          "question": "Documenter le BCP avec procédures dégradées",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-8.4"
+        },
+        {
+          "question": "Installer et tester les UPS sur les équipements critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.5"
+        },
+        {
+          "question": "Configurer les sauvegardes immuables et isolées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.7"
+        },
+        {
+          "question": "Tester la restauration complète d'un service depuis les sauvegardes",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Réaliser un exercice de DR annuel avec chronométrage du RTO",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-8.3"
+        },
+        {
+          "question": "Configurer le clustering haute disponibilité (HA) pour tous les services critiques (base de données, API, load balancer)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.5"
+        },
+        {
+          "question": "Tester le basculement automatique (failover) de chaque service critique au moins une fois par semestre",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.6"
+        },
+        {
+          "question": "Rédiger des runbooks BCP pour chaque service critique : procédures dégradées, communication, critères de retour à la normale",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-8.4"
+        }
+      ]
+    },
+    {
+      "title": "Automation et orchestration - Actions concrètes",
+      "domain": "AutomationOrchestration",
+      "checklistType": "Actionable",
+      "criticality": "Medium",
+      "applicability": [
+        "Pipeline",
+        "Server",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Configurer les playbooks SOAR de triage automatique des alertes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.1"
+        },
+        {
+          "question": "Configurer l'enrichissement automatique des IOC (lookup TI feeds)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.1"
+        },
+        {
+          "question": "Configurer l'isolation automatique des endpoints sur alerte critique EDR",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.2"
+        },
+        {
+          "question": "Configurer le blocage automatique des IOC confirmés sur firewall/proxy/EDR",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.3"
+        },
+        {
+          "question": "Configurer les garde-fous : approbation humaine pour les actions à fort impact",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.4"
+        },
+        {
+          "question": "Tester les playbooks d'automatisation avec des scénarios simulés",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-20.1"
+        },
+        {
+          "question": "Automatiser le scan de vulnérabilités hebdomadaire avec création automatique de tickets pour les vulnérabilités critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.1"
+        },
+        {
+          "question": "Configurer des règles d'enrichissement automatique des alertes SIEM avec contexte (GeoIP, réputation, WHOIS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.1"
+        },
+        {
+          "question": "Mettre en place un workflow automatisé de révocation d'accès lors du départ d'un collaborateur (HR → IAM → IT)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-20.3"
+        }
+      ]
+    },
+    {
+      "title": "Sensibilisation sécurité - Actions concrètes",
+      "domain": "FormationSecurity",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Human"
+      ],
+      "items": [
+        {
+          "question": "Créer le module de formation sécurité onboarding (avec quiz)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-21.1"
+        },
+        {
+          "question": "Former tous les nouveaux collaborateurs dans les 7 premiers jours",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-21.1"
+        },
+        {
+          "question": "Lancer la campagne de phishing simulé mensuelle",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-21.2"
+        },
+        {
+          "question": "Mesurer le taux de clic phishing (objectif < 5%)",
+          "itemType": "Score",
+          "controlCode": "STRAT-21.2"
+        },
+        {
+          "question": "Former immédiatement les personnes ayant cliqué sur le phishing",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-21.2"
+        },
+        {
+          "question": "Mesurer le temps moyen de signalement des emails suspects",
+          "itemType": "Score",
+          "controlCode": "STRAT-21.3"
+        },
+        {
+          "question": "Récompenser les signalements de sécurité (gamification/reconnaissance)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-21.4"
+        },
+        {
+          "question": "Réaliser un quiz sécurité trimestriel pour tout le personnel",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-21.3"
+        },
+        {
+          "question": "Mesurer trimestriellement les indicateurs de sensibilisation : taux de clic phishing simulé (<5% cible), temps moyen de signalement (<15 min cible), taux de réussite quiz (>80%)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-21.3"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des actifs et changements - Actions concrètes",
+      "domain": "AssetChangeManagement",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Infrastructure",
+        "Server",
+        "Device",
+        "Application",
+        "Cloud",
+        "Network",
+        "Database",
+        "Storage",
+        "PhysicalAsset",
+        "Tool",
+        "ThirdParty",
+        "Site",
+        "Domain",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Scanner le réseau complet pour découvrir tous les actifs (Nmap/Lansweeper)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-6.1"
+        },
+        {
+          "question": "Lister tous les services SaaS utilisés et détecter le Shadow IT",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-6.2"
+        },
+        {
+          "question": "Déployer et configurer la CMDB (GLPI/Snipe-IT/NetBox)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.3"
+        },
+        {
+          "question": "Renseigner propriétaire et criticité pour chaque actif dans la CMDB",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.1"
+        },
+        {
+          "question": "Configurer la mise à jour automatique de la CMDB par scan réseau",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.3"
+        },
+        {
+          "question": "Documenter le processus de gestion des changements",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-6.4"
+        },
+        {
+          "question": "Vérifier que tout changement en prod passe par le processus (demande → approbation → validation)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.4"
+        },
+        {
+          "question": "Détecter le shadow IT : scanner le réseau pour les services non autorisés et les SaaS non référencés (via CASB ou analyse DNS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.2"
+        },
+        {
+          "question": "Exiger une analyse de risque sécurité pour tout changement impactant l'infrastructure ou les applications critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.4"
+        },
+        {
+          "question": "Configurer des notifications automatiques lorsqu'un nouvel actif est détecté sur le réseau (NAC, scanner)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.1"
+        },
+        {
+          "question": "Documenter et tester la procédure de rollback pour chaque changement critique : vérifier que le retour arrière fonctionne avant le déploiement en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.4"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité des noms de domaine - Actions concrètes",
+      "domain": "SecurityInfra",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Domain",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Activer le verrouillage registrar (transfer lock) sur tous les domaines",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.1"
+        },
+        {
+          "question": "Configurer DNSSEC sur les domaines critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.1"
+        },
+        {
+          "question": "Activer MFA sur le compte registrar",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-11.2"
+        },
+        {
+          "question": "Configurer SPF + DKIM + DMARC sur tous les domaines",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-2.6"
+        },
+        {
+          "question": "Vérifier et renouveler les certificats TLS (automatisation cert-manager)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.5.3"
+        },
+        {
+          "question": "Surveiller les domaines pour le typosquatting et le phishing",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-2.1"
+        },
+        {
+          "question": "Configurer le monitoring d'expiration des noms de domaine avec alertes 90/60/30 jours avant expiration",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.1"
+        },
+        {
+          "question": "Activer le transfert lock sur tous les noms de domaine critiques pour empêcher les transferts non autorisés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-6.1"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité du stockage - Actions concrètes",
+      "domain": "SecurityBackup",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Storage",
+        "Cloud",
+        "Server",
+        "Database"
+      ],
+      "items": [
+        {
+          "question": "Configurer tous les buckets/conteneurs en privé par défaut",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.19"
+        },
+        {
+          "question": "Activer le chiffrement au repos sur tous les volumes de stockage",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.2"
+        },
+        {
+          "question": "Activer le versioning sur les stockages critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.7"
+        },
+        {
+          "question": "Configurer l'immutabilité (Object Lock/WORM) sur les sauvegardes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.7"
+        },
+        {
+          "question": "Activer les logs d'accès au stockage et les envoyer au SIEM",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-17.1"
+        },
+        {
+          "question": "Définir et appliquer les politiques de rétention et suppression",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.5"
+        },
+        {
+          "question": "Configurer les sauvegardes 3-2-1 (3 copies, 2 supports, 1 hors site)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Tester la restauration depuis les sauvegardes mensuellement",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.4.6"
+        },
+        {
+          "question": "Isoler les sauvegardes dans un réseau dédié inaccessible depuis le réseau de production (air-gap ou VLAN dédié)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.9"
+        },
+        {
+          "question": "Activer l'immutabilité des sauvegardes (object lock S3, WORM) pour empêcher la suppression par un ransomware",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-10.9"
+        }
+      ]
+    },
+    {
+      "title": "Investigation forensic - Actions concrètes",
+      "domain": "Forensic",
+      "checklistType": "Actionable",
+      "criticality": "Medium",
+      "applicability": [
+        "Server",
+        "Device",
+        "Application",
+        "DataAsset"
+      ],
+      "items": [
+        {
+          "question": "Préparer le kit forensic (KAPE, FTK Imager, Volatility, AVML)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.1"
+        },
+        {
+          "question": "Préparer les disques de stockage de preuves (formatés, vérifiés)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.1"
+        },
+        {
+          "question": "Documenter la procédure de collecte avec chaîne de conservation",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-19.2"
+        },
+        {
+          "question": "Configurer l'EDR pour la collecte automatique d'artefacts sur alerte critique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.3"
+        },
+        {
+          "question": "Former les analystes à la procédure de collecte forensic",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.1"
+        },
+        {
+          "question": "Vérifier que les preuves collectées sont hashées (SHA-256) et horodatées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.2"
+        },
+        {
+          "question": "Former au moins 2 personnes de l'équipe aux techniques de forensic numérique (acquisition, analyse, reporting)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.1"
+        },
+        {
+          "question": "Documenter la procédure de collecte de preuves avec les outils, les formats et la chaîne de conservation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-19.2"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des risques - Actions concrètes",
+      "domain": "RiskManagement",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Human",
+        "ThirdParty"
+      ],
+      "items": [
+        {
+          "question": "Réaliser l'analyse de risques pour chaque actif critique (menace × vulnérabilité × impact)",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.6.1"
+        },
+        {
+          "question": "Créer et maintenir le registre des risques avec propriétaire et traitement",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.6.2"
+        },
+        {
+          "question": "Rédiger les plans de traitement avec actions concrètes, responsable et échéance",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-3.6.3"
+        },
+        {
+          "question": "Réaliser la revue mensuelle du registre des risques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.2"
+        },
+        {
+          "question": "Souscrire ou mettre à jour l'assurance cyber",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.2"
+        },
+        {
+          "question": "Cartographier les menaces sectorielles spécifiques à votre activité (MITRE ATT&CK, rapports ANSSI/CERT)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-2.2"
+        },
+        {
+          "question": "Maintenir un registre de risques avec propriétaire, probabilité, impact, traitement et échéance pour chaque risque",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.2"
+        },
+        {
+          "question": "Réaliser une analyse d'impact métier (BIA) pour chaque processus critique de l'organisation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.1"
+        },
+        {
+          "question": "Vérifier que chaque risque identifié a un plan de traitement concret avec des actions mesurables et datées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.3"
+        }
+      ]
+    },
+    {
+      "title": "Conformité - Gouvernance et politiques",
+      "domain": "Governance",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Human"
+      ],
+      "items": [
+        {
+          "question": "Les politiques de sécurité sont-elles rédigées, approuvées et communiquées ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Les rôles CISO, DPO, propriétaires d'actifs sont-ils désignés et documentés ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.2"
+        },
+        {
+          "question": "La cartographie des exigences de conformité (RGPD, sectoriel, contractuel) est-elle à jour ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.3"
+        },
+        {
+          "question": "Les KPI/KRI sécurité sont-ils suivis et reportés à la direction ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.4"
+        },
+        {
+          "question": "Les exceptions de sécurité sont-elles documentées avec justification et compensations ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.4"
+        },
+        {
+          "question": "Les revues de direction sécurité sont-elles réalisées régulièrement ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.4"
+        },
+        {
+          "question": "Mettre en place un processus de gestion des exceptions sécurité : justification, durée limitée, compensation, approbation CISO",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Organiser une revue de direction sécurité au moins trimestrielle avec KPI, incidents et risques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.4"
+        },
+        {
+          "question": "Définir clairement les rôles et responsabilités sécurité : CISO, DPO, propriétaires d'actifs, correspondants sécurité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.2"
+        },
+        {
+          "question": "Mettre en place un contrôle continu de conformité : dashboards automatisés, scans de conformité récurrents, alertes sur les dérives par rapport aux politiques et référentiels applicables",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.3"
+        },
+        {
+          "question": "Garantir la non-répudiation des actions critiques : signatures numériques, journaux horodatés infalsifiables, preuves d'envoi/réception pour les transactions sensibles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.1"
+        },
+        {
+          "question": "Appliquer la séparation des rôles (Segregation of Duties) : aucune personne ne doit cumuler les droits de création, validation et déploiement sur les systèmes critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.1"
+        },
+        {
+          "question": "Mettre en œuvre la défense en profondeur : superposer les contrôles (réseau, endpoint, applicatif, données) pour qu'aucune couche unique ne soit un point de défaillance",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.1"
+        },
+        {
+          "question": "Réduire la surface d'attaque : désactiver les services inutiles, fermer les ports non nécessaires, supprimer les comptes inactifs, minimiser les droits d'accès",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.1"
+        },
+        {
+          "question": "Implémenter une architecture Zero Trust : vérification continue de chaque accès (identité, device, contexte), ne jamais faire confiance par défaut même au réseau interne",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.2"
+        },
+        {
+          "question": "Appliquer le principe Secure by Design / Secure by Default : intégrer la sécurité dès la conception des systèmes, activer les protections par défaut, exiger une revue sécurité avant mise en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.2"
+        }
+      ]
+    },
+    {
+      "title": "Conformité - Audit et évaluation",
+      "domain": "Audit",
+      "checklistType": "Compliance",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Infrastructure",
+        "Server",
+        "Application",
+        "Cloud",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Des audits internes sécurité sont-ils réalisés semestriellement ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.1"
+        },
+        {
+          "question": "Un audit externe est-il réalisé annuellement ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.1"
+        },
+        {
+          "question": "Un pentest annuel est-il réalisé par une équipe indépendante ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-12.6"
+        },
+        {
+          "question": "Les écarts d'audit sont-ils suivis avec tâches de remédiation ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.3"
+        },
+        {
+          "question": "Les scans de configuration CIS sont-ils réalisés et les résultats documentés ?",
+          "itemType": "Evidence",
+          "controlCode": "STRAT-7.2"
+        },
+        {
+          "question": "Réaliser un pentest externe et interne au moins une fois par an sur les systèmes exposés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.1"
+        },
+        {
+          "question": "Exécuter des scans de configuration CIS Benchmark mensuels sur les serveurs et postes critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.2"
+        },
+        {
+          "question": "Mettre en place un suivi des écarts d'audit jusqu'à résolution complète avec responsable et échéance",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.3"
+        },
+        {
+          "question": "Inclure des interviews des responsables d'actifs et des opérateurs dans chaque audit pour valider l'application effective des contrôles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.1"
+        },
+        {
+          "question": "Utiliser des techniques d'échantillonnage lors des audits : sélectionner un échantillon représentatif de systèmes, configurations et logs pour vérification approfondie",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-7.1"
+        }
+      ]
+    },
+    {
+      "title": "Conformité - Documentation de sécurité",
+      "domain": "DocumentsSecurity",
+      "checklistType": "Compliance",
+      "criticality": "Medium",
+      "applicability": [
+        "Project",
+        "Human"
+      ],
+      "items": [
+        {
+          "question": "La documentation sécurité est-elle centralisée et accessible aux parties prenantes ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Les procédures opérationnelles de sécurité sont-elles documentées ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Le plan de réponse aux incidents est-il documenté et distribué ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-18.1"
+        },
+        {
+          "question": "Le registre des risques est-il accessible et à jour ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-3.6.2"
+        },
+        {
+          "question": "Les rapports de sécurité réguliers sont-ils produits ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.4"
+        },
+        {
+          "question": "Maintenir un référentiel documentaire centralisé et versionné accessible à toutes les parties prenantes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Documenter l'architecture de sécurité avec schémas réseau, zones de confiance et flux de données",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        },
+        {
+          "question": "Rédiger des procédures opérationnelles standard (SOP) pour chaque processus de sécurité critique",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-5.1"
+        }
+      ]
+    },
+    {
+      "title": "Checklist express - Vérification rapide",
+      "domain": "PointSecurity",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Project",
+        "Human",
+        "Infrastructure",
+        "Server",
+        "Network",
+        "Application",
+        "Cloud",
+        "Device"
+      ],
+      "items": [
+        {
+          "question": "MFA activé sur 100% des comptes ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.1"
+        },
+        {
+          "question": "PAM opérationnel pour les comptes admin ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.1"
+        },
+        {
+          "question": "Revues d'accès trimestrielles réalisées ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.1"
+        },
+        {
+          "question": "Tous les systèmes sont patchés (CVSS 9+ < 72h) ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.2"
+        },
+        {
+          "question": "EDR actif sur 100% des endpoints ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.2"
+        },
+        {
+          "question": "Durcissement CIS appliqué (score >= 80%) ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.2"
+        },
+        {
+          "question": "Segmentation réseau effective (VLAN, firewall inter-zones) ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.3"
+        },
+        {
+          "question": "Filtrage egress en place (proxy, pas de sortie directe) ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.3"
+        },
+        {
+          "question": "WAF déployé devant les apps web exposées ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.3"
+        },
+        {
+          "question": "Données classifiées et chiffrées (repos + transit) ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.4"
+        },
+        {
+          "question": "Sauvegardes 3-2-1 testées ce mois ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.4"
+        },
+        {
+          "question": "SIEM opérationnel avec alertes utiles ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.5"
+        },
+        {
+          "question": "Playbooks IR documentés et testés ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.5"
+        },
+        {
+          "question": "Due diligence faite pour tous les fournisseurs actifs ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.6"
+        },
+        {
+          "question": "Clauses sécurité dans tous les contrats fournisseurs ?",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ANN.6"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité DevOps — Pipelines et déploiements",
+      "domain": "SecurityDevOps",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Pipeline",
+        "Codebase",
+        "Cluster",
+        "Application",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Configurer l'authentification obligatoire pour accéder aux runners CI/CD (GitHub Actions, GitLab CI, Jenkins)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.1"
+        },
+        {
+          "question": "Activer la vérification d'intégrité des artefacts de build (checksums SHA256, signatures cosign)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.2"
+        },
+        {
+          "question": "Scanner les images Docker avec Trivy/Grype avant chaque déploiement en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.2"
+        },
+        {
+          "question": "Configurer les pipelines pour rejeter automatiquement les builds avec des vulnérabilités critiques (CVE score >= 9)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.1"
+        },
+        {
+          "question": "Séparer les credentials de CI/CD par environnement (dev/staging/prod) avec des scopes distincts",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.3"
+        },
+        {
+          "question": "Activer les logs d'audit sur toutes les exécutions de pipeline (qui, quand, quoi, résultat)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.4"
+        },
+        {
+          "question": "Configurer le principe du moindre privilège pour les service accounts des pipelines",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.3"
+        },
+        {
+          "question": "Mettre en place une gate de sécurité (security gate) obligatoire avant le déploiement en production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.1"
+        },
+        {
+          "question": "Implémenter le déploiement immutable (conteneurs read-only, infrastructure as code)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.2"
+        },
+        {
+          "question": "Configurer des alertes en cas de modification non autorisée des fichiers de pipeline (.gitlab-ci.yml, Jenkinsfile)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DEVOPS.4"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité des dépôts de code source",
+      "domain": "SecurityRepo",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Codebase",
+        "Pipeline",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Activer la protection de branche sur main/master : exiger pull request + au moins 1 approbation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.1"
+        },
+        {
+          "question": "Installer et configurer un scanner de secrets pre-commit (gitleaks, truffleHog, detect-secrets)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.2"
+        },
+        {
+          "question": "Scanner l'historique complet du dépôt pour détecter les secrets déjà commitées et les révoquer",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.2"
+        },
+        {
+          "question": "Configurer la signature obligatoire des commits (GPG ou SSH signing)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.3"
+        },
+        {
+          "question": "Activer Dependabot / Renovate pour les mises à jour automatiques des dépendances",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.4"
+        },
+        {
+          "question": "Exécuter npm audit / pip audit / cargo audit dans le pipeline CI pour chaque PR",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.4"
+        },
+        {
+          "question": "Configurer CODEOWNERS pour exiger l'approbation des propriétaires sur les fichiers sensibles",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.1"
+        },
+        {
+          "question": "Désactiver le force-push sur les branches protégées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.1"
+        },
+        {
+          "question": "Auditer les accès au dépôt : supprimer les collaborateurs inactifs et les deploy keys inutilisées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.3"
+        },
+        {
+          "question": "Configurer les webhooks de sécurité pour notifier en cas de push sur des branches protégées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-REPO.1"
+        }
+      ]
+    },
+    {
+      "title": "Outillage de sécurité — Déploiement et configuration",
+      "domain": "SecurityTooling",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Tool",
+        "SystemTool",
+        "Server",
+        "Infrastructure",
+        "Network",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Dresser l'inventaire complet des outils de sécurité déployés (SIEM, EDR, WAF, IDS/IPS, scanner)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.1"
+        },
+        {
+          "question": "Vérifier que le SIEM collecte les logs de tous les systèmes critiques (serveurs, firewall, AD, applications)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.3"
+        },
+        {
+          "question": "Configurer les règles de corrélation du SIEM pour détecter les attaques courantes (brute force, lateral movement, exfiltration)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.3"
+        },
+        {
+          "question": "Vérifier que l'EDR/XDR est déployé sur 100% des postes et serveurs avec les protections actives",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.2"
+        },
+        {
+          "question": "Mettre à jour les signatures et règles de tous les outils de sécurité (antivirus, IDS, WAF)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.4"
+        },
+        {
+          "question": "Tester le bon fonctionnement de chaque outil avec un test EICAR ou une simulation d'attaque",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.2"
+        },
+        {
+          "question": "Configurer les alertes de disponibilité des outils de sécurité (alerte si un agent EDR est hors ligne)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.3"
+        },
+        {
+          "question": "Vérifier les licences et dates d'expiration de tous les outils de sécurité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.1"
+        },
+        {
+          "question": "Configurer le WAF avec des règles OWASP Core Rule Set et des règles personnalisées pour l'application",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.2"
+        },
+        {
+          "question": "Intégrer les outils de sécurité avec le système de ticketing pour la création automatique d'incidents",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-TOOL.3"
+        }
+      ]
+    },
+    {
+      "title": "Reprise d'activité — Actions concrètes PRA/PCA",
+      "domain": "DisasterRecovery",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Database",
+        "Infrastructure",
+        "Cloud",
+        "Application",
+        "Storage",
+        "Cluster"
+      ],
+      "items": [
+        {
+          "question": "Configurer la réplication temps réel des bases de données critiques vers un site de secours",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.3"
+        },
+        {
+          "question": "Tester la restauration complète d'une base de données depuis un backup (test réel, pas théorique)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.2"
+        },
+        {
+          "question": "Configurer le failover DNS automatique (Route53 health checks, Cloudflare failover) pour les services critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.4"
+        },
+        {
+          "question": "Configurer le failover automatique du load balancer en cas de panne d'un datacenter",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.4"
+        },
+        {
+          "question": "Documenter les procédures de bascule étape par étape avec les contacts et escalations",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.1"
+        },
+        {
+          "question": "Définir les RTO/RPO pour chaque service critique et vérifier que l'infrastructure les supporte",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.1"
+        },
+        {
+          "question": "Effectuer un exercice de bascule complète vers le site de secours au moins une fois par an",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.2"
+        },
+        {
+          "question": "Vérifier que les backups sont stockés dans une zone géographique différente du site principal",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.3"
+        },
+        {
+          "question": "Tester le redémarrage complet de l'infrastructure from scratch à partir de l'IaC (Infrastructure as Code)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.2"
+        },
+        {
+          "question": "Configurer les alertes de monitoring pour détecter automatiquement une panne nécessitant un basculement",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-DR.4"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité humaine — Gestion des personnes et accès",
+      "domain": "SecurityHuman",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Human",
+        "Project",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Mettre en place un processus automatisé de désactivation des comptes lors du départ d'un collaborateur (AD, email, VPN, SaaS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.2"
+        },
+        {
+          "question": "Récupérer physiquement le matériel (laptop, badge, clés, tokens) lors de chaque départ",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.2"
+        },
+        {
+          "question": "Configurer et lancer des campagnes de phishing simulé mensuelles avec GoPhish ou KnowBe4",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.3"
+        },
+        {
+          "question": "Déployer une solution PAM (CyberArk, Teleport, Boundary) pour les accès administratifs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.4"
+        },
+        {
+          "question": "Enregistrer les sessions des comptes à privilèges élevés pour audit post-incident",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.4"
+        },
+        {
+          "question": "Effectuer une revue trimestrielle des accès : désactiver les comptes dormants (>90 jours sans connexion)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.2"
+        },
+        {
+          "question": "Vérifier les antécédents des nouveaux collaborateurs ayant accès aux systèmes critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.1"
+        },
+        {
+          "question": "Organiser au moins 2 sessions de sensibilisation sécurité par an avec quiz de validation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.3"
+        },
+        {
+          "question": "Configurer des accès just-in-time (JIT) pour les élévations de privilèges temporaires",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.4"
+        },
+        {
+          "question": "Révoquer immédiatement les accès VPN et les sessions actives en cas de départ non planifié",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-HUMAN.2"
+        }
+      ]
+    },
+    {
+      "title": "Prévention des activités malveillantes — Détection et blocage",
+      "domain": "MaliciousActivityPrevention",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Network",
+        "Infrastructure",
+        "Application",
+        "Cluster",
+        "Tool",
+        "SystemTool",
+        "AgentTool",
+        "Device"
+      ],
+      "items": [
+        {
+          "question": "Déployer un IDS/IPS (Suricata, Snort) sur les segments réseau critiques et activer les règles Emerging Threats",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.1"
+        },
+        {
+          "question": "Configurer des listes de blocage IP/domaines alimentées par des flux de threat intelligence (AlienVault OTX, Abuse.ch)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.2"
+        },
+        {
+          "question": "Activer la détection d'anomalies de connexion (connexions à des heures inhabituelles, depuis des géolocalisations nouvelles)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.3"
+        },
+        {
+          "question": "Configurer des alertes sur les transferts de données volumineux anormaux (exfiltration potentielle)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.3"
+        },
+        {
+          "question": "Déployer un honeypot (Cowrie, T-Pot) pour détecter les mouvements latéraux dans le réseau interne",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.1"
+        },
+        {
+          "question": "Configurer des playbooks SOAR pour isoler automatiquement un hôte compromis du réseau",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.4"
+        },
+        {
+          "question": "Mettre en place le blocage automatique des IP après N tentatives de brute force (fail2ban, WAF rate limiting)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.2"
+        },
+        {
+          "question": "Configurer la détection de scan de ports et de reconnaissance réseau avec des alertes temps réel",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.1"
+        },
+        {
+          "question": "Activer le DNS filtering pour bloquer les domaines malveillants connus (Pi-hole, Umbrella, NextDNS)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.2"
+        },
+        {
+          "question": "Configurer un playbook automatisé pour bloquer et investiguer les hash de malware détectés par l'EDR",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-MALACT.4"
+        },
+        {
+          "question": "Configurer le blocage automatique des IOC confirmés (IP, domaines, hash) sur firewall, proxy et EDR en temps réel",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.3"
+        },
+        {
+          "question": "Effectuer la rotation immédiate de tous les secrets compromis ou potentiellement exposés : mots de passe, clés API, tokens d'accès, certificats, rotation secret post-incident obligatoire",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-13.1"
+        }
+      ]
+    },
+    {
+      "title": "Gestion des secrets et credentials",
+      "domain": "SecretsCredentials",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Application",
+        "Pipeline",
+        "Codebase",
+        "Database",
+        "Cloud",
+        "Tool",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Déployer HashiCorp Vault (ou AWS Secrets Manager / Azure Key Vault) pour centraliser tous les secrets",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.1"
+        },
+        {
+          "question": "Migrer tous les mots de passe de base de données depuis les fichiers .env vers le vault centralisé",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.1"
+        },
+        {
+          "question": "Configurer la rotation automatique des clés API tous les 90 jours maximum",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.2"
+        },
+        {
+          "question": "Configurer la rotation automatique des mots de passe de service (base de données, LDAP, service accounts)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.2"
+        },
+        {
+          "question": "Scanner tous les dépôts de code avec gitleaks/truffleHog pour identifier les secrets en dur et les supprimer",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.3"
+        },
+        {
+          "question": "Vérifier qu'aucun fichier .env, .pem, .key ou credentials.json n'est versionné dans git",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.3"
+        },
+        {
+          "question": "Configurer les logs d'accès au vault avec alertes sur les accès à des secrets critiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.4"
+        },
+        {
+          "question": "Révoquer et régénérer immédiatement tout secret exposé dans un commit public",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.3"
+        },
+        {
+          "question": "Configurer des politiques d'accès aux secrets par rôle (les devs n'accèdent pas aux secrets de production)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.1"
+        },
+        {
+          "question": "Auditer trimestriellement la liste des secrets actifs et révoquer ceux qui ne sont plus utilisés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-SECRET.4"
+        }
+      ]
+    },
+    {
+      "title": "Cartographie SI — Inventaire et visibilité",
+      "domain": "Cartographie",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Infrastructure",
+        "Server",
+        "Network",
+        "Application",
+        "Database",
+        "Cloud",
+        "Storage",
+        "Domain",
+        "PhysicalAsset",
+        "Project",
+        "DataAsset"
+      ],
+      "items": [
+        {
+          "question": "Exécuter un scan de découverte réseau (nmap -sn) sur tous les sous-réseaux pour identifier les actifs non inventoriés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.1"
+        },
+        {
+          "question": "Documenter tous les flux réseau entre zones de sécurité dans un diagramme (draw.io, Lucidchart)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.2"
+        },
+        {
+          "question": "Déployer un outil de découverte automatique d'actifs (Rumble, NetBox, GLPI) et le maintenir à jour",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.1"
+        },
+        {
+          "question": "Cartographier les dépendances applicatives : quelle application dépend de quelle base de données et quel service",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.3"
+        },
+        {
+          "question": "Identifier et classifier toutes les données sensibles (PII, données financières, secrets) avec leur lieu de stockage",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.4"
+        },
+        {
+          "question": "Scanner les enregistrements DNS pour identifier tous les sous-domaines actifs et vérifier qu'ils pointent vers des services valides",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.1"
+        },
+        {
+          "question": "Documenter les flux de données sensibles (de la collecte au stockage en passant par le traitement)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.4"
+        },
+        {
+          "question": "Identifier les single points of failure dans l'architecture et documenter les plans de mitigation",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.3"
+        },
+        {
+          "question": "Maintenir un inventaire à jour des certificats TLS avec leurs dates d'expiration et configurer des alertes 30 jours avant expiration",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.1"
+        },
+        {
+          "question": "Vérifier que chaque actif inventorié a un propriétaire identifié et un niveau de criticité assigné",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-CARTO.1"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité des mots de passe et authentification",
+      "domain": "PasswordSecurity",
+      "checklistType": "Actionable",
+      "criticality": "Critical",
+      "applicability": [
+        "Server",
+        "Application",
+        "Database",
+        "Human",
+        "Cloud",
+        "Tool",
+        "Infrastructure",
+        "SystemTool",
+        "AgentTool"
+      ],
+      "items": [
+        {
+          "question": "Configurer la politique de mot de passe sur Active Directory / LDAP : minimum 12 caractères, complexité, historique 24",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.1"
+        },
+        {
+          "question": "Activer le MFA (TOTP ou FIDO2) sur tous les accès administratifs (AD, cloud console, SSH)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.2"
+        },
+        {
+          "question": "Activer le MFA sur tous les accès VPN et accès distants",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.2"
+        },
+        {
+          "question": "Déployer un gestionnaire de mots de passe d'entreprise (Bitwarden, 1Password Business) pour tous les collaborateurs",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.3"
+        },
+        {
+          "question": "Vérifier les mots de passe des comptes de service contre la base Have I Been Pwned et changer ceux qui sont compromis",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.4"
+        },
+        {
+          "question": "Configurer le verrouillage de compte après 5 tentatives échouées avec déblocage automatique après 30 minutes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.1"
+        },
+        {
+          "question": "Désactiver les protocoles d'authentification legacy (NTLMv1, basic auth HTTP) sur tous les services",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.1"
+        },
+        {
+          "question": "Configurer le SSO (SAML/OIDC) pour toutes les applications SaaS afin de centraliser l'authentification",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.2"
+        },
+        {
+          "question": "Vérifier qu'aucun mot de passe par défaut n'est utilisé sur les équipements réseau, imprimantes et IoT",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.4"
+        },
+        {
+          "question": "Former les utilisateurs à l'utilisation du gestionnaire de mots de passe et interdire les mots de passe sur post-it ou fichiers texte",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-PWD.3"
+        },
+        {
+          "question": "Vérifier que le MFA est activé sur 100% des comptes utilisateurs (pas seulement les admins)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-1.7"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité IA — Systèmes intelligents et agents automatisés",
+      "domain": "SecurityCode",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "AISystem",
+        "SystemTool",
+        "AgentTool",
+        "Application",
+        "Tool"
+      ],
+      "items": [
+        {
+          "question": "Configurer le filtrage des entrées sur les systèmes IA pour bloquer les injections de prompt (prompt injection)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.2"
+        },
+        {
+          "question": "Isoler les environnements d'entraînement IA dans un réseau dédié sans accès à la production",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.4"
+        },
+        {
+          "question": "Configurer le rate limiting et les quotas sur les API d'inférence IA pour prévenir les abus",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.2"
+        },
+        {
+          "question": "Journaliser toutes les requêtes et réponses des systèmes IA avec horodatage et identité de l'appelant",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.3"
+        },
+        {
+          "question": "Scanner les données d'entraînement pour détecter les biais, les données empoisonnées et les PII non autorisées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.1"
+        },
+        {
+          "question": "Configurer des guardrails sur les sorties IA pour filtrer les contenus sensibles (PII, secrets, données internes)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.2"
+        },
+        {
+          "question": "Restreindre les permissions des agents automatisés au strict minimum nécessaire (principe du moindre privilège)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.1"
+        },
+        {
+          "question": "Mettre en place un circuit de validation humaine (human-in-the-loop) pour les actions critiques des agents IA",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.3"
+        },
+        {
+          "question": "Tester les systèmes IA contre les attaques adversariales connues (évasion, extraction de modèle)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.1"
+        },
+        {
+          "question": "Séparer les credentials des agents automatisés des credentials humains avec des comptes de service dédiés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-AI.4"
+        }
+      ]
+    },
+    {
+      "title": "Assurance cyber — Couverture et conformité",
+      "domain": "AssuranceSecurity",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Infrastructure",
+        "Cloud",
+        "Application",
+        "ThirdParty"
+      ],
+      "items": [
+        {
+          "question": "Souscrire une police d'assurance cyber couvrant : ransomware, fuite de données, interruption d'activité, frais juridiques",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.1"
+        },
+        {
+          "question": "Vérifier que la couverture d'assurance inclut les incidents liés aux fournisseurs tiers (supply chain)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.1"
+        },
+        {
+          "question": "Réaliser une estimation financière de l'impact d'un incident majeur (ransomware, fuite) pour calibrer la couverture",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.2"
+        },
+        {
+          "question": "Identifier les risques résiduels non couverts par les contrôles techniques et les transférer à l'assurance",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.2"
+        },
+        {
+          "question": "Vérifier que les prérequis de l'assureur sont respectés (MFA, EDR, sauvegardes, plan IR) pour ne pas invalider la police",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.3"
+        },
+        {
+          "question": "Conserver les preuves de conformité aux exigences de l'assureur (rapports de scan, logs MFA, politique IR)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.3"
+        },
+        {
+          "question": "Documenter la procédure de déclaration de sinistre : contacts assureur, délais, pièces à fournir",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.4"
+        },
+        {
+          "question": "Simuler une déclaration de sinistre au moins une fois par an pour valider le processus",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.4"
+        },
+        {
+          "question": "Revoir annuellement la police d'assurance pour ajuster la couverture aux nouveaux risques identifiés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.1"
+        },
+        {
+          "question": "Vérifier que la politique de rétention des logs est conforme aux exigences de l'assureur pour l'investigation post-sinistre",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-ASSUR.3"
+        }
+      ]
+    },
+    {
+      "title": "Politiques de sécurité — Rédaction et diffusion",
+      "domain": "PolitiqueSecurity",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Project",
+        "Human",
+        "Infrastructure",
+        "Application"
+      ],
+      "items": [
+        {
+          "question": "Rédiger et faire approuver par la direction une PSSI (Politique de Sécurité du Système d'Information) complète",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.1"
+        },
+        {
+          "question": "Diffuser la PSSI à tous les collaborateurs et obtenir un accusé de réception signé",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.1"
+        },
+        {
+          "question": "Rédiger une politique d'utilisation acceptable (AUP) couvrant internet, email, BYOD et réseaux sociaux",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.2"
+        },
+        {
+          "question": "Rédiger une politique de classification des données avec 4 niveaux minimum (public, interne, confidentiel, secret)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.3"
+        },
+        {
+          "question": "Rédiger une politique de gestion des accès définissant les règles d'attribution et de révocation des droits",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.4"
+        },
+        {
+          "question": "Rédiger une politique de gestion des mots de passe alignée avec les contrôles techniques déployés",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.4"
+        },
+        {
+          "question": "Rédiger une politique de gestion des incidents définissant rôles, escalades et délais",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.1"
+        },
+        {
+          "question": "Rédiger une politique de sauvegarde et de restauration alignée avec les RTO/RPO définis",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.1"
+        },
+        {
+          "question": "Planifier et exécuter la revue annuelle de toutes les politiques de sécurité avec mise à jour si nécessaire",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.5"
+        },
+        {
+          "question": "Vérifier que chaque politique est accessible dans un référentiel documentaire centralisé et versionné",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-POLIT.5"
+        }
+      ]
+    },
+    {
+      "title": "Reporting sécurité — Tableaux de bord et rapports",
+      "domain": "Rapport",
+      "checklistType": "Actionable",
+      "criticality": "Medium",
+      "applicability": [
+        "Project",
+        "Infrastructure",
+        "Application",
+        "Cloud",
+        "Network"
+      ],
+      "items": [
+        {
+          "question": "Configurer un tableau de bord sécurité mensuel automatisé dans le SIEM (incidents, alertes, tendances)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.1"
+        },
+        {
+          "question": "Produire un rapport mensuel pour la direction avec : nombre d'incidents, score de conformité, risques ouverts, KPI sécurité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.1"
+        },
+        {
+          "question": "Configurer la génération automatique de rapports de vulnérabilités après chaque scan (Nessus, Qualys)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.4"
+        },
+        {
+          "question": "Documenter chaque incident de sécurité avec un rapport post-mortem (chronologie, impact, root cause, actions)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.2"
+        },
+        {
+          "question": "Produire des rapports de conformité trimestriels pour chaque référentiel applicable (ISO 27001, SOC2, RGPD)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.3"
+        },
+        {
+          "question": "Définir et suivre les KPI sécurité : MTTD, MTTR, taux de patch, couverture EDR, taux de conformité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.1"
+        },
+        {
+          "question": "Configurer des alertes automatiques lorsque les KPI sécurité passent sous les seuils définis",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.1"
+        },
+        {
+          "question": "Tracer les tendances des vulnérabilités (ouvertes vs résolues) et le respect des SLA de correction",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.4"
+        },
+        {
+          "question": "Produire un rapport annuel de sécurité synthétisant l'ensemble des activités, incidents et améliorations",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.3"
+        },
+        {
+          "question": "Archiver tous les rapports de sécurité pendant au moins 3 ans pour audit et traçabilité",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-RAPPORT.2"
+        }
+      ]
+    },
+    {
+      "title": "Nouvelles menaces — Veille et protection avancée",
+      "domain": "NewTypeAttack",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "Application",
+        "Codebase",
+        "Server",
+        "Network",
+        "Infrastructure",
+        "Pipeline",
+        "Cloud"
+      ],
+      "items": [
+        {
+          "question": "S'abonner aux flux de threat intelligence (MITRE ATT&CK, AlienVault OTX, CERT-FR) et configurer les alertes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.1"
+        },
+        {
+          "question": "Configurer une veille automatique sur les CVE affectant les technologies utilisées (via Dependabot, Snyk)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.1"
+        },
+        {
+          "question": "Vérifier l'intégrité de toutes les dépendances logicielles avec des SBOM (Software Bill of Materials)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.2"
+        },
+        {
+          "question": "Configurer la vérification de signature des packages (npm, pip, Maven) dans les pipelines CI/CD",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.2"
+        },
+        {
+          "question": "Déployer des solutions EDR/XDR avec détection comportementale pour les exploits zero-day",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.3"
+        },
+        {
+          "question": "Configurer le sandboxing automatique des fichiers suspects (pièces jointes, téléchargements)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.3"
+        },
+        {
+          "question": "Mettre en place une procédure de vérification call-back pour les demandes de virement ou accès sensibles (anti-deepfake)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.4"
+        },
+        {
+          "question": "Former les équipes finance et direction aux techniques de fraude au président et deepfake",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.4"
+        },
+        {
+          "question": "Effectuer un exercice de purple team au moins une fois par an pour tester les nouvelles techniques d'attaque",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.1"
+        },
+        {
+          "question": "Bloquer l'exécution de macros non signées et les scripts PowerShell non approuvés (prévention fileless malware)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-NEWATK.3"
+        }
+      ]
+    },
+    {
+      "title": "Sécurité IA et Prompting — Risques et contrôles",
+      "domain": "IAPrompting",
+      "checklistType": "Actionable",
+      "criticality": "High",
+      "applicability": [
+        "AISystem",
+        "Application",
+        "AgentTool",
+        "SystemTool",
+        "Codebase",
+        "Tool"
+      ],
+      "items": [
+        {
+          "question": "Déployer un filtre d'entrée sur les LLM pour détecter et bloquer les tentatives d'injection de prompt (jailbreak, DAN)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.1"
+        },
+        {
+          "question": "Configurer un filtre de sortie pour empêcher les LLM de retourner des PII, secrets ou données internes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.2"
+        },
+        {
+          "question": "Restreindre les outils et API auxquels les agents IA peuvent accéder (principe du moindre privilège)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.3"
+        },
+        {
+          "question": "Configurer un circuit de validation humaine (human-in-the-loop) pour les actions destructives des agents IA",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.3"
+        },
+        {
+          "question": "Rédiger et diffuser une politique d'utilisation de l'IA encadrant ChatGPT, Copilot et les LLM internes",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.4"
+        },
+        {
+          "question": "Interdire l'envoi de données sensibles (code source, données clients, secrets) vers des IA externes non approuvées",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.2"
+        },
+        {
+          "question": "Journaliser toutes les interactions avec les systèmes IA (requêtes, réponses, actions) avec rétention 12 mois",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.1"
+        },
+        {
+          "question": "Tester les systèmes IA avec des attaques de prompt injection connues (benchmark OWASP LLM Top 10)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.1"
+        },
+        {
+          "question": "Séparer les environnements d'entraînement IA de la production avec des contrôles d'accès distincts",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.3"
+        },
+        {
+          "question": "Former les développeurs aux risques spécifiques de l'IA (injection de prompt, data poisoning, model extraction)",
+          "itemType": "YesNo",
+          "controlCode": "STRAT-IAPROMPT.4"
+        }
+      ]
+    }
+  ]
+}
